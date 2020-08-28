@@ -1,0 +1,195 @@
+<div class="container-fluid no-breadcrumbs page-dashboard">
+
+  <mat-card>
+    <mat-card-title>Welcome</mat-card-title>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-12">
+          <dt>ผู้ใช้งาน</dt>
+          <dd>{{user.username}} </dd>
+        </div>
+        
+        <!-- <div class="col-12" *ngIf="user.branch">
+          <dt>ห้าง</dt>
+          <dd>{{user.branch.branch.branchCode}}-{{user.branch.branch.branchNameThai}}
+            [{{user.branch.branch.entityCode}}]</dd>
+        </div>
+        <div class="col-12" *ngIf="user.branch">
+          <dt>Entity Code</dt>
+          <dd>{{user.branch.branch.entityCode}}</dd>
+        </div> -->
+        <div class="col-12" *ngIf="!user.branch">
+          <dt>แผนก</dt>
+          <dd>{{user.dept_name}}</dd>
+        </div>
+        <div class="col-12" *ngIf="user.def_wc_code">
+          <dt>หน่วยผลิต</dt>
+          <dd>{{user.def_wc_code}}</dd>
+        </div>
+        <div class="col-12" *ngIf="user.mc_code">
+          <dt>เครื่องจักร</dt>
+          <dd>{{user.mc_code}}</dd>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- informationMessage -->
+  <!-- <mat-card *ngIf="user.branch">
+    <mat-card-title>
+      <h6>แสดงข้อความข่าวสาร</h6>
+    </mat-card-title>
+
+    <mat-card-content *ngIf="data.datas.length == 0">
+      <div class="col-12 col-sm-12">
+        <div class="detail">
+          <small></small>
+          <span>ไม่มีข้อมูล</span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-content *ngIf="data.datas.length != 0">
+      <mat-card-content> -->
+        <!-- <div class="row card-table-header">
+          <div class="col-lg-4">
+            <b>หัวข้อ</b>
+          </div>          
+          <div class="col-lg-3">
+            <b>ผู้ส่ง</b>
+          </div>
+          <div class="col-lg-3">
+            <b>แผนก</b>
+          </div>         
+          <div class="col-lg-2">
+
+          </div>
+        </div> -->
+        <!-- <div class="row card-table-body" *ngFor="let x of data.datas">
+          <div class="col-6 col-sm-4">
+            <small>หัวข้อ</small>
+            <dd>{{x.titleMessage }}</dd>
+          </div>         
+          <div class="col-6 col-sm-3">
+            <small>ผู้ส่ง</small>
+            <dd>{{x.createUserName}}</dd>
+          </div>
+          <div class="col-6 col-sm-3">
+            <small>แผนก</small>
+            <dd>{{x.departmentName }}</dd>
+          </div>          
+          <div class="col-12 col-sm-2 text-right">
+            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+              <mat-icon class="material-icons">more_horiz</mat-icon>
+            </button>
+            <mat-menu #appMenu="matMenu">
+              <button mat-menu-item [routerLink]="['/app/informationMessage/view/'+x.informationMessageId+'/'+'v']">
+                <mat-icon class="material-icons">search</mat-icon> <span>แสดง</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card-content>
+  </mat-card> -->
+
+  <!-- promotion -->
+  <!-- <mat-card *ngIf="user.branch">
+    <mat-card-title>
+      <h6>แสดงโปรโมชั่น</h6>
+    </mat-card-title>
+
+    <mat-card-content *ngIf="pro.datas.length == 0">
+      <div class="col-12 col-lg-12">
+        <div class="detail">
+          <small></small>
+          <span>ไม่มีข้อมูล</span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-content *ngIf="pro.datas.length != 0">
+      <mat-card-content> -->
+        <!-- <div class="row card-table-header">
+          <div class="col-lg-2">
+            <b>รหัสโปรโมชั่น</b>
+          </div>
+          <div class="col-lg-2">
+            <b>ชื่อโปรโมชั่น</b>
+          </div>
+          <div class="col-lg-2">
+            <b>หมายเหตุ</b>
+          </div>
+          <div class="col-lg-2">
+            <b>วันที่เริ่ม</b>
+          </div>
+          <div class="col-lg-2">
+            <b>วันที่สิ้นสุด</b>
+          </div>
+          <div class="col-lg-2">
+
+          </div>
+        </div> -->
+        <!-- <div class="row card-table-body" *ngFor="let x of pro.datas">
+          <div class="col-6 col-lg-2">
+            <small>รหัสโปรโมชั่น</small>
+            <dd>{{x.promotionCode}}</dd>
+          </div>
+          <div class="col-12 col-lg-2">
+            <small>ชื่อโปรโมชั่น</small>
+            <dd>{{x.promotionName}}</dd>
+          </div>
+          <div class="col-12 col-lg-2">
+            <small>หมายเหตุ</small>
+            <dd>{{x.remark}}</dd>
+          </div>
+          <div class="col-6 col-lg-2">
+            <small>วันที่เริ่ม</small>
+            <dd>{{x.effDate | date:'dd/MM/yyyy'}}</dd>
+          </div>
+          <div class="col-6 col-lg-2">
+            <small>วันที่สิ้นสุด</small>
+            <dd>{{x.endDate | date:'dd/MM/yyyy'}}</dd>
+          </div>
+          <div class="col-12 col-lg-2 text-right">
+            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+              <mat-icon class="material-icons">more_horiz</mat-icon>
+            </button>
+            <mat-menu #appMenu="matMenu">
+              <button mat-menu-item [routerLink]="['/app/promotion/view/'+x.promotionId+'/'+'v']">
+                <mat-icon class="material-icons">search</mat-icon> <span>แสดง</span>
+              </button>
+            </mat-menu>
+          </div>
+          <div class="col-12">
+            <hr />
+          </div>
+        </div> -->
+      <!-- </mat-card-content>
+    </mat-card-content>
+  </mat-card> -->
+
+  <!-- <mat-card *ngIf="!user.isPC && branchList.length > 0">
+
+    <mat-card-title>
+      <h6>สาขาที่รับผิดชอบ</h6>
+    </mat-card-title>
+
+    <mat-card-content>
+
+      <div class="col-sm-12">
+
+        <dl *ngFor="let x of branchList">
+          <dd>{{x.value}}</dd>
+        </dl>
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card> -->
+
+</div>

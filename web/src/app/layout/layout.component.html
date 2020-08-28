@@ -1,0 +1,21 @@
+
+<my-app-sidenav class="d-none d-lg-block"></my-app-sidenav>
+
+<section id="page-container" class="app-page-container">
+  <my-app-header class="d-none d-lg-block"></my-app-header>
+  <my-app-mobile-header class="d-lg-none"></my-app-mobile-header>
+
+  <div class="app-content-wrapper">
+    <div class="app-content" style="padding-bottom: 50px">
+      <div class="full-height">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <my-app-mobile-footer class="d-lg-none" ></my-app-mobile-footer>
+    <my-app-footer class="d-none d-lg-block"></my-app-footer>
+  </div>
+</section>
+
+<!-- <my-app-customizer></my-app-customizer> -->
+
+<!-- <my-app-search-overlay></my-app-search-overlay> -->

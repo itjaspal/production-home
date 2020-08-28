@@ -1,0 +1,90 @@
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>ข้อมูล User Role</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+
+        <div class="row">
+            <!-- <div class="col-sm-6 col-lg-12">
+                <section style="margin-top: 17px;">
+                  <mat-checkbox [disabled]="true" [(ngModel)]="data.isPC">PC
+                    User</mat-checkbox>
+                </section>
+              </div> -->
+              <div class="col-sm-6 col-lg-3">
+                <div class="detail">
+                  <small>ชื่อ User Role</small>
+                  <span>{{data.roleName}}</span>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="detail">
+                  <small>สถานะ</small>
+                  <span *ngIf="data.status == 'A'">ใช้งาน</span>
+                  <span *ngIf="data.status == 'I'">ไม่ใช้งาน</span>
+                </div>
+              </div>
+        </div>
+
+      </mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <mat-card style="margin-top: 40px">
+    <mat-card-title>
+      <h6>สิทธิ์การเข้าถึง</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let group of functionGroup; let i = index;">
+            <!-- <mat-expansion-panel-header>
+              <mat-panel-title>
+                <section style="margin-top: 10px;">
+                  <mat-checkbox [disabled]="true" (change)="checkAllGroup($event.checked,group);" [(ngModel)]="group.isAll">{{group.menuFunctionGroupName}}</mat-checkbox>
+                </section>
+              </mat-panel-title>
+            </mat-expansion-panel-header> -->
+
+
+            <div class="list-detail" *ngFor="let functions of group.menuFunctionList">
+              <h6 style="margin-top:0px;">{{functions.menuFunctionName}}</h6>
+              <div *ngFor="let actions of functions.menuFunctionActionList">
+
+                <section>
+                  <mat-checkbox [disabled]="true" [(ngModel)]="actions.isSelected">{{actions.actionDesc}}</mat-checkbox>
+                </section>
+              </div>
+            </div>
+
+
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+
+      </mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <div class="row" style="margin-top: 40px;margin-bottom: 40px">
+    <div class="col-12 col-lg-2">
+      <button [routerLink]="['/app/user-role']" routerLinkActive="user-role" mat-raised-button style="width:100%">
+        <mat-icon class="material-icons">clear</mat-icon> ปิด
+      </button>
+    </div>
+    <div class="d-none d-lg-block col-lg-8"></div>
+  </div>
+
+
+</div>

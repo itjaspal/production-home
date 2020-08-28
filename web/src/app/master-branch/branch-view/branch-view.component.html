@@ -1,0 +1,56 @@
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>ข้อมูลกลุ่มข้อมูล</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <div class="row">
+        <div class="col-6 col-lg-2">
+          <small>รหัสกลุ่มข้อมู</small>
+          <dd>{{model.branchCode}}</dd>
+        </div>
+        <!-- <div class="col-6 col-lg-2">
+          <small>Entity Code</small>
+          <dd>{{model.entityCode}}</dd>
+        </div> -->
+        <div class="col-6 col-lg-4">
+          <small>ชื่อภาษาไทย</small>
+          <dd>{{model.branchNameThai}}</dd>
+        </div>
+        <div class="col-6 col-lg-4">
+          <small>ชื่อภาษาอังกฤษ</small>
+          <dd>{{model.branchNameEng}}</dd>
+        </div>
+        <div class="col-6 col-lg-4">
+          <small>กลุ่ม</small>
+          <dd>{{model.branchGroupCode}}-{{model.branchGroupName}}</dd>
+        </div>
+        <!-- <div class="col-6 col-lg-4">
+          <small>อีเมล</small>
+          <dd>{{model.email}}</dd>
+        </div> -->
+        <div class="col-6 col-lg-4">
+          <small>สถานะ</small>
+          <dd>{{model.statusTxt}}</dd>
+        </div>
+        <!-- <div class="col-2 col-lg-2">
+          <small>Prefix เอกสาร</small>
+          <dd>{{model.docRunningPrefix}}</dd>
+        </div> -->
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <div class="form-action">
+    
+    <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+      <mat-icon class="material-icons">close</mat-icon> ปิด
+    </button>
+
+  </div>
+
+</div>

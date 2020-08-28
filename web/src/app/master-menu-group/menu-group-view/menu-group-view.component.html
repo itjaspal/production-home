@@ -1,0 +1,36 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+      <mat-card-title>
+          <h6>แสดงข้อมูลกลุ่มเมนู</h6>
+      </mat-card-title>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-6 col-lg-2">
+            <small>รหัสกลุ่มเมนู</small>
+            <dd>{{model.menuFunctionGroupId}}</dd>
+          </div>
+          <div class="col-6 col-lg-2">
+            <small>ชื่อกลุ่มเมนู</small>
+            <dd>{{model.menuFunctionGroupName}}</dd>
+          </div>                  
+        </div>
+
+        <div class="row">
+          <div class="col-6 col-lg-2">
+            <small>Icon Name</small>
+            <dd>{{model.iconName}}</dd>
+          </div>
+          <div class="col-6 col-lg-2">
+            <small>ลำดับ</small>
+            <dd>{{model.orderDisplay}}</dd>
+          </div>                  
+        </div>
+      </mat-card-content>
+      
+      <mat-card-actions>
+          <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+              <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>         
+      </mat-card-actions>
+  </mat-card>
+</div>

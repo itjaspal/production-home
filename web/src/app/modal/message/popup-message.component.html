@@ -1,0 +1,14 @@
+<div class="custom-dialog-content">
+
+  <h5 style="white-space: pre-line;font-size: 1rem">
+    <i *ngIf="data.info" class="material-icons info">check_circle</i>
+    <i *ngIf="data.error" class="material-icons error">highlight_off</i>
+    <i *ngIf="data.warning" class="material-icons warning">report_problem</i>
+    {{data.message}}
+  </h5>
+
+
+  <div class="text-right">
+    <button mat-raised-button color="primary" (click)="onNoClick()">Ok</button>
+  </div>
+</div>

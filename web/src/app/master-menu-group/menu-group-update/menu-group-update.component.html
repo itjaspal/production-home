@@ -1,0 +1,67 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+      <mat-card-title>
+          <h6>แก้ไขข้อมูลกลุ่มเมนู</h6>
+      </mat-card-title>
+      <mat-card-content>
+          <form [formGroup]="validationForm">
+              <div class="row">
+                  <div class="col-12 col-sm-6">
+                      <!-- <mat-form-field class="full-width">
+                          <input matInput placeholder="รหัสแผนก *" formControlName="departmentCode"
+                              [(ngModel)]="model.departmentCode" name="departmentCode">
+                      </mat-form-field>
+                      <mat-error class="error-message"
+                          *ngIf="validationForm.get('departmentCode').hasError('required') && (validationForm.get('departmentCode').dirty || validationForm.get('departmentCode').touched)">
+                          โปรดระบุข้อมูล
+                      </mat-error> -->
+                      <small>รหัสกลุ่มเมนู</small>
+                      <dd>{{model.menuFunctionGroupId}}</dd>
+                  </div>
+                  <div class="col-12 col-sm-5">
+                      <mat-form-field class="full-width">
+                          <input matInput placeholder="ชื่อกลุ่มเมนู *" formControlName="menuFunctionGroupName"
+                              [(ngModel)]="model.menuFunctionGroupName" name="menuFunctionGroupName">
+                      </mat-form-field>
+                      <mat-error class="error-message"
+                          *ngIf="validationForm.get('menuFunctionGroupName').hasError('required') && (validationForm.get('menuFunctionGroupName').dirty || validationForm.get('menuFunctionGroupName').touched)">
+                          โปรดระบุข้อมูล
+                      </mat-error>
+                  </div>   
+                          
+              </div>
+
+              <div class="row">
+                <div class="col-12 col-sm-6">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="ลำดับ *" formControlName="iconName"
+                            [(ngModel)]="model.iconName" name="iconName">
+                    </mat-form-field>
+                    
+                </div>   
+                <div class="col-12 col-sm-5">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="ลำดับ *" formControlName="orderDisplay"
+                            [(ngModel)]="model.orderDisplay" name="orderDisplay">
+                    </mat-form-field>
+                    <mat-error class="error-message"
+                        *ngIf="validationForm.get('orderDisplay').hasError('required') && (validationForm.get('orderDisplay').dirty || validationForm.get('orderDisplay').touched)">
+                        โปรดระบุข้อมูล
+                    </mat-error>
+                </div>   
+                        
+            </div>
+          </form>
+      </mat-card-content>
+      <mat-card-actions>
+          <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+              <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+
+          <button mat-raised-button color="primary" class="btn-w-md pull-right" type="button" (click)="save()"
+              [disabled]="!validationForm.valid">
+              <mat-icon class="material-icons">save</mat-icon> บันทึกข้อมูล
+          </button>
+      </mat-card-actions>
+  </mat-card>
+</div>

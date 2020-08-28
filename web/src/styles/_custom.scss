@@ -1,0 +1,272 @@
+@font-face {
+  font-family: 'angsana';
+  src: url('/assets/fonts/angsa.ttf') format('truetype'),;
+}
+@import url( 'https://fonts.googleapis.com/css?family=Kanit:400,700');
+@mixin web-fonts {
+  font-family: 'Kanit' !important;
+  
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.mat-accordion,
+.mat-button,
+.mat-card,
+.mat-fab,
+.mat-flat-button,
+.mat-form-field,
+.mat-icon-button,
+.mat-list-item,
+.mat-menu-item,
+.mat-mini-fab,
+.mat-option,
+.mat-radio-button,
+.mat-raised-button,
+.mat-select,
+.mat-stroked-button,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @include web-fonts;
+}
+
+body {
+  @include web-fonts;
+}
+
+.mat-icon-button {
+  @media only screen and (min-width: 769px) {
+    margin-top: -5px !important;
+  }
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+}
+
+.m-menu-btn {
+  font-family: 'angsana';
+  font-size: 3rem;
+}
+
+.mat-card-title {
+  h6 {
+    margin: 0;
+    padding: 0;
+    border-radius: 3px;
+    margin-top: -40px;
+    padding: 15px;
+    color: #fff;
+    background: linear-gradient(60deg, #af8638, #997633);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(176, 131, 39, 0.4);
+  }
+
+  h5 { 
+    margin: 0;
+    padding: 0;
+    border-radius: 3px;
+    margin-top: -40px;
+    padding: 7px;
+    color: #fff;
+    background: linear-gradient(60deg, #633201, #633201);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(176, 131, 39, 0.4);
+    width: 200px;
+    text-align: center;
+    font-size: 12pt;
+    height: 35px;
+    
+    
+  }
+  h1 { 
+    margin: 0;
+    padding: 0;
+    border-radius: 3px;
+    margin-top: -40px;
+    padding: 7px;
+    color: #fff;
+    background: linear-gradient(60deg, #633201, #633201);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(176, 131, 39, 0.4);
+    width: 300px;
+    text-align: center;
+    font-size: 12pt;
+    height: 35px;
+    
+    
+  }
+}
+
+.mat-subcard {
+  margin-top: 40px;
+
+  .mat-card-subtitle {
+    margin-bottom: 0 !important;
+
+    h6 {
+      margin: 0;
+    }
+
+    .mat-fab {
+      position: absolute;
+      right: 28px;
+      top: -28px;
+    }
+  }
+}
+@media only screen and (max-width: 992px) {
+  // .card-table-header {
+  //   display: none !important;
+  // }
+
+  .mat-dialog-container {
+    padding: 0 !important;
+  }
+
+  .card-table-body {
+    div {
+      small {
+        color: #000000a3;
+      }
+
+      dd.text-right {
+        text-align: left !important;
+      }
+    }
+  }
+
+  .custom-dialog-content {
+    padding: 10px !important;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .hidden-placeholder-pc {
+    .mat-form-field-wrapper {
+      .mat-form-field-flex {
+        .mat-form-field-infix {
+          border-top: 0;
+        }
+
+        .mat-form-field-label-wrapper {
+          display: none;
+        }
+      }
+    }
+  }
+
+}
+
+.card-table-body {
+  div {
+    dd.text-right {
+      text-align: left !important;
+    }
+  }
+}
+
+.custom-dialog-content {
+  padding: 0;
+}
+
+.mat-form-field {
+  line-height: 1.5;
+}
+
+.errorBtn {
+  border: #ef5350 1px solid !important;
+  color: #ef5350 !important;
+}
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #795548 !important;
+}
+
+.detail {
+  small {
+    display: block;
+    font-weight: 700;
+    color: #666;
+    padding-top: 10px;
+  }
+
+  span {
+    margin-top: -5px;
+    display: block;
+  }
+}
+
+.form-action {
+  margin: 40px 0;
+}
+
+.mat-select-search-clear {
+  top: 10px !important;
+}
+
+.highlight-auto-complete {
+  b {
+    color: blue;
+  }
+}
+
+.autoComplete-option {
+  // .mat-option {
+  height: auto !important;
+  border-bottom: 1px solid #cacaca;
+  padding: 10px 15px !important;
+  line-height: 20px !important;
+  // }
+
+  small {
+    font-size: 60%;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  dd {
+    font-size: 80%;
+    margin-bottom: 0;
+  }
+}
+
+dd {
+  word-wrap: break-word;
+}
+
+.mat-dialog-container {
+  background: #eee !important;
+}
+
+.mat-fab-2 {
+  right: 100px !important;
+
+  .mat-button-wrapper {
+    i.fa {
+      color: #000;
+    }
+  }
+}
+
+.mat-form-field {
+  line-height: 1.4 !important;
+}
+
+
+.red-snackbar {
+  background: red !important;
+}
+@media print {
+  .app-page-container .app-content-wrapper {
+    background-color: #fff !important;
+  }
+
+  .mat-card {
+    box-shadow: 0 3px 1px -2px rgba(255, 255, 255, 0.2), 0 2px 2px 0 rgba(255, 255, 255, 0.2), 0 1px 5px 0 rgba(255, 255, 255, 0.2) !important;
+  }
+
+  
+}

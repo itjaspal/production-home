@@ -1,0 +1,29 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+    <mat-card-title>
+      <h6>แสดงข้อมูลแผนก</h6>
+    </mat-card-title>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-12 col-sm-4">
+          <small>รหัสแผนก</small>
+          <dd>{{model.departmentCode}}</dd>
+        </div>
+        <div class="col-12 col-sm-4">
+          <small>ชื่อแผนก</small>
+          <dd>{{model.departmentName}}</dd>
+        </div>
+        <div class="col-12 col-sm-4">
+          <small>สถานะ</small>
+          <dd>{{model.status=="A" ? "ใช้งาน" : "ไม่ใช้งาน"}}</dd>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+        <mat-icon class="material-icons">close</mat-icon> ปิด
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

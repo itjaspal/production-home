@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<preserve resultType="2" virtualPath="/Areas/HelpPage/Views/Help/DisplayTemplates/Samples.cshtml" hash="ffffffffe8b3c0cb" filehash="1080287b187a" flags="110000" assembly="Production_api" type="ASP._Page_Areas_HelpPage_Views_Help_DisplayTemplates_Samples_cshtml">
+  <filedeps>
+    <filedep name="/Areas/HelpPage/Views/Help/DisplayTemplates/Samples.cshtml" />
+  </filedeps>
+</preserve>

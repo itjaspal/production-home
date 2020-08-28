@@ -1,0 +1,89 @@
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>สร้างข้อมูล User Role</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+
+        <div class="row" [formGroup]="formGroup">
+          <!-- <div class="col-sm-6 col-lg-12">
+            <section style="margin-top: 17px;">
+              <mat-checkbox (change)="changePCUser($event.checked);" [(ngModel)]="data.isPC" formControlName="isPC">PC
+                User</mat-checkbox>
+            </section>
+          </div> -->
+          <div class="col-sm-6 col-lg-3">
+            <mat-form-field class="full-width">
+              <input maxlength="100" autocomplete="off" matInput placeholder="ชื่อ User Role" [(ngModel)]="data.roleName"
+                formControlName="name" required>
+              <mat-error *ngIf="f.name.errors?.required">Required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <mat-card style="margin-top: 40px">
+    <mat-card-title>
+      <h6>สิทธิ์การเข้าถึง</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let group of functionGroup; let i = index;">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <section style="margin-top: 10px;">
+                  <mat-checkbox  (change)="checkAllGroup($event.checked,group);" [(ngModel)]="group.isAll">{{group.menuFunctionGroupName}}</mat-checkbox>
+                </section>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+
+            <div class="list-detail" *ngFor="let functions of group.menuFunctionList">
+              <h6 style="margin-top:0px;">{{functions.menuFunctionName}}</h6>
+              <div *ngFor="let actions of functions.menuFunctionActionList">
+
+                <section>
+                  <mat-checkbox [(ngModel)]="actions.isSelected">{{actions.actionDesc}}</mat-checkbox>
+                </section>
+              </div>
+            </div>
+
+
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+
+      </mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <div class="row" style="margin-top: 40px;margin-bottom: 40px">
+    <div class="col-6 col-lg-2">
+      <button [routerLink]="['/app/user-role']" routerLinkActive="user" mat-raised-button style="width:100%">
+        <mat-icon class="material-icons">clear</mat-icon> ปิด
+      </button>
+    </div>
+    <div class="d-none d-lg-block col-lg-8"></div>
+    <div class="col-6 col-lg-2">
+      <button (click)="create()" mat-raised-button type="button" mat-button color="primary" style="width:100%">
+        <mat-icon class="material-icons">done</mat-icon> บันทึกข้อมูล
+      </button>
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,122 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+    <mat-card-title>
+      <h6 [hidden]="branchId != undefined">เพิ่มห้างใหม่</h6>
+      <h6 [hidden]="branchId == undefined">แก้ไขข้อมูลห้าง</h6>
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="validationForm">
+        <div class="row">
+          <div class="col-6 col-lg-3" *ngIf="branchId == undefined">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="กลุ่มข้อมูล *" formControlName="branchCode" [(ngModel)]="model.branchCode"
+                name="branchCode">
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('branchCode').hasError('required') && (validationForm.get('branchCode').dirty || validationForm.get('branchCode').touched)">
+              โปรดระบุข้อมูล
+            </mat-error>
+          </div>
+          <div class="col-6 col-sm-3" *ngIf="branchId != undefined">
+            <small>รหัสห้าง</small>
+            <dd>{{model.branchCode}}</dd>
+          </div>
+          <div class="col-6 col-sm-3" *ngIf="branchId == undefined">
+            <!-- <mat-form-field class="full-width">
+              <input matInput placeholder="Entity Code *" formControlName="entityCode" [(ngModel)]="model.entityCode"
+                name="entityCode">
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('entityCode').hasError('required') && (validationForm.get('entityCode').dirty || validationForm.get('entityCode').touched)">
+              โปรดระบุข้อมูล
+            </mat-error> -->
+          </div>
+          <!-- <div class="col-6 col-sm-3" *ngIf="branchId != undefined">
+            <small>Entity Code</small>
+            <dd>{{model.entityCode}}</dd>
+          </div> -->
+          <div class="col-12 col-sm-6">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="กลุ่ม" [(ngModel)]="model.branchGroupId" formControlName="branchGroupId">
+                <mat-option *ngFor="let x of ddlBranchGroup" [value]="x.key">{{x.value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('branchGroupId').hasError('required') && (validationForm.get('branchGroupId').dirty || validationForm.get('branchGroupId').touched)">
+              โปรดระบุข้อมูล
+            </mat-error>
+          </div>
+          <div class="col-12 col-sm-6">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="ชื่อภาษาไทย *" formControlName="branchNameThai"
+                [(ngModel)]="model.branchNameThai" name="branchNameThai">
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('branchNameThai').hasError('required') && (validationForm.get('branchNameThai').dirty || validationForm.get('branchNameThai').touched)">
+              โปรดระบุข้อมูล
+            </mat-error>
+          </div>
+          <div class="col-12 col-sm-6">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="ชื่อภาษาอังกฤษ *" formControlName="branchNameEng"
+                [(ngModel)]="model.branchNameEng" name="branchNameEng">
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('branchNameEng').hasError('required') && (validationForm.get('branchNameEng').dirty || validationForm.get('branchNameEng').touched)">
+              โปรดระบุข้อมูล
+            </mat-error>
+          </div>
+          <!-- <div class="col-12 col-sm-6">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="อีเมล" formControlName="email" [(ngModel)]="model.email">
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('email').hasError('required') && (validationForm.get('email').dirty || validationForm.get('email').touched)">
+              โปรดระบุข้อมูล
+            </mat-error>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('email').hasError('pattern') && (validationForm.get('email').dirty || validationForm.get('email').touched)">
+              รูปแบบอีเมลไม่ถูกต้อง Ex. www.example@gmail.com
+            </mat-error>
+          </div> -->
+          <div class="col-12 col-sm-4">
+            <mat-form-field class="full-width">
+              <mat-select placeholder="สถานะ" [(ngModel)]="model.status" formControlName="status">
+                <mat-option *ngFor="let x of ddlStatus" [value]="x.key">{{x.value}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- <div class="col-12 col-sm-4">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Prefix เอกสาร *" formControlName="docRunningPrefix"
+                [(ngModel)]="model.docRunningPrefix" name="branchNameThai">
+            </mat-form-field>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('docRunningPrefix').hasError('required') && (validationForm.get('docRunningPrefix').dirty || validationForm.get('docRunningPrefix').touched)">
+              โปรดระบุข้อมูล
+            </mat-error>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('docRunningPrefix').hasError('minLength') && (validationForm.get('docRunningPrefix').dirty || validationForm.get('docRunningPrefix').touched)">
+              โปรดระบุข้อมูล 1 - 3 ตัวอักษร
+            </mat-error>
+            <mat-error class="error-message"
+              *ngIf="validationForm.get('docRunningPrefix').hasError('maxLength') && (validationForm.get('docRunningPrefix').dirty || validationForm.get('docRunningPrefix').touched)">
+              โปรดระบุข้อมูลไม่เกิน 3 ตัวอักษร
+            </mat-error>
+          </div> -->
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  <div class="form-action">
+
+    <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+      <mat-icon class="material-icons">close</mat-icon> ปิด
+    </button>
+
+    <button mat-raised-button color="primary" class="btn-w-md pull-right" type="button" (click)="save()"
+      [disabled]="!validationForm.valid">
+      <mat-icon class="material-icons">save</mat-icon> บันทึกข้อมูล
+    </button>
+  </div>
+</div>

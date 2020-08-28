@@ -1,0 +1,32 @@
+.container-fluid {
+  
+  @media only screen and (min-width: 769px) {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  @media only screen and (max-width: 769px) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  &.padding-lg-h {
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+  }
+  &.with-maxwidth {
+    max-width: $container_fluid_maxwidth;
+  }
+  &.with-maxwidth-lg {
+    max-width: map-get($container-max-widths, lg);
+  }
+  &.with-maxwidth-md {
+    max-width: map-get($container-max-widths, lg);
+  }
+  &.with-maxwidth-sm {
+    max-width: map-get($container-max-widths, md);
+  }
+  &.no-breadcrumbs {
+    padding-top: 2em;
+    padding-bottom: 1em;
+  }
+}

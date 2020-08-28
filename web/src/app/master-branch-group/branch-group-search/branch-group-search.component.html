@@ -1,0 +1,96 @@
+<div class="container-fluid no-breadcrumbs">
+    <mat-card>
+        <mat-card-title>
+            <h6>ค้นหากลุ่มข้อมูล</h6>
+        </mat-card-title>
+        <mat-card-content>
+
+            <form>
+                <mat-card-content class="no-margin">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="รหัสกลุ่มข้อมูล" [(ngModel)]="model.branchGroupCode"
+                                    name="branchGroupCode">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="ชื่อกลุ่มข้อมูล" [(ngModel)]="model.branchGroupName"
+                                    name="branchGroupName">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions class="no-margin">
+                    <button mat-raised-button color="primary" class="btn-w-md" type="button" (click)="search()">
+                        <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                    </button>
+                    <button mat-raised-button type="button" mat-button class="btn-w-md pull-right"
+                        [routerLink]="['/app/branch-group/create']" *ngIf="actions.ADD">
+                        <mat-icon class="material-icons">add</mat-icon> เพิ่มกลุ่มห้าง
+                    </button>
+                </mat-card-actions>
+            </form>
+
+            <mat-card>
+                <mat-card-content>
+                    <!-- <div class="row card-table-header">
+                        <div class="col-12 col-lg-2">
+                            <b>รหัสกลุ่มห้าง</b>
+                        </div>
+                        <div class="col-3 col-lg-2">
+                            <b>ชื่อกลุ่มห้าง</b>
+                        </div>
+                        <div class="col-3 col-lg-2">
+
+                        </div>
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div> -->
+                    <div class="row card-table-body" *ngFor="let x of data.datas">
+                        <div class="col-12 col-sm-3">
+                            <small>รหัสกลุ่มข้อมูล</small>
+                            <dd>{{x.branchGroupCode}}</dd>
+                        </div>
+                        <div class="col-3 col-sm-6">
+                            <small>ชื่อกลุ่มข้อมูล</small>
+                            <dd>{{x.branchGroupName}}</dd>
+                        </div>
+                        <div class="col-12 col-sm-3 text-right">
+                            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                                <mat-icon class="material-icons">more_horiz</mat-icon>
+                            </button>
+
+                            <mat-menu #appMenu="matMenu">
+                                <button mat-menu-item [routerLink]="['/app/branch-group/view/'+x.branchGroupId]" *ngIf="actions.VIEW">
+                                    <mat-icon class="material-icons">search</mat-icon> <span>แสดง</span>
+                                </button>
+                                <button mat-menu-item [routerLink]="['/app/branch-group/update/'+x.branchGroupId]" *ngIf="actions.EDIT">
+                                    <mat-icon class="material-icons">edit</mat-icon> <span>แก้ไข</span>
+                                </button>
+                                <!-- <button mat-menu-item ng-click="delete(x)">
+                      <mat-icon class="material-icons">delete</mat-icon> <span>ลบ</span>
+                  </button> -->
+                            </mat-menu>
+
+                        </div>
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- <mat-paginator [length]="data.totalItem" [pageIndex]="model.pageIndex" [pageSize]="model.itemPerPage"
+                [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event; search($event)">
+            </mat-paginator> -->
+
+        </mat-card-content>
+        <mat-card-content *ngIf="data.datas != undefined">
+            <ngb-pagination [collectionSize]="data.totalItem" [pageSize]="model.itemPerPage" [maxSize]="5"
+                [(page)]="model.pageIndex" (pageChange)="search()" [boundaryLinks]="true"></ngb-pagination>
+        </mat-card-content>
+    </mat-card>
+</div>

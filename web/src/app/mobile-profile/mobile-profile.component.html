@@ -1,0 +1,27 @@
+<div class="container-fluid no-breadcrumbs">
+    <div class="row">
+        <div class="col-12">
+            <mat-card>
+                <mat-card-header>
+                    <div mat-card-avatar>
+                        <mat-icon class="material-icons"> account_circle </mat-icon>
+                    </div>
+                    <mat-card-title>{{user.username}}</mat-card-title>
+                    <mat-card-subtitle *ngIf="!user.isPC">{{user.department.departmentName}}</mat-card-subtitle>
+                    <mat-card-subtitle *ngIf="user.isPC">{{user.branch.branch.branchNameThai}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-12 col-lg-2">
+                            <button [routerLink]="['/app/user/change-password']" mat-raised-button type="button"
+                                mat-button color="white" style="width:100%">
+                                <mat-icon class="material-icons">done</mat-icon> เปลี่ยนรหัสผ่าน
+                            </button>
+                        </div>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

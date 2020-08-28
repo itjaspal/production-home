@@ -1,0 +1,20 @@
+<div class="container-fluid no-breadcrumbs">
+    <ng-container *ngFor="let item of user.menuGroups">
+        <div class="row" *ngIf="item.menuFunctionGroupId != '01'">
+            <div class="col-12">
+                <h5>{{item.menuFunctionGroupName}}</h5>
+            </div>
+                <div class="col-4 text-center" style="margin-bottom: 20px"  *ngFor="let function of item.menuFunctionList">
+
+                    <button (click)="selectMenu(function)" mat-fab
+                        style="background-color: #60564b;color: white;border-radius: 25%;">
+                        <i class="material-icons">
+                            {{function.iconName}}
+                        </i>
+                    </button>
+                    <small class="d-block">{{function.menuFunctionName}}</small>
+
+                </div>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,204 @@
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>แก้ไขข้อมูลผู้ใช้งาน</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+
+        <div class="row" [formGroup]="formGroup">
+          <!-- <div class="col-sm-6">
+            <section style="margin-top: 17px;">
+              <mat-checkbox [disableControl]="true" [(ngModel)]="data.isPC" formControlName="isPC">PC
+                User</mat-checkbox>
+            </section>
+          </div> -->
+          <div class="col-sm-6">
+            <mat-form-field class="full-width">
+              <input [disableControl]="true" matInput placeholder="รหัสผู้ใช้งาน" [(ngModel)]="data.username"
+                formControlName="username" required>
+              <mat-error *ngIf="f.username.errors?.required">Required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field class="full-width">
+              <input maxlength="100" autocomplete="off" matInput placeholder="ชื่อผู้ใช้งาน" [(ngModel)]="data.name"
+                formControlName="name" required>
+              <mat-error *ngIf="f.name.errors?.required">Required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6" *ngIf="!data.isPC">
+            <mat-form-field class="full-width">
+              <mat-select autocomplete="off" placeholder="User Role" [(ngModel)]="data.userRoleId"
+                formControlName="userrole" required>
+                <mat-option>โปรดเลือก</mat-option>
+                <mat-option *ngFor="let x of userRoleLists" [value]="x.key">{{x.value}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="f.userrole.errors?.required">Required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6" *ngIf="!data.isPC">
+            <mat-form-field class="full-width">
+              <mat-select autocomplete="off" placeholder="แผนก" [(ngModel)]="data.departmentId"
+                formControlName="department" required>
+                <mat-option>โปรดเลือก</mat-option>
+                <mat-option *ngFor="let x of departmentLists" [value]="x.key">{{x.value}}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="f.department.errors?.required">Required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field class="full-width">
+              <mat-select autocomplete="off" placeholder="สถานะ" [(ngModel)]="data.statusId" formControlName="status"
+                required>
+                <mat-option [value]="'A'">ใช้งาน</mat-option>
+                <mat-option [value]="'I'">ไม่ใช้งาน</mat-option>
+              </mat-select>
+              <mat-error *ngIf="f.status.errors?.required">Required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <mat-card style="margin-top: 40px" *ngIf="!data.isPC">
+    <mat-card-title>
+      <h6>ห้างสาขาที่สามารถเข้าถึงข้อมูลได้</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let group of branchGroupLists; let i = index;">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <section style="margin-top: 10px;">
+                  <mat-checkbox (change)="checkAllGroup($event.checked,group);" [(ngModel)]="group.isAll">
+                    {{group.branchGroupName}}</mat-checkbox>
+                </section>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="list-detail" *ngFor="let branch of group.branchList">
+              <section>
+                <mat-checkbox [(ngModel)]="branch.isSelected">{{branch.branchNameThai}}
+                </mat-checkbox>
+              </section>
+            </div>
+
+
+          </mat-expansion-panel>
+
+        </mat-accordion>
+
+      </mat-card-content>
+
+    </mat-card-content>
+  </mat-card>
+
+
+  <mat-card style="margin-top: 40px" *ngIf="data.isPC" [formGroup]="userEntityFormGroup">
+    <mat-card-title>
+      <h6>User Entities</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <div class="row" style="margin-top: 20px;margin-bottom: 20px" *ngIf="data.isPC">
+        <div class="col-12 col-sm-6">
+          <mat-form-field class="full-width">
+            <mat-select autocomplete="off" placeholder="ห้างสาขา" [(ngModel)]="selectBranch"
+              formControlName="selectBranch" required>
+              <mat-option>โปรดเลือก</mat-option>
+              <mat-optgroup *ngFor="let group of branchGroupLists" [label]="group.branchGroupName">
+                <mat-option *ngFor="let branch of group.branchList" [value]="branch">
+                    {{branch.branchNameThai}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+            <mat-error *ngIf="ue.selectBranch.errors?.required">Required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-4">
+          <mat-form-field class="full-width">
+            <mat-select autocomplete="off" placeholder="User Role" [(ngModel)]="selectUserRole"
+              formControlName="selectUserRole" required>
+              <mat-option>โปรดเลือก</mat-option>
+
+              <mat-option *ngFor="let x of userRoleLists" [value]="x">{{x.value}}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="ue.selectUserRole.errors?.required">Required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-sm-2">
+          <button [ngClass]="{'errorBtn' : userEntityRequired}" (click)="addEntity()" mat-raised-button>
+            <mat-icon class="material-icons">add</mat-icon> เพิ่มข้อมูล
+          </button>
+        </div>
+      </div>
+
+      <!-- <div class="row card-table-header">
+        <div class="col-lg-4">
+          <b>ห้างสาขา</b>
+        </div>
+        <div class="col-lg-6">
+          <b>User Role</b>
+        </div>
+        <div class="col-lg-2">
+        </div>
+        <div class="col-12">
+          <hr />
+        </div>
+      </div> -->
+      <div class="row card-table-body" *ngFor="let x of data.userEntity">
+        <div class="col-12 col-sm-4">
+          <small>ห้างสาขา</small>
+          <!-- <dd>{{x.branch.branchNameThai}}</dd> -->
+          <dd>{{x.branch.branchNameThai}} </dd>
+        </div>
+        <div class="col-12 col-sm-6">
+          <small>User Role</small>
+          <dd>{{x.userRole.value}}</dd>
+        </div>
+        <div class="col-12 col-sm-2 text-right">
+          <button mat-icon-button [matMenuTriggerFor]="appMenu">
+            <mat-icon class="material-icons">more_horiz</mat-icon>
+          </button>
+
+          <mat-menu #appMenu="matMenu">
+            <button mat-menu-item (click)="removeUserEntity(x)">
+              <mat-icon class="material-icons">delete</mat-icon> <span>ลบข้อมูล</span>
+            </button>
+          </mat-menu>
+
+        </div>
+        <div class="col-12">
+          <hr />
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <div class="row" style="margin-top: 40px;margin-bottom: 40px">
+    <div class="col-6 col-lg-2">
+      <button [routerLink]="['/app/user']" routerLinkActive="user" mat-raised-button style="width:100%">
+        <mat-icon class="material-icons">clear</mat-icon> ปิด
+      </button>
+    </div>
+    <div class="d-none d-lg-block col-lg-8"></div>
+    <div class="col-6 col-lg-2">
+      <button (click)="update()" mat-raised-button type="button" mat-button color="primary" style="width:100%">
+        <mat-icon class="material-icons">done</mat-icon> บันทึกข้อมูล
+      </button>
+    </div>
+  </div>
+
+
+</div>

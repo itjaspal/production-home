@@ -1,0 +1,29 @@
+<section class="app-footer" style="padding: 0;bottom: 0;background-color: white;position: fixed;">
+  <div class="container-fluid">
+    <div class="row">
+      <div *ngIf="(data.menuGroups.length > 0 && data.menuGroups[0].menuFunctionGroupId == '01')"
+        class="col-4 text-center" [routerLink]="['/app/dashboard']">
+        <i class="material-icons" style="font-size: 2rem;margin-top: 5px;">
+          poll
+        </i>
+        <small class="d-block">Dashbaord</small>
+      </div>
+      <div *ngIf="(data.menuGroups.length > 0 && data.menuGroups[0].menuFunctionGroupId != '01')"
+        class="col-4 text-center" [routerLink]="['/app/home']">
+        <i class="material-icons" style="font-size: 2rem;margin-top: 5px;">
+          apps
+        </i>
+        <small class="d-block">Home</small>
+      </div>
+      <div class="col-4 text-center">
+        <button mat-fab style="background-color: #997633;    bottom: 28px;" [routerLink]="['/app/mobile-navigator']">
+          <span class="m-menu-btn">J</span>
+        </button>
+      </div>
+      <div class="col-4 text-center">
+        <span class="d-block" style="padding-top: 7px"><b>{{data.username}}</b></span>
+        <small class="d-block" style="padding-top: 8px">v. {{version}}</small>
+      </div>
+    </div>
+  </div>
+</section>

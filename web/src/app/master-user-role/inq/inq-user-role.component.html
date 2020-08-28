@@ -1,0 +1,120 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+    <mat-card-title>
+      <h6>ค้นหาUser Role</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+        <form>
+          <div class="row">
+            <!-- <div class="col-sm-6 col-lg-12">
+              <section style="margin-top: 17px;">
+                <mat-checkbox [(ngModel)]="model.isPC" name="isPC" (change)="search()">PC User</mat-checkbox>
+              </section>
+            </div> -->
+            <div class="col-sm-6 col-lg-3">
+              <mat-form-field class="full-width">
+                <input autocomplete="off" matInput placeholder="ชื่อ User Role" [(ngModel)]="model.name" name="name">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <mat-form-field class="full-width">
+                <mat-select autocomplete="off" placeholder="สถานะ" [(ngModel)]="model.status" name="status">
+                  <mat-option>ทั้งหมด</mat-option>
+                  <mat-option [value]="'A'">ใช้งาน</mat-option>
+                  <mat-option [value]="'I'">ไม่ใช้งาน</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+        </form>
+
+
+
+      </mat-card-content>
+      <mat-card-actions class="no-margin">
+        <div class="row">
+          <div class="col-6 col-lg-2">
+            <button (click)="search();" mat-raised-button color="primary" style="width:100%">
+              <mat-icon class="material-icons">search</mat-icon> ค้นหา
+            </button>
+          </div>
+          <div class="d-none d-lg-block col-lg-8"></div>
+          <div class="col-6 col-lg-2">
+            <button mat-raised-button type="button" mat-button style="width:100%"
+              [routerLink]="['/app/user-role/create/']">
+              <mat-icon class="material-icons">add</mat-icon> เพิ่ม
+            </button>
+          </div>
+        </div>
+
+
+      </mat-card-actions>
+
+
+      <mat-card *ngIf="data.datas">
+        <mat-card-content>
+          <!-- <div class="row card-table-header">
+            <div class="col-lg-8">
+              <b>ชื่อ User Role</b>
+            </div>
+            <div class="col-lg-3">
+              <b>ผู้สร้างรายการ / วันที่</b>
+            </div>
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col-12">
+              <hr />
+            </div>
+          </div> -->
+          <div class="row card-table-body" *ngFor="let x of data.datas">
+            <div class="col-12 col-lg-8">
+              <small>ชื่อ User Role</small>
+              <dd>{{x.roleName}}</dd>
+            </div>
+            <div class="col-12 col-lg-3">
+              <small>ผู้สร้างรายการ / วันที่</small>
+              <dd>{{x.createUser}} {{x.createDatetime | date:'dd/MM/yyyy HH:mm:ss'}}</dd>
+            </div>
+            <div class="col-12 col-lg-1 text-right">
+              <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                <mat-icon class="material-icons">more_horiz</mat-icon>
+              </button>
+
+              <mat-menu #appMenu="matMenu">
+                <button mat-menu-item [routerLink]="['/app/user-role/view/'+x.userRoleId]">
+                  <mat-icon class="material-icons">search</mat-icon> <span>แสดง</span>
+                </button>
+                <button mat-menu-item [routerLink]="['/app/user-role/update/'+x.userRoleId]">
+                  <mat-icon class="material-icons">edit</mat-icon> <span>แก้ไข</span>
+                </button>
+                <button mat-menu-item (click)="delete(x)">
+                  <mat-icon class="material-icons">delete</mat-icon> <span>ลบ</span>
+                </button>
+              </mat-menu>
+
+            </div>
+            <div class="col-12">
+              <hr />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <ngb-pagination [collectionSize]="data.totalItem" [pageSize]="model.itemPerPage" [maxSize]="3"
+                [(page)]="model.pageIndex" (pageChange)="search()" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+
+
+    </mat-card-content>
+  </mat-card>
+
+
+</div>

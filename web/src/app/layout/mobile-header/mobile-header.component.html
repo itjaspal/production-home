@@ -1,0 +1,21 @@
+<section class="app-header">
+  <div class="app-header-inner" style="box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.16)">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-3 text-left">
+            <i [routerLink]="['/app/mobile-profile']" class="material-icons" style="font-size: 2.3rem;color: #949494;margin-top: 13px">
+                account_circle
+              </i>
+        </div>
+        <div class="col-6 text-center">
+          <img src="./assets/images/logo-main.png" style="width: 120px;margin-top: 17px;" />
+        </div>
+        <div class="col-3 text-right">
+          <i (click)="logout()" class="material-icons" style="font-size: 2.3rem;color: #949494;margin-top: 13px">
+            power_settings_new
+          </i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,207 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+    <mat-card-title>
+      <h6>ค้นหาผู้ใช้งาน</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <mat-card-content class="no-margin">
+        <form [formGroup]="fbGroup">
+          <div class="row">
+            <!-- <div class="col-lg-2">
+              <section style="margin-top: 17px;">
+                <mat-checkbox (change)="changePCUser($event.checked);" [(ngModel)]="model.isPC" name="isPC"
+                  formControlName="isPC">PC User
+                </mat-checkbox>
+              </section>
+            </div>
+            <div class="col-lg-5">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="กลุ่มห้าง *" [(ngModel)]="model.branchGroupId" name="branchGroup"
+                  (selectionChange)="getBranchInGroup(model.branchGroupId)" formControlName="branchGroupId">
+                  <mat-option *ngFor="let x of ddlBranchGroups" [value]="x.key">{{x.value}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-5">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="ห้าง *" [(ngModel)]="model.branchId" name="branch" formControlName="branchId">
+                  <mat-option *ngFor="let x of ddlBranches" [value]="x.key">{{x.value}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-lg-9">
+              <mat-form-field class="full-width">
+                <mat-label *ngIf="!model.isPC">ห้างสาขาที่สามารถเข้าถึงข้อมูลได้</mat-label>
+                <mat-label *ngIf="model.isPC">User Entities</mat-label>
+                <mat-select [(ngModel)]="model.branchList" name="branchList" formControlName="branchList" multiple>
+                  <mat-option #allSelected (click)="toggleAllSelection()" [value]="0">ทั้งหมด
+                  </mat-option>
+
+                  <mat-optgroup *ngFor="let group of branchGroupLists" [label]="group.branchGroupName">
+                    <mat-option *ngFor="let x of group.branchList" [value]="x.branchId"
+                      (click)="tosslePerOne(allSelected.viewValue)">{{x.branchNameThai}}</mat-option>
+                  </mat-optgroup>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+            <div class="col-sm-6 col-lg-3">
+              <mat-form-field class="full-width">
+                <input autocomplete="off" matInput placeholder="รหัสผู้ใช้งาน" [(ngModel)]="model.username"
+                  formControlName="username" name="username">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <mat-form-field class="full-width">
+                <input autocomplete="off" matInput placeholder="ชื่อผู้ใช้งาน" [(ngModel)]="model.name" name="name"
+                  formControlName="name">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-lg-3" *ngIf="!model.isPC">
+              <mat-form-field class="full-width">
+                <mat-select autocomplete="off" placeholder="User Role" [(ngModel)]="model.userRole" name="userrole"
+                  formControlName="roleId">
+                  <mat-option>ทั้งหมด</mat-option>
+                  <mat-option *ngFor="let x of userRoleLists" [value]="x.key">{{x.value}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <mat-form-field class="full-width">
+                <mat-select autocomplete="off" placeholder="สถานะ" [(ngModel)]="model.statusId" name="status"
+                  formControlName="status">
+                  <mat-option>ทั้งหมด</mat-option>
+                  <mat-option [value]="'A'">ใช้งาน</mat-option>
+                  <mat-option [value]="'I'">ไม่ใช้งาน</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+        </form>
+
+
+
+      </mat-card-content>
+      <mat-card-actions class="no-margin">
+        <div class="row">
+          <div class="col-6 col-lg-2">
+            <button (click)="search();" mat-raised-button color="primary" style="width:100%">
+              <!-- [disabled]="!fbGroup.valid"> -->
+              <mat-icon class="material-icons">search</mat-icon> ค้นหา
+            </button>
+          </div>
+          <div class="d-none d-lg-block col-lg-8"></div>
+          <div class="col-6 col-lg-2">
+            <button mat-raised-button type="button" mat-button style="width:100%" [routerLink]="['/app/user/create/']">
+              <mat-icon class="material-icons">add</mat-icon> เพิ่ม
+            </button>
+          </div>
+        </div>
+
+
+      </mat-card-actions>
+
+
+      <mat-card *ngIf="data.datas">
+        <mat-card-content>
+          <!-- <div class="row card-table-header">
+            <div class="col-lg-2">
+              <b>รหัสผู้ใช้งาน</b>
+            </div>
+            <div class="col-lg-2">
+              <b>ชื่อผู้ใช้งาน</b>
+            </div>
+
+            <div class="col-lg-2" *ngIf="!model.isPC">
+              <b>แผนก</b>
+            </div>
+            <div class="col-lg-2" *ngIf="!model.isPC">
+              <b>Role</b>
+            </div>
+            <div class="col-lg-1 d-none">
+              <b>PC</b>
+            </div>
+            <div class="col-lg-3">
+              <b>ผู้สร้างรายการ / วันที่</b>
+            </div>
+            <div class="col-lg-4" *ngIf="model.isPC">
+            </div>
+            <div class="col-lg-1">
+
+            </div>
+            <div class="col-12">
+              <hr />
+            </div>
+          </div> -->
+          <div class="row card-table-body" *ngFor="let x of data.datas">
+            <div class="col-12 col-lg-2">
+              <small>รหัสผู้ใช้งาน</small>
+              <dd>{{x.username}}</dd>
+            </div>
+            <div class="col-6 col-lg-2">
+              <small>ชื่อผู้ใช้งาน</small>
+              <dd>{{x.name}}</dd>
+            </div>
+            <div class="col-6 col-lg-2" *ngIf="!model.isPC">
+              <small>แผนก</small>
+              <dd>{{x.departmentDesc}}</dd>
+            </div>
+            <div class="col-6 col-lg-2" *ngIf="!model.isPC">
+              <small>Role</small>
+              <dd>{{x.userRoleDesc}}</dd>
+            </div>
+            <div class="col-4 col-lg-1 d-none">
+              <small>PC</small>
+              <dd>
+                <mat-icon *ngIf="x.isPC" class="material-icons">done</mat-icon>
+              </dd>
+            </div>
+            <div class="col-12 col-lg-3">
+              <small>ผู้สร้างรายการ / วันที่</small>
+              <dd>{{x.createUser}} {{x.createdDate | date:'dd/MM/yyyy HH:mm:ss'}}</dd>
+            </div>
+            <div class="col-lg-4" *ngIf="model.isPC">
+            </div>
+            <div class="col-12 col-lg-1 text-right">
+              <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                <mat-icon class="material-icons">more_horiz</mat-icon>
+              </button>
+
+              <mat-menu #appMenu="matMenu">
+                <button mat-menu-item [routerLink]="['/app/user/view/'+x.username]">
+                  <mat-icon class="material-icons">search</mat-icon> <span>แสดง</span>
+                </button>
+                <button mat-menu-item [routerLink]="['/app/user/update/'+x.username]">
+                  <mat-icon class="material-icons">edit</mat-icon> <span>แก้ไข</span>
+                </button>
+                <button mat-menu-item [routerLink]="['/app/user/reset-password/'+x.username]">
+                  <mat-icon class="material-icons">replay</mat-icon> <span>รีเซ็ทพาสเวิร์ด</span>
+                </button>
+                <button mat-menu-item (click)="delete(x)">
+                  <mat-icon class="material-icons">delete</mat-icon> <span>ลบ</span>
+                </button>
+              </mat-menu>
+
+            </div>
+            <div class="col-12">
+              <hr />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <ngb-pagination [collectionSize]="data.totalItem" [pageSize]="model.itemPerPage" [maxSize]="3"
+                [(page)]="model.pageIndex" (pageChange)="search()" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+
+
+    </mat-card-content>
+  </mat-card>
+
+
+</div>

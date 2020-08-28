@@ -1,0 +1,42 @@
+<div class="page-auth" style="padding: 0">
+  <div class="main-body">
+
+    <div class="card card-white">
+      <div class="card-content">
+        <div class="text-center" style="margin-bottom: 50px;">
+          <img src="./assets/images/logo-main.png" />
+        </div>
+
+        <form [formGroup]="formGroup" name="material_login_form" class="form-validation">
+          <fieldset>
+            <div class="form-group">
+              <mat-form-field class="full-width">
+                <input (keyup.enter)="login()" formControlName="username" autocomplete="off" required matInput
+                  name="username" placeholder="Username" [(ngModel)]="data.username">
+                <mat-icon matSuffix class="material-icons">person</mat-icon>
+                <mat-error *ngIf="f.username.errors?.required">Required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group">
+              <mat-form-field class="full-width">
+                <input (keyup.enter)="login()" formControlName="password" autocomplete="off" required matInput
+                  style="-webkit-text-security: disc;" name="password" placeholder="Password"
+                  [(ngModel)]="data.password">
+                <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+                <mat-error *ngIf="f.password.errors?.required">Required</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="divider divider-md"></div>
+
+            <button (click)="login()" mat-raised-button type="button" color="primary" class="float-right">Login</button>
+
+          </fieldset>
+        </form>
+
+        <div class="text-center"> version {{version}} </div>
+
+      </div>
+    </div>
+  </div>
+</div>

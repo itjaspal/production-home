@@ -1,0 +1,108 @@
+<div class="container-fluid no-breadcrumbs">
+    <mat-card>
+        <mat-card-title>
+            <h6>ค้นหาแผนก</h6>
+        </mat-card-title>
+        <mat-card-content>
+
+            <form>
+                <mat-card-content class="no-margin">
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-3">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="รหัสแผนก" [(ngModel)]="model.departmentCode"
+                                    name="departmentCode">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="ชื่อแผนก" [(ngModel)]="model.departmentName"
+                                    name="departmentName">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-6 col-lg-4">
+                            <mat-form-field class="full-width">
+                                <mat-select placeholder="สถานะ *" [(ngModel)]="model.status" name="ddlStatus">
+                                    <mat-option>ทั้งหมด</mat-option>
+                                    <mat-option *ngFor="let x of ddlStatus" [value]="x.key">{{x.value}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions class="no-margin">
+                    <button mat-raised-button color="primary" class="btn-w-md" type="button" (click)="search()">
+                        <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                    </button>
+                    <button mat-raised-button type="button" mat-button class="btn-w-md pull-right"
+                        [routerLink]="['/app/department/create']" *ngIf="actions.ADD">
+                        <mat-icon class="material-icons">add</mat-icon> เพิ่มแผนก
+                    </button>
+                </mat-card-actions>
+            </form>
+
+            <mat-card>
+                <mat-card-content>
+                    <!-- <div class="row card-table-header">
+                        <div class="col-12 col-lg-2">
+                            <b>รหัสแผนก</b>
+                        </div>
+                        <div class="col-3 col-lg-4">
+                            <b>ชื่อแผนก</b>
+                        </div>
+                        <div class="col-3 col-lg-2">
+                            <b>สถานะ</b>
+                        </div>
+                        <div class="col-3 col-lg-2">
+
+                        </div>
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div> -->
+                    <div class="row card-table-body" *ngFor="let x of data.datas">
+                        <div class="col-12 col-sm-3">
+                            <small>รหัสแผนก</small>
+                            <dd>{{x.departmentCode}}</dd>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <small>ชื่อแผนก</small>
+                            <dd>{{x.departmentName}}</dd>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <small>สถานะ</small>
+                            <dd>{{x.status=="A" ? "ใช้งาน" : "ไม่ใช้งาน"}}</dd>
+                        </div>
+                        <div class="col-12 col-ms-2 text-right">
+                            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                                <mat-icon class="material-icons">more_horiz</mat-icon>
+                            </button>
+
+                            <mat-menu #appMenu="matMenu">
+                                <button mat-menu-item [routerLink]="['/app/department/view/'+x.departmentId]"
+                                    *ngIf="actions.VIEW">
+                                    <mat-icon class="material-icons">search</mat-icon> <span>แสดง</span>
+                                </button>
+                                <button mat-menu-item [routerLink]="['/app/department/update/'+x.departmentId]"
+                                    *ngIf="actions.EDIT">
+                                    <mat-icon class="material-icons">edit</mat-icon> <span>แก้ไข</span>
+                                </button>
+                                <!-- <button mat-menu-item ng-click="delete(x)">
+                      <mat-icon class="material-icons">delete</mat-icon> <span>ลบ</span>
+                  </button> -->
+                            </mat-menu>
+
+                        </div>
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+        <mat-card-content *ngIf="data.datas != undefined">
+            <ngb-pagination [collectionSize]="data.totalItem" [pageSize]="model.itemPerPage" [maxSize]="5"
+                [(page)]="model.pageIndex" (pageChange)="search()" [boundaryLinks]="true"></ngb-pagination>
+        </mat-card-content>
+    </mat-card>
+</div>
