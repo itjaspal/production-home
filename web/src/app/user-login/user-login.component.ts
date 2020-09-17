@@ -58,9 +58,10 @@ export class UserLoginComponent extends BaseComponent implements OnInit {
     //   if (user.menuGroups.length > 0 && user.menuGroups[0].menuFunctionGroupId == '01') {
     //     this.router.navigateByUrl('/app/dashboard');
     //   } else {
-        this.router.navigateByUrl('/app/home');
+        //this.router.navigateByUrl('/app/home');
     //  }
     //}
+    this.router.navigateByUrl('/select-branch');
   }
 
 }

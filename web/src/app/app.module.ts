@@ -142,6 +142,7 @@ import { MenuUpdateComponent } from './master-menu/menu-update/menu-update.compo
 import { MenuViewComponent } from './master-menu/menu-view/menu-view.component';
 import { MenuService } from './_service/menu.service';
 import { BranchSearchAssignProductComponent } from './master-branch/branch-search-assignProduct/branch-search-assignProduct.component';
+import { UserSelectBranchComponent } from './user-select-branch/user-select-branch/user-select-branch.component';
 
 
 
@@ -310,6 +311,7 @@ import { BranchSearchAssignProductComponent } from './master-branch/branch-searc
     MenuSearchComponent,
     MenuUpdateComponent,
     MenuViewComponent,
+    UserSelectBranchComponent,
     
 
   

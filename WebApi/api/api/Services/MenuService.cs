@@ -36,7 +36,7 @@ namespace api.Services
                 //    .OrderBy(o => o.MENU_ID)
                 //    .ToList();
 
-                string sql = "select  menu_id, menu_name , menu_type, link_name , main_menu , icon_name from su_menu where menu_id like '%'||:p_menu_id||'%' and menu_name like '%'||:p_menu_name||'%' and menu_id  like 'MOB%' order by menu_id";
+                string sql = "select  menu_id, menu_name , menu_type, link_name , main_menu , icon_name from su_menu where menu_id like '%'||:p_menu_id||'%' and menu_name like '%'||:p_menu_name||'%' and menu_id  like 'MOBB%' order by menu_id";
 
 
                 List<menuView> menu = ctx.Database.SqlQuery<menuView>(sql, new OracleParameter("p_menu_id", model.menuFunctionId), new OracleParameter("p_menu_name", model.menuFunctionName)).ToList();

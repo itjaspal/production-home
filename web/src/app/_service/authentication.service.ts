@@ -37,10 +37,11 @@ export class AuthenticationService {
   public async getPcUserRole(branch) {
 
     let param = {
-      userRoleId: branch.userRoleId
+      userRoleId: branch.user_id
+      
     }
 
-    let menuGroups: any = await this.http.post(environment.API_URL + 'authen/pc/getUserRole', param).toPromise();
+    let menuGroups: any = await this.http.post(environment.API_URL + 'authen/getUserRole', param).toPromise();
 
     let user = this.getLoginUser();
     user.branch = branch;

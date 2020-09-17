@@ -1,0 +1,47 @@
+<div class="page-auth" style="padding: 0">
+  <div class="main-body">
+
+    <div class="card card-white" style="padding : 0px;">
+      <div class="card-content">
+
+        <div class="row">
+          <div class="col-8">
+            <h5>โปรดเลือกสาขา</h5>
+          </div>
+          <div class="col-4 text-right">
+            <button (click)="logout()" mat-icon-button style="margin-top: 23px !important;">
+              <mat-icon>reply</mat-icon>
+            </button>
+          </div>
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="row" *ngFor="let branch of user.userEntityPrvlgList">
+              <div class="col-8">
+                <h6>
+                  {{branch.entity_code}} - {{branch.entity_name}}
+                </h6>
+                <small>
+                  <!-- {{branch.userRole.roleName}} -->
+                </small>
+              </div>
+              <div class="col-4 text-right">
+                <button (click)="select(branch)" mat-mini-fab color="primary" style="margin-top: 30px;">
+                  <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
+              </div>
+              <div class="col-12">
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -37,19 +37,19 @@ namespace api.Controllers
             }
         }
 
-        //[Route("pc/getUserRole")]
-        //public HttpResponseMessage PostuserRole([FromBody]AuthenticationUserRoleParam param)
-        //{
-        //    try
-        //    {
-        //        var userrole = authService.getUserRole(param.userRoleId);
+        [Route("authen/getUserRole")]
+        public HttpResponseMessage PostuserRole([FromBody]AuthenticationUserRoleParam param)
+        {
+            try
+            {
+                var userrole = authService.getUserRole(param.userRoleId);
 
-        //        return Request.CreateResponse(HttpStatusCode.OK, userrole);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
-        //    }
-        //}
+                return Request.CreateResponse(HttpStatusCode.OK, userrole);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
     }
 }

@@ -22,7 +22,8 @@ namespace api.ModelViews
         public string def_printer { get; set; }
         public string def_wc_code { get; set; }
         public string mc_code { get; set; }
-
+        public virtual List<UserEntityPrvlg> userEntityPrvlgList { get; set; }
+        public virtual List<UserWcPrvlg> userWcPrvlgList { get; set; }
         public List<menuFunctionGroupView> menuGroups { get; set; }
 
        
@@ -31,6 +32,19 @@ namespace api.ModelViews
     public class AuthenticationUserRoleParam
     {
         public string userRoleId { get; set; }
+    }
+
+    public class UserEntityPrvlg
+    {
+        public string entity_code { get; set; }
+        public string entity_name { get; set; }
+        public string user_id { get; set; }
+    }
+
+    public class UserWcPrvlg
+    {
+        public string wc_code { get; set; }
+        public string wc_name { get; set; }
     }
 
     public class menuFunctionGroupView
