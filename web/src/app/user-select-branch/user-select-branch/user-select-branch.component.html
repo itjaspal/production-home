@@ -20,7 +20,7 @@
         <div class="row">
           <div class="col-12">
             <div class="row" *ngFor="let branch of user.userEntityPrvlgList">
-              <div class="col-8">
+              <div class="col-10">
                 <h6>
                   {{branch.entity_code}} - {{branch.entity_name}}
                 </h6>
@@ -28,7 +28,7 @@
                   <!-- {{branch.userRole.roleName}} -->
                 </small>
               </div>
-              <div class="col-4 text-right">
+              <div class="col-2 text-right">
                 <button (click)="select(branch)" mat-mini-fab color="primary" style="margin-top: 30px;">
                   <mat-icon>keyboard_arrow_right</mat-icon>
                 </button>
