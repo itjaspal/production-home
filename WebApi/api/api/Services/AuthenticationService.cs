@@ -26,7 +26,7 @@ namespace api.Services
                
                 var vuser = username.ToUpper();
 
-                string sql = "select a.user_id username , a.user_name name , a.user_password, a.dept_code , a.active statusId , b.dept_namet dept_name , c.mc_code  from su_user a , department b , pd_mapp_user_mac c where a.dept_code=b.dept_code and a.user_id = c.user_id and a.user_id = :p_user_id and c.status='A'";
+                string sql = "select a.user_id username , a.user_name name , a.user_password, a.dept_code , a.active statusId , b.dept_namet dept_name   from su_user a , department b  where a.dept_code=b.dept_code  and a.user_id = :p_user_id";
 
                 AuthenticationData user = ctx.Database.SqlQuery<AuthenticationData>(sql, new OracleParameter("p_user_id", vuser)).FirstOrDefault();
 
@@ -35,7 +35,7 @@ namespace api.Services
 
                 if (user == null)
                 {
-                    throw new Exception("รหัสผู้ใช้หรือรหัสผ่านไม่ถูกต้อง / ไม่ได้กำหนด Machine");
+                    throw new Exception("รหัสผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
                 }
                 else
                 {
