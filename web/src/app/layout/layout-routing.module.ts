@@ -1,3 +1,4 @@
+import { DefaultPrinterComponent } from './../default-printer/default-printer/default-printer.component';
 import { AuthenGuard } from './../_service/authen.guard';
 import { HomeComponent } from './../home/home.component';
 import { DepartmentSearchComponent } from './../master-department/department-search/department-search.component';
@@ -96,11 +97,11 @@ const routes: Routes = [
       { path: 'menu/update/:menuFunctionId', component: MenuUpdateComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/menu" } },
       { path: 'menu/view/:menuFunctionId', component: MenuViewComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/menu" } },
 
-     
-
+      //Default Printer
+      { path: 'default-printer', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/default-printer" } },
        
 
-       { path: '**', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]
   }
 ];

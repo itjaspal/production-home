@@ -260,9 +260,13 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AuthenController.cs" />
+    <Compile Include="Controllers\DefaultPrinterController.cs" />
     <Compile Include="Controllers\DropdownlistController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobOperationController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PrintRawTagController.cs" />
+    <Compile Include="Controllers\SpecDrawingController.cs" />
     <Compile Include="DataAccess\ConXContext.cs" />
     <Compile Include="DataAccess\MyDbConfiguration.cs" />
     <Compile Include="DataAccess\NVarcharInterceptor.cs" />
@@ -270,17 +274,29 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IAuthenticationService.cs" />
+    <Compile Include="Interfaces\IDefaultPrinterService.cs" />
     <Compile Include="Interfaces\IDropdownlistService.cs" />
+    <Compile Include="Interfaces\IJobOperationService.cs" />
     <Compile Include="Interfaces\IMenuService.cs" />
+    <Compile Include="Interfaces\IPrintRawTagService.cs" />
+    <Compile Include="Interfaces\ISpecDrawingService.cs" />
     <Compile Include="ModelViews\AuthenticationView.cs" />
     <Compile Include="ModelViews\CommonResponseView.cs" />
     <Compile Include="ModelViews\CommonSearchView.cs" />
+    <Compile Include="ModelViews\DefaultPrinterView.cs" />
     <Compile Include="ModelViews\Dropdownlist.cs" />
+    <Compile Include="ModelViews\JobOperationView.cs" />
     <Compile Include="ModelViews\MasterMenuView.cs" />
+    <Compile Include="ModelViews\PrintRawTagView.cs" />
+    <Compile Include="ModelViews\SpecDrawingView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\DefaultPrinterService.cs" />
     <Compile Include="Services\DropdownlistService.cs" />
+    <Compile Include="Services\JobOperationService.cs" />
     <Compile Include="Services\MenuService.cs" />
+    <Compile Include="Services\PrintRawTagService.cs" />
+    <Compile Include="Services\SpecDrawingService.cs" />
     <Compile Include="Util\DataIgnoreAttribute.cs" />
     <Compile Include="Util\DataNameAttribute.cs" />
     <Compile Include="Util\DataTableMapping.cs" />

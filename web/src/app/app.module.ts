@@ -73,6 +73,7 @@ import { SharedModule } from './shared/shared.module';
 //3rd party
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { SignaturePadModule } from 'angular2-signaturepad';
 
 // hmr
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
@@ -143,6 +144,7 @@ import { MenuViewComponent } from './master-menu/menu-view/menu-view.component';
 import { MenuService } from './_service/menu.service';
 import { BranchSearchAssignProductComponent } from './master-branch/branch-search-assignProduct/branch-search-assignProduct.component';
 import { UserSelectBranchComponent } from './user-select-branch/user-select-branch/user-select-branch.component';
+import { DefaultPrinterComponent } from './default-printer/default-printer/default-printer.component';
 
 
 
@@ -195,7 +197,8 @@ import { UserSelectBranchComponent } from './user-select-branch/user-select-bran
 
     //3rd party
     NgxMatSelectSearchModule,
-    ZXingScannerModule.forRoot()
+    ZXingScannerModule.forRoot(),
+    SignaturePadModule,
   ],
   providers: [
     // AuthGuard,
@@ -312,6 +315,7 @@ import { UserSelectBranchComponent } from './user-select-branch/user-select-bran
     MenuUpdateComponent,
     MenuViewComponent,
     UserSelectBranchComponent,
+    DefaultPrinterComponent,
     
 
   
