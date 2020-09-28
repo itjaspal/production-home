@@ -33,7 +33,7 @@ namespace api.ModelViews
         public DateTime req_date { get; set; }
         public string pdjit_grp { get; set; }
         public string pdgrp_tname { get; set; }
-        public int total_build_qty { get; set; }
+        //public int total_build_qty { get; set; }
         public int total_plan_qty { get; set; }
         public int total_cancel_qty { get; set; }
         public int total_act_qty { get; set; }
@@ -48,7 +48,9 @@ namespace api.ModelViews
         public DateTime req_date { get; set; }
         public string display_group { get; set; }
         public string display_type { get; set; }
-        public int build_qty { get; set; }
+        public string pdjit_grp { get; set; }
+        public string pddsgn_code { get; set; }
+        public string design_name { get; set; }
         public int plan_qty { get; set; }
         public int cancel_qty { get; set; }
         public int act_qty { get; set; }
@@ -67,6 +69,14 @@ namespace api.ModelViews
     {
         public string pdjit_grp { get; set; }
         public string group_name { get; set; }
+        public string por_no { get; set; }
+    }
+
+
+    public class PorDesignView
+    {
+        public string pddsgn_code { get; set; }
+        public string design_name { get; set; }
         public string por_no { get; set; }
     }
 

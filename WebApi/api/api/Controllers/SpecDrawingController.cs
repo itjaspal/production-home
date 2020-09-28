@@ -1,4 +1,5 @@
 ﻿using api.Interfaces;
+using api.ModelViews;
 using api.Services;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,21 @@ namespace api.Controllers
         {
 
             specService = new SpecDrawingService();
+        }
+
+        [Route("spec/postdrawning")]
+        public HttpResponseMessage postdrawing(SpecDrawingSearchView model)
+        {
+            try
+            {
+                var result = specService.GetSpecInfo(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
         }
 
 

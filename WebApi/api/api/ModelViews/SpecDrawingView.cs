@@ -8,4 +8,9 @@ namespace api.ModelViews
     public class SpecDrawingView
     {
     }
+
+    public class SpecDrawingSearchView
+    {
+
+    }
 }
