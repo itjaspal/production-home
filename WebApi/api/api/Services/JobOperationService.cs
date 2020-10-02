@@ -169,6 +169,88 @@ namespace api.Services
             }
         }
 
+        public OrderSumView OrderSummary(OrderSumSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                
+                string ventity = model.entity_code;
+                string vpdjit_grp = model.pdjit_grp;
+                DateTime vreq_date = model.req_date;
+                string vbuild_type = model.build_type;
+                string vspec = "";
+
+                string sql = "select req_date , pdjit_grp ,  sum(qty_req) total_plan_qty , sum(nvl(qty_fgg,0)) total_actual_qty from mps_det where entity= :p_entity and req_date = trunc(:p_req_date) and nvl(build_type,'HMJIT') = :p_build_type and pdjit_grp = :p_pdjit_grp group by req_date , pdjit_grp";
+                OrderSumView mps = ctx.Database.SqlQuery<OrderSumView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_pdjit_grp", vpdjit_grp)).SingleOrDefault();
+
+                //define model view
+                OrderSumView view = new ModelViews.OrderSumView()
+                {
+                    req_date = mps.req_date,
+                    pdjit_grp = mps.pdjit_grp,
+                    build_type = vbuild_type,
+                    total_plan_qty = mps.total_plan_qty,
+                    total_actual_qty = mps.total_actual_qty,
+                    total_diff_qty = mps.total_plan_qty - mps.total_actual_qty,
+                    productDetail = new List<ModelViews.OrderProductView>()
+                };
+
+                string sqld = "select a.prod_code , a.prod_tname prod_name , a.model_name model , a.tick_no spec, a.size_name , b.style_code style , b.weight_net weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , a.model_name , a.tick_no , a.size_name , b.style_code , b.weight_net";
+                List<OrderProductView> prod = ctx.Database.SqlQuery<OrderProductView>(sqld, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
+
+                foreach(var x in prod)
+                {
+                    List<PorDetailView> porViews = new List<PorDetailView>();
+
+                    string sqlp = "select a.por_no , b.qty_req , b.weight_net weight from mps_det a, por_det b  where a.por_no=b.por_no and a.prod_code=b.prod_code  and a.entity= :p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and b.prod_code= :p_prod_code";
+                    List<PorDetailView> por = ctx.Database.SqlQuery<PorDetailView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_prod_code", x.prod_code)).ToList();
+
+                    foreach (var y in por)
+                    {
+                        string sqlsp = "select spc_desc from por_special_det where pd_entity = :p_entity and por_no = :p_por_no and prod_code = :p_prod_code order by item ";
+                        List<SpecialDescView> special = ctx.Database.SqlQuery<SpecialDescView>(sqlsp, new OracleParameter("p_entity", ventity), new OracleParameter("p_por_no", y.por_no), new OracleParameter("p_prod_code", x.prod_code)).ToList();
+                        foreach (var z in special)
+                        {
+                            vspec = vspec + z.spc_desc + '/';
+                        }
+
+                        PorDetailView pView = new PorDetailView()
+                        {
+                            por_no = y.por_no,
+                            qty_req = y.qty_req,
+                            weight = y.weight,
+                            special_order = vspec.Trim('/')
+                        };
+
+                        porViews.Add(pView);
+
+                    }
+
+                    view.productDetail.Add(new ModelViews.OrderProductView()
+                    {
+                        prod_code  = x.prod_code,
+                        prod_name = x.prod_name,
+                        style = x.style,
+                        weight = x.weight,
+                        model = x.model,
+                        size_name = x.size_name,
+                        spec = x.spec,
+                        weight_kg = (x.weight*x.plan_qty)/1000,
+                        plan_qty = x.plan_qty,
+                        act_qty = x.act_qty,
+                        diff_qty = x.plan_qty - x.act_qty,
+                        porDetail = porViews,
+
+                    });
+                }
+
+
+
+                return view;
+            }
+
+        }
+
         public JobOperationView SearchDataCurrent(JobOperationSearchView model)
         {
             using (var ctx = new ConXContext())
@@ -205,173 +287,122 @@ namespace api.Services
                 {
                     pageIndex = model.pageIndex - 1,
                     itemPerPage = model.itemPerPage,
-                    totalItem = 0,
                     wc_code = vwc_code,
                     wc_name = wc_name,
                     build_type = model.build_type,
-                    dataGroups = new List<ModelViews.JobOperationDetailView>(),
                     dataTotals = new List<ModelViews.JobOperationTotalGroupView>()
                 };
 
                 //query data
                 if (model.build_type == "HMJIT")
                 {
-                    string sqlg = "select distinct a.pdjit_grp , pdgrp_tname group_name from mps_det_wc a , pdgrp_mast b where a.pdjit_grp = b.pdgrp_code and a.entity = :p_entity and wc_code = :p_wc_code and trunc(a.req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
-                    List<JitgroupView> group = ctx.Database.SqlQuery<JitgroupView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date)).ToList();
+                    
+                    List<JobOperationDetailView> detailViews = new List<JobOperationDetailView>();
 
-                    string sqlp = "select distinct por_no from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')"; 
-                    List<PorGroupView> por = ctx.Database.SqlQuery<PorGroupView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date)).ToList();
-
-
-                    string sqlt = "select  pdjit_grp , pdgrp_tname , req_date ,sum(plan_qty) total_plan_qty , sum(act_qty) total_act_qty , sum(cancel_qty) total_cancel_qty from (";
-                    sqlt += " select a.pdjit_grp , b.pdgrp_tname , a.req_date , count(*) plan_qty ,  0 act_qty , 0 cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.entity= :p_entity ";
+                    string sqlt = "select  req_date ,sum(plan_qty) total_plan_qty , sum(act_qty) total_act_qty , sum(cancel_qty) total_cancel_qty , sum(defect_qty) total_defect_qty from (";
+                    sqlt += " select a.req_date , count(*) plan_qty ,  0 act_qty , 0 cancel_qty , 0 defect_qty";
+                    sqlt += " from mps_det_wc a";
+                    sqlt += " where a.entity= :p_entity ";
                     sqlt += " and trunc(a.req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                     sqlt += " and a.mps_st <> 'OCL'";
                     sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
                     sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
+                    sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                    sqlt += " group by a.req_date";
                     sqlt += " union";
-                    sqlt += " select  a.pdjit_grp , b.pdgrp_tname , a.req_date , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.entity= :p_entity ";
+                    sqlt += " select  a.req_date , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty , 0 defect_qty";
+                    sqlt += " from mps_det_wc a ";
+                    sqlt += " where a.entity= :p_entity ";
                     sqlt += " and trunc(a.req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                     sqlt += " and a.mps_st='Y'";
                     sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
                     sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
+                    sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                    sqlt += " group by a.req_date";
                     sqlt += " union";
-                    sqlt += " select a.pdjit_grp , b.pdgrp_tname , a.req_date , 0 plan_qty ,  0 act_qty , count(*) cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.entity= :p_entity ";
+                    sqlt += " select a.req_date , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
+                    sqlt += " from mps_det_wc a";
+                    sqlt += " where a.entity= :p_entity ";
                     sqlt += " and trunc(a.req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                     sqlt += " and a.mps_st='OCL'";
                     sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
                     sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " ) group by pdjit_grp , pdgrp_tname , req_date";
-                    sqlt += " order by req_date , pdjit_grp";
+                    sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                    sqlt += " group by a.req_date";
+                    sqlt += " ) group by req_date";
+                    sqlt += " order by req_date";
 
-                    List<JobOperationTotalGroupView> totalView = ctx.Database.SqlQuery<JobOperationTotalGroupView>(sqlt, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code)).ToList();
+                    List<JobOperationTotalGroupView> totalView = ctx.Database.SqlQuery<JobOperationTotalGroupView>(sqlt, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_entity2", ventity), new OracleParameter("p_user_id", vuser)).ToList();
+
+                    
+
+                    string sql = "select  req_date , pdjit_grp , wc_code  ,sum(plan_qty) plan_qty , sum(act_qty) act_qty , sum(cancel_qty) cancel_qty , sum(defect_qty) defect_qty from (";
+                    sql += " select req_date , pdjit_grp , wc_code , count(*) plan_qty ,  0 act_qty , 0 cancel_qty , 0 defect_qty";
+                    sql += " from mps_det_wc where entity= :p_entity ";
+                    sql += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
+                    sql += " and mps_st <> 'OCL'";
+                    sql += " and nvl(build_type,'HMJIT') = :p_build_type";
+                    sql += " and wc_code = :p_wc_code";
+                    sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                    sql += " group by req_date , pdjit_grp , wc_code";
+                    sql += " union";
+                    sql += " select req_date , pdjit_grp , wc_code , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty , 0 defect_qty";
+                    sql += " from mps_det_wc where entity= :p_entity ";
+                    sql += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
+                    sql += " and mps_st='Y'";
+                    sql += " and nvl(build_type,'HMJIT') = :p_build_type";
+                    sql += " and wc_code = :p_wc_code";
+                    sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                    sql += " group by por_no , req_date , pdjit_grp , wc_code";
+                    sql += " union";
+                    sql += " select req_date , pdjit_grp , wc_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
+                    sql += " from mps_det_wc where entity= :p_entity ";
+                    sql += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
+                    sql += " and mps_st='OCL'";
+                    sql += " and nvl(build_type,'HMJIT') = :p_build_type";
+                    sql += " and wc_code = :p_wc_code";
+                    sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                    sql += " group by por_no , req_date , pdjit_grp , wc_code ";
+                    sql += " ) group by req_date , pdjit_grp , wc_code";
+                    sql += " order by req_date , pdjit_grp";
+
+                    List<JobOperationDetailView> jobcurrentView = ctx.Database.SqlQuery<JobOperationDetailView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_entity2", ventity), new OracleParameter("p_user_id", vuser)).ToList();
+
+
+                    foreach (var i in jobcurrentView)
+                    {
+                        string sql1 = "select pdgrp_tname from pdgrp_mast where pdgrp_code = :p_pdgrp_code";
+                        string group_name = ctx.Database.SqlQuery<string>(sql1, new OracleParameter("p_pdgrp_code", i.pdjit_grp)).SingleOrDefault();
+
+                        JobOperationDetailView dView = new JobOperationDetailView()
+                        {
+                            display_group = group_name,
+                            display_type = "",
+                            req_date = i.req_date,
+                            pdjit_grp = i.pdjit_grp,
+                            plan_qty = i.plan_qty,
+                            act_qty = i.act_qty,
+                            cancel_qty = i.cancel_qty,
+                            defect_qty = i.defect_qty,
+                            diff_qty = i.plan_qty - (i.act_qty + i.defect_qty) - i.cancel_qty
+                        };
+
+                        detailViews.Add(dView);
+                    }
 
                     foreach (var x in totalView)
                     {
                         view.dataTotals.Add(new ModelViews.JobOperationTotalGroupView()
                         {
                             req_date = x.req_date,
-                            pdjit_grp = x.pdjit_grp,
-                            pdgrp_tname = x.pdgrp_tname,
                             total_plan_qty = x.total_plan_qty,
                             total_act_qty = x.total_act_qty,
                             total_cancel_qty = x.total_cancel_qty,
                             total_defect_qty = x.total_defect_qty,
-                            //total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) - total_cancel_qty,
-                            total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) ,
+                            total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) - x.total_cancel_qty,
+                            dataGroups = detailViews
                         });
                     }
-
-
-
-                    foreach (var k in group)
-                    {
-                        foreach (var n in por)
-                        {
-                            string sqls = "select distinct pddsgn_code , model_name design_name from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy') and por_no = :p_por_no";
-                            List<PorDesignView> design = ctx.Database.SqlQuery<PorDesignView>(sqls, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", n.por_no)).ToList();
-
-                            foreach (var m in design)
-                            {
-                                string sql = "select  por_no , req_date , pdjit_grp , wc_code , pddsgn_code ,sum(plan_qty) plan_qty , sum(act_qty) act_qty , sum(cancel_qty) cancel_qty from (";
-                                sql += " select por_no , req_date , pdjit_grp , wc_code, pddsgn_code , count(*) plan_qty ,  0 act_qty , 0 cancel_qty";
-                                sql += " from mps_det_wc where entity= :p_entity ";
-                                sql += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
-                                sql += " and pdjit_grp = :p_pdjit_grp";
-                                sql += " and por_no = :p_por_no";
-                                sql += " and mps_st <> 'OCL'";
-                                sql += " and nvl(build_type,'HMJIT') = :p_build_type";
-                                sql += " and wc_code = :p_wc_code";
-                                sql += " and pddsgn_code = :p_pddsgn_code";
-                                sql += " group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                sql += " union";
-                                sql += " select por_no , req_date , pdjit_grp , wc_code , pddsgn_code , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty";
-                                sql += " from mps_det_wc where entity='H10'";
-                                sql += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
-                                sql += " and pdjit_grp = :p_pdjit_grp";
-                                sql += " and por_no = :p_por_no";
-                                sql += " and mps_st='Y'";
-                                sql += " and nvl(build_type,'HMJIT') = :p_build_type";
-                                sql += " and wc_code = :p_wc_code";
-                                sql += " and pddsgn_code = :p_pddsgn_code";
-                                sql += " group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                sql += " union";
-                                sql += " select por_no , req_date , pdjit_grp , wc_code , pddsgn_code, 0 plan_qty ,  0 act_qty , count(*) cancel_qty";
-                                sql += " from mps_det_wc where entity='H10'";
-                                sql += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
-                                sql += " and pdjit_grp = :p_pdjit_grp";
-                                sql += " and por_no = :p_por_no";
-                                sql += " and mps_st='OCL'";
-                                sql += " and nvl(build_type,'HMJIT') = :p_build_type";
-                                sql += " and wc_code = :p_wc_code";
-                                sql += " and pddsgn_code = :p_pddsgn_code";
-                                sql += " group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                sql += " ) group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                sql += " order by req_date , pdjit_grp , por_no , pddsgn_code";
-
-                                JobOperationDetailView jobcurrentView = ctx.Database.SqlQuery<JobOperationDetailView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_pdjit_grp", k.pdjit_grp), new OracleParameter("p_por_no", n.por_no), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pddsgn_code", m.pddsgn_code)).SingleOrDefault();
-
-
-
-                                if (jobcurrentView == null)
-                                {
-
-                                    view.dataGroups.Add(new ModelViews.JobOperationDetailView()
-                                    {
-                                        por_no = n.por_no,
-                                        display_group = k.group_name,
-                                        display_type = "",
-                                        req_date = req_tmp,
-                                        pdjit_grp = jobcurrentView.pdjit_grp,
-                                        pddsgn_code = m.pddsgn_code,
-                                        design_name = m.design_name,
-                                        plan_qty = 0,
-                                        act_qty = 0,
-                                        cancel_qty = 0,
-                                        defect_qty = 0,
-                                        diff_qty = 0,
-                                    });
-                                }
-                                else
-                                {
-                                 
-
-                                    req_tmp = jobcurrentView.req_date;
-
-                                    view.dataGroups.Add(new ModelViews.JobOperationDetailView()
-                                    {
-                                        por_no = n.por_no,
-                                        display_group = k.group_name,
-                                        display_type = "",
-                                        req_date = req_tmp,
-                                        pdjit_grp = jobcurrentView.pdjit_grp,
-                                        pddsgn_code = m.pddsgn_code,
-                                        design_name = m.design_name,
-                                        plan_qty = jobcurrentView.plan_qty,
-                                        act_qty = jobcurrentView.act_qty,
-                                        cancel_qty = jobcurrentView.cancel_qty,
-                                        defect_qty = jobcurrentView.defect_qty,
-                                        diff_qty = jobcurrentView.plan_qty - (jobcurrentView.act_qty + jobcurrentView.defect_qty) - jobcurrentView.cancel_qty,
-                                    });
-                                }
-                            }
-                        }
-                    }
-
-
-
 
                 }
                 else if(model.build_type == "HMSTK")
@@ -417,176 +448,129 @@ namespace api.Services
                 {
                     pageIndex = model.pageIndex - 1,
                     itemPerPage = model.itemPerPage,
-                    totalItem = 0,
                     wc_code = vwc_code,
                     wc_name = wc_name,
                     build_type = model.build_type,
-                    dataGroups = new List<ModelViews.JobOperationDetailView>(),
                     dataTotals = new List<ModelViews.JobOperationTotalGroupView>()
                 };
 
                 //query data
                 if (model.build_type == "HMJIT")
                 {
-                    string sqlg = "select distinct a.pdjit_grp , pdgrp_tname group_name from mps_det_wc a , pdgrp_mast b where a.pdjit_grp = b.pdgrp_code and a.entity = :p_entity and wc_code = :p_wc_code and trunc(a.req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
-                    List<JitgroupView> group = ctx.Database.SqlQuery<JitgroupView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date)).ToList();
-
-                    string sqlp = "select distinct por_no from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and trunc(req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
-                    List<PorGroupView> por = ctx.Database.SqlQuery<PorGroupView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date)).ToList();
-
+                    
                     string sqlr = "select distinct req_date from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and  trunc(req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
                     List<PorReqView> req = ctx.Database.SqlQuery<PorReqView>(sqlr, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date)).ToList();
 
-
-                    string sqlt = "select  pdjit_grp , pdgrp_tname , req_date ,sum(plan_qty) total_plan_qty , sum(act_qty) total_act_qty , sum(cancel_qty) total_cancel_qty from (";
-                    sqlt += " select a.pdjit_grp , b.pdgrp_tname , a.req_date , count(*) plan_qty ,  0 act_qty , 0 cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.entity= :p_entity ";
-                    sqlt += " and trunc(a.req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
-                    sqlt += " and a.mps_st <> 'OCL'";
-                    sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                    sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " union";
-                    sqlt += " select  a.pdjit_grp , b.pdgrp_tname , a.req_date , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.entity= :p_entity ";
-                    sqlt += " and trunc(a.req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
-                    sqlt += " and a.mps_st='Y'";
-                    sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                    sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " union";
-                    sqlt += " select a.pdjit_grp , b.pdgrp_tname , a.req_date , 0 plan_qty ,  0 act_qty , count(*) cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.entity= :p_entity ";
-                    sqlt += " and trunc(a.req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
-                    sqlt += " and a.mps_st='OCL'";
-                    sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                    sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " ) group by pdjit_grp , pdgrp_tname , req_date";
-                    sqlt += " order by req_date , pdjit_grp";
-
-                    List<JobOperationTotalGroupView> totalView = ctx.Database.SqlQuery<JobOperationTotalGroupView>(sqlt, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code)).ToList();
-
-                    foreach (var x in totalView)
+                    foreach(var k in req)
                     {
-                        view.dataTotals.Add(new ModelViews.JobOperationTotalGroupView()
-                        {
-                            req_date = x.req_date,
-                            pdjit_grp = x.pdjit_grp,
-                            pdgrp_tname = x.pdgrp_tname,
-                            total_plan_qty = x.total_plan_qty,
-                            total_act_qty = x.total_act_qty,
-                            total_cancel_qty = x.total_cancel_qty,
-                            total_defect_qty = x.total_defect_qty,
-                            //total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) - total_cancel_qty,
-                            total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty),
-                        });
-                    }
+                        List<JobOperationDetailView> detailViews = new List<JobOperationDetailView>();
+
+                        string sqlt = "select  req_date ,sum(plan_qty) total_plan_qty , sum(act_qty) total_act_qty , sum(cancel_qty) total_cancel_qty , sum(defect_qty) total_defect_qty from (";
+                        sqlt += " select a.req_date , count(*) plan_qty ,  0 act_qty , 0 cancel_qty , 0 defect_qty";
+                        sqlt += " from mps_det_wc a";
+                        sqlt += " where a.entity= :p_entity ";
+                        sqlt += " and trunc(a.req_date) = trunc(:p_req_date)";
+                        sqlt += " and a.mps_st <> 'OCL'";
+                        sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sqlt += " and a.wc_code = :p_wc_code";
+                        sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sqlt += " group by a.req_date";
+                        sqlt += " union";
+                        sqlt += " select  a.req_date , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty , 0 defect_qty";
+                        sqlt += " from mps_det_wc a";
+                        sqlt += " where a.entity= :p_entity ";
+                        sqlt += " and trunc(a.req_date) = trunc(:p_req_date)";
+                        sqlt += " and a.mps_st='Y'";
+                        sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sqlt += " and a.wc_code = :p_wc_code";
+                        sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sqlt += " group by a.req_date";
+                        sqlt += " union";
+                        sqlt += " select a.req_date , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
+                        sqlt += " from mps_det_wc a";
+                        sqlt += " where a.entity= :p_entity ";
+                        sqlt += " and trunc(a.req_date) = trunc(:p_req_date)";
+                        sqlt += " and a.mps_st='OCL'";
+                        sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sqlt += " and a.wc_code = :p_wc_code";
+                        sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sqlt += " group by a.req_date";
+                        sqlt += " ) group by req_date";
+                        sqlt += " order by req_date";
+
+                        List<JobOperationTotalGroupView> totalView = ctx.Database.SqlQuery<JobOperationTotalGroupView>(sqlt, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", k.req_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_entity2", ventity), new OracleParameter("p_user_id", vuser)).ToList();
+                       
 
 
-                    foreach (var l in req)
-                    {
-                        foreach (var k in group)
+
+                        string sql = "select  req_date , pdjit_grp , wc_code  ,sum(plan_qty) plan_qty , sum(act_qty) act_qty , sum(cancel_qty) cancel_qty , sum(defect_qty) defect_qty from (";
+                        sql += " select req_date , pdjit_grp , wc_code , count(*) plan_qty ,  0 act_qty , 0 cancel_qty , 0 defect_qty";
+                        sql += " from mps_det_wc where entity= :p_entity ";
+                        sql += " and trunc(req_date) = trunc(:p_req_date)";
+                        sql += " and mps_st <> 'OCL'";
+                        sql += " and nvl(build_type,'HMJIT') = :p_build_type";
+                        sql += " and wc_code = :p_wc_code";
+                        sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sql += " group by req_date , pdjit_grp , wc_code";
+                        sql += " union";
+                        sql += " select req_date , pdjit_grp , wc_code , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty , 0 defect_qty";
+                        sql += " from mps_det_wc where entity= :p_entity ";
+                        sql += " and trunc(req_date) = trunc(:p_req_date)";
+                        sql += " and mps_st='Y'";
+                        sql += " and nvl(build_type,'HMJIT') = :p_build_type";
+                        sql += " and wc_code = :p_wc_code";
+                        sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sql += " group by por_no , req_date , pdjit_grp , wc_code";
+                        sql += " union";
+                        sql += " select req_date , pdjit_grp , wc_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
+                        sql += " from mps_det_wc where entity= :p_entity ";
+                        sql += " and trunc(req_date) = trunc(:p_req_date)";
+                        sql += " and mps_st='OCL'";
+                        sql += " and nvl(build_type,'HMJIT') = :p_build_type";
+                        sql += " and wc_code = :p_wc_code";
+                        sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sql += " group by por_no , req_date , pdjit_grp , wc_code ";
+                        sql += " ) group by req_date , pdjit_grp , wc_code";
+                        sql += " order by req_date , pdjit_grp";
+
+                        List<JobOperationDetailView> jobcurrentView = ctx.Database.SqlQuery<JobOperationDetailView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", k.req_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_entity2", ventity), new OracleParameter("p_user_id", vuser)).ToList();
+
+
+                        foreach (var i in jobcurrentView)
                         {
-                            foreach (var n in por)
+                            string sql1 = "select pdgrp_tname from pdgrp_mast where pdgrp_code = :p_pdgrp_code";
+                            string group_name = ctx.Database.SqlQuery<string>(sql1, new OracleParameter("p_pdgrp_code", i.pdjit_grp)).SingleOrDefault();
+
+                            JobOperationDetailView dView = new JobOperationDetailView()
                             {
-                                string sqls = "select distinct pddsgn_code , model_name design_name from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy') and por_no = :p_por_no";
-                                List<PorDesignView> design = ctx.Database.SqlQuery<PorDesignView>(sqls, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", n.por_no)).ToList();
+                                display_group = group_name,
+                                display_type = "",
+                                req_date = i.req_date,
+                                pdjit_grp = i.pdjit_grp,
+                                plan_qty = i.plan_qty,
+                                act_qty = i.act_qty,
+                                cancel_qty = i.cancel_qty,
+                                defect_qty = i.defect_qty,
+                                diff_qty = i.plan_qty - (i.act_qty + i.defect_qty) - i.cancel_qty
+                            };
 
-                                foreach (var m in design)
-                                {
+                            detailViews.Add(dView);
+                        }
 
-                                    string sql = "select  por_no , req_date , pdjit_grp , wc_code , pddsgn_code ,sum(plan_qty) plan_qty , sum(act_qty) act_qty , sum(cancel_qty) cancel_qty from (";
-                                    sql += " select por_no , req_date , pdjit_grp , wc_code , pddsgn_code , count(*) plan_qty ,  0 act_qty , 0 cancel_qty";
-                                    sql += " from mps_det_wc where entity= :p_entity ";
-                                    sql += " and trunc(req_date) = trunc(:p_req_date)";
-                                    sql += " and pdjit_grp = :p_pdjit_grp";
-                                    sql += " and por_no = :p_por_no";
-                                    sql += " and mps_st <> 'OCL'";
-                                    sql += " and nvl(build_type,'HMJIT') = :p_build_type";
-                                    sql += " and wc_code = :p_wc_code";
-                                    sql += " and pddsgn_code = :p_pddsgn_code";
-                                    sql += " group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                    sql += " union";
-                                    sql += " select por_no , req_date , pdjit_grp , wc_code  , pddsgn_code, 0 plan_qty ,  count(*) act_qty , 0 cancel_qty";
-                                    sql += " from mps_det_wc where entity='H10'";
-                                    sql += " and trunc(req_date) = trunc(:p_req_date)";
-                                    sql += " and pdjit_grp = :p_pdjit_grp";
-                                    sql += " and por_no = :p_por_no";
-                                    sql += " and mps_st='Y'";
-                                    sql += " and nvl(build_type,'HMJIT') = :p_build_type";
-                                    sql += " and wc_code = :p_wc_code";
-                                    sql += " and pddsgn_code = :p_pddsgn_code";
-                                    sql += " group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                    sql += " union";
-                                    sql += " select por_no , req_date , pdjit_grp , wc_code  , pddsgn_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty";
-                                    sql += " from mps_det_wc where entity='H10'";
-                                    sql += " and trunc(req_date) = trunc(:p_req_date)";
-                                    sql += " and pdjit_grp = :p_pdjit_grp";
-                                    sql += " and por_no = :p_por_no";
-                                    sql += " and mps_st='OCL'";
-                                    sql += " and nvl(build_type,'HMJIT') = :p_build_type";
-                                    sql += " and wc_code = :p_wc_code";
-                                    sql += " and pddsgn_code = :p_pddsgn_code";
-                                    sql += " group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                    sql += " ) group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                    sql += " order by req_date , pdjit_grp , por_no";
-
-                                    JobOperationDetailView jobcurrentView = ctx.Database.SqlQuery<JobOperationDetailView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", l.req_date), new OracleParameter("p_pdjit_grp", k.pdjit_grp), new OracleParameter("p_por_no", n.por_no), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pddsgn_code", m.pddsgn_code)).SingleOrDefault();
-
-
-
-                                    if (jobcurrentView == null)
-                                    {
-
-                                        view.dataGroups.Add(new ModelViews.JobOperationDetailView()
-                                        {
-                                            por_no = n.por_no,
-                                            display_group = k.group_name,
-                                            display_type = "",
-                                            req_date = l.req_date,
-                                            pdjit_grp = jobcurrentView.pdjit_grp,
-                                            pddsgn_code = m.pddsgn_code,
-                                            design_name = m.design_name,
-                                            plan_qty = 0,
-                                            act_qty = 0,
-                                            cancel_qty = 0,
-                                            defect_qty = 0,
-                                            diff_qty = 0,
-                                        });
-                                    }
-                                    else
-                                    {
-                                        
-
-                                        view.dataGroups.Add(new ModelViews.JobOperationDetailView()
-                                        {
-                                            por_no = n.por_no,
-                                            display_group = k.group_name,
-                                            display_type = "",
-                                            req_date = l.req_date,
-                                            pdjit_grp = jobcurrentView.pdjit_grp,
-                                            pddsgn_code = m.pddsgn_code,
-                                            design_name = m.design_name,
-                                            plan_qty = jobcurrentView.plan_qty,
-                                            //plan_qty = i.plan_qty,
-                                            act_qty = jobcurrentView.act_qty,
-                                            cancel_qty = jobcurrentView.cancel_qty,
-                                            defect_qty = jobcurrentView.defect_qty,
-                                            diff_qty = jobcurrentView.plan_qty - (jobcurrentView.act_qty + jobcurrentView.defect_qty) - jobcurrentView.cancel_qty,
-                                        });
-                                    }
-                                }
-                            }
+                        foreach (var x in totalView)
+                        {
+                            view.dataTotals.Add(new ModelViews.JobOperationTotalGroupView()
+                            {
+                                req_date = x.req_date,
+                                total_plan_qty = x.total_plan_qty,
+                                total_act_qty = x.total_act_qty,
+                                total_cancel_qty = x.total_cancel_qty,
+                                total_defect_qty = x.total_defect_qty,
+                                total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) - x.total_cancel_qty,
+                                dataGroups = detailViews
+                            });
                         }
                     }
-
 
 
                 }
@@ -632,192 +616,145 @@ namespace api.Services
                 {
                     pageIndex = model.pageIndex - 1,
                     itemPerPage = model.itemPerPage,
-                    totalItem = 0,
                     wc_code = vwc_code,
                     wc_name = wc_name,
                     build_type = model.build_type,
-                    dataGroups = new List<ModelViews.JobOperationDetailView>(),
                     dataTotals = new List<ModelViews.JobOperationTotalGroupView>()
                 };
 
                 //query data
                 if (model.build_type == "HMJIT")
                 {
-                    string sqlg = "select distinct a.pdjit_grp , b.pdgrp_tname group_name from mps_det_wc a , pdgrp_mast b , por_mast c where a.pdjit_grp = b.pdgrp_code and a.entity = :p_entity and a.wc_code = :p_wc_code and a.por_no = c.por_no and c.por_status not in ('CLS','OCL') and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1";
-                    List<JitgroupView> group = ctx.Database.SqlQuery<JitgroupView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date1", vreq_date), new OracleParameter("p_req_date2", vreq_date)).ToList();
-
-                    string sqlp = "select distinct a.por_no from mps_det_wc a , por_mast b where a.entity = :p_entity and a.wc_code = :p_wc_code and a.por_no = b.por_no and b.por_status not in ('CLS','OCL') and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1";
-                    List<PorGroupView> por = ctx.Database.SqlQuery<PorGroupView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date1", vreq_date), new OracleParameter("p_req_date2", vreq_date)).ToList();
-
+                   
                     string sqlr = "select distinct a.req_date from mps_det_wc a , por_mast b where a.entity = :p_entity and a.wc_code = :p_wc_code and a.por_no = b.por_no and b.por_status not in ('CLS','OCL') and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1";
                     List<PorReqView> req = ctx.Database.SqlQuery<PorReqView>(sqlr, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date1", vreq_date), new OracleParameter("p_req_date2", vreq_date)).ToList();
 
-
-                    string sqlt = "select  pdjit_grp , pdgrp_tname , req_date ,sum(plan_qty) total_plan_qty , sum(act_qty) total_act_qty , sum(cancel_qty) total_cancel_qty from (";
-                    sqlt += " select a.pdjit_grp , b.pdgrp_tname , a.req_date , count(*) plan_qty ,  0 act_qty , 0 cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b , por_mast c";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.por_no = c.por_no";
-                    sqlt += " and c.por_status not in ('CLS','OCL')";
-                    sqlt += " and a.entity= :p_entity ";
-                    sqlt += " and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1 ";
-                    sqlt += " and a.mps_st <> 'OCL'";
-                    sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                    sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " union";
-                    sqlt += " select  a.pdjit_grp , b.pdgrp_tname , a.req_date , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b , por_mast c";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.por_no = c.por_no";
-                    sqlt += " and c.por_status not in ('CLS','OCL')";
-                    sqlt += " and a.entity= :p_entity ";
-                    sqlt += " and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1 ";
-                    sqlt += " and a.mps_st='Y'";
-                    sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                    sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " union";
-                    sqlt += " select a.pdjit_grp , b.pdgrp_tname , a.req_date , 0 plan_qty ,  0 act_qty , count(*) cancel_qty";
-                    sqlt += " from mps_det_wc a , pdgrp_mast b , por_mast c";
-                    sqlt += " where a.pdjit_grp = b.pdgrp_code ";
-                    sqlt += " and a.por_no = c.por_no";
-                    sqlt += " and c.por_status not in ('CLS','OCL')";
-                    sqlt += " and a.entity= :p_entity ";
-                    sqlt += " and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1 ";
-                    sqlt += " and a.mps_st='OCL'";
-                    sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                    sqlt += " and a.wc_code = :p_wc_code";
-                    sqlt += " group by a.pdjit_grp , b.pdgrp_tname , a.req_date";
-                    sqlt += " ) group by pdjit_grp , pdgrp_tname , req_date";
-                    sqlt += " order by req_date , pdjit_grp";
-
-                    List<JobOperationTotalGroupView> totalView = ctx.Database.SqlQuery<JobOperationTotalGroupView>(sqlt, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date1", vreq_date), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code)).ToList();
-
-                    foreach (var x in totalView)
+                    foreach (var k in req)
                     {
-                        view.dataTotals.Add(new ModelViews.JobOperationTotalGroupView()
-                        {
-                            req_date = x.req_date,
-                            pdjit_grp = x.pdjit_grp,
-                            pdgrp_tname = x.pdgrp_tname,
-                            total_plan_qty = x.total_plan_qty,
-                            total_act_qty = x.total_act_qty,
-                            total_cancel_qty = x.total_cancel_qty,
-                            total_defect_qty = x.total_defect_qty,
-                            //total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) - total_cancel_qty,
-                            total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty),
-                        });
-                    }
+                        List<JobOperationDetailView> detailViews = new List<JobOperationDetailView>();
+
+                        string sqlt = "select  req_date ,sum(plan_qty) total_plan_qty , sum(act_qty) total_act_qty , sum(cancel_qty) total_cancel_qty , sum(defect_qty) total_defect_qty from (";
+                        sqlt += " select a.req_date , count(*) plan_qty ,  0 act_qty , 0 cancel_qty , 0 defect_qty";
+                        sqlt += " from mps_det_wc a , por_mast c";
+                        sqlt += " where  a.por_no = c.por_no";
+                        sqlt += " and c.por_status not in ('CLS','OCL')";
+                        sqlt += " and a.entity= :p_entity ";
+                        sqlt += " and trunc(a.req_date) = trunc(:p_rq_date) ";
+                        sqlt += " and a.mps_st <> 'OCL'";
+                        sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sqlt += " and a.wc_code = :p_wc_code";
+                        sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sqlt += " group by a.req_date";
+                        sqlt += " union";
+                        sqlt += " select  a.req_date , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty , 0 defect_qty";
+                        sqlt += " from mps_det_wc a , por_mast c";
+                        sqlt += " where a.por_no = c.por_no";
+                        sqlt += " and c.por_status not in ('CLS','OCL')";
+                        sqlt += " and a.entity= :p_entity ";
+                        sqlt += " and trunc(a.req_date) = trunc(:p_rq_date) ";
+                        sqlt += " and a.mps_st='Y'";
+                        sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sqlt += " and a.wc_code = :p_wc_code";
+                        sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sqlt += " group by a.req_date";
+                        sqlt += " union";
+                        sqlt += " select a.req_date , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
+                        sqlt += " from mps_det_wc a , por_mast c";
+                        sqlt += " where a.por_no = c.por_no";
+                        sqlt += " and c.por_status not in ('CLS','OCL')";
+                        sqlt += " and a.entity= :p_entity ";
+                        sqlt += " and trunc(a.req_date) = trunc(:p_rq_date) ";
+                        sqlt += " and a.mps_st='OCL'";
+                        sqlt += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sqlt += " and a.wc_code = :p_wc_code";
+                        sqlt += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sqlt += " group by a.req_date";
+                        sqlt += " ) group by req_date";
+                        sqlt += " order by req_date";
+
+                        List<JobOperationTotalGroupView> totalView = ctx.Database.SqlQuery<JobOperationTotalGroupView>(sqlt, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", k.req_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_entity2", ventity), new OracleParameter("p_user_id", vuser)).ToList();
 
 
-                    foreach(var l in req)
-                    {
-                        foreach (var k in group)
+
+                        string sql = "select req_date , pdjit_grp , wc_code  ,sum(plan_qty) plan_qty , sum(act_qty) act_qty , sum(cancel_qty) cancel_qty , sum(defect_qty) defect_qty from (";
+                        sql += " select a.req_date , a.pdjit_grp , a.wc_code , count(*) plan_qty ,  0 act_qty , 0 cancel_qty , 0 defect_qty";
+                        sql += " from mps_det_wc a , por_mast b";
+                        sql += " where a.por_no = b.por_no";
+                        sql += " and a.entity = :p_entity ";
+                        sql += " and trunc(a.req_date) = trunc(:p_req_date) ";
+                        sql += " and a.mps_st <> 'OCL'";
+                        sql += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sql += " and a.wc_code = :p_wc_code";
+                        sql += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sql += " and b.por_status not in ('CLS','OCL')";
+                        sql += " group by a.req_date , a.pdjit_grp , a.wc_code ";
+                        sql += " union";
+                        sql += " select a.req_date , a.pdjit_grp , a.wc_code , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty , 0 defect_qty";
+                        sql += " from mps_det_wc a , por_mast b";
+                        sql += " where a.por_no = b.por_no";
+                        sql += " and a.entity = :p_entity ";
+                        sql += " and trunc(a.req_date) = trunc(:p_req_date) ";
+                        sql += " and a.mps_st='Y'";
+                        sql += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sql += " and a.wc_code = :p_wc_code";
+                        sql += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sql += " and b.por_status not in ('CLS','OCL')";
+                        sql += " group by a.req_date , a.pdjit_grp , a.wc_code ";
+                        sql += " union";
+                        sql += " select a.req_date , a.pdjit_grp , a.wc_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
+                        sql += " from mps_det_wc a , por_mast b";
+                        sql += " where a.por_no = b.por_no";
+                        sql += " and a.entity = :p_entity ";
+                        sql += " and trunc(a.req_date) = trunc(:p_req_date) ";
+                        sql += " and a.mps_st='OCL'";
+                        sql += " and nvl(a.build_type,'HMJIT') = :p_build_type";
+                        sql += " and a.wc_code = :p_wc_code";
+                        sql += " and a.pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
+                        sql += " and b.por_status not in ('CLS','OCL')";
+                        sql += " group by a.req_date , a.pdjit_grp , a.wc_code";
+                        sql += " ) group by req_date , pdjit_grp , wc_code ";
+                        sql += " order by req_date , pdjit_grp ";
+
+                        List<JobOperationDetailView> jobcurrentView = ctx.Database.SqlQuery<JobOperationDetailView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", k.req_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_entity2", ventity), new OracleParameter("p_user_id", vuser)).ToList();
+
+
+                        foreach (var i in jobcurrentView)
                         {
-                            foreach (var n in por)
+                            string sql1 = "select pdgrp_tname from pdgrp_mast where pdgrp_code = :p_pdgrp_code";
+                            string group_name = ctx.Database.SqlQuery<string>(sql1, new OracleParameter("p_pdgrp_code", i.pdjit_grp)).SingleOrDefault();
+
+                            JobOperationDetailView dView = new JobOperationDetailView()
                             {
-                                string sqls = "select distinct pddsgn_code , model_name design_name from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy') and por_no = :p_por_no";
-                                List<PorDesignView> design = ctx.Database.SqlQuery<PorDesignView>(sqls, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", n.por_no)).ToList();
+                                display_group = group_name,
+                                display_type = "",
+                                req_date = i.req_date,
+                                pdjit_grp = i.pdjit_grp,
+                                plan_qty = i.plan_qty,
+                                act_qty = i.act_qty,
+                                cancel_qty = i.cancel_qty,
+                                defect_qty = i.defect_qty,
+                                diff_qty = i.plan_qty - (i.act_qty + i.defect_qty) - i.cancel_qty
+                            };
 
-                                foreach (var m in design)
-                                {
-                                    string sql = "select  por_no , req_date , pdjit_grp , wc_code , pddsgn_code ,sum(plan_qty) plan_qty , sum(act_qty) act_qty , sum(cancel_qty) cancel_qty from (";
-                                    sql += " select a.por_no , a.req_date , a.pdjit_grp , a.wc_code , pddsgn_code , count(*) plan_qty ,  0 act_qty , 0 cancel_qty";
-                                    sql += " from mps_det_wc a , por_mast b";
-                                    sql += " where a.por_no = b.por_no";
-                                    sql += " and a.entity = :p_entity ";
-                                    sql += " and trunc(a.req_date) = trunc(:p_req_date) ";
-                                    sql += " and a.pdjit_grp = :p_pdjit_grp";
-                                    sql += " and a.por_no = :p_por_no";
-                                    sql += " and a.mps_st <> 'OCL'";
-                                    sql += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                                    sql += " and a.wc_code = :p_wc_code";
-                                    sql += " and a.pddsgn_code = :p_pddsgn_code";
-                                    sql += " and b.por_status not in ('CLS','OCL')";
-                                    sql += " group by a.por_no , a.req_date , a.pdjit_grp , a.wc_code , pddsgn_code";
-                                    sql += " union";
-                                    sql += " select a.por_no , a.req_date , a.pdjit_grp , a.wc_code , pddsgn_code , 0 plan_qty ,  count(*) act_qty , 0 cancel_qty";
-                                    sql += " from mps_det_wc a , por_mast b";
-                                    sql += " where a.por_no = b.por_no";
-                                    sql += " and a.entity = :p_entity ";
-                                    sql += " and trunc(a.req_date) = trunc(:p_req_date) ";
-                                    sql += " and a.pdjit_grp = :p_pdjit_grp";
-                                    sql += " and a.por_no = :p_por_no";
-                                    sql += " and a.mps_st='Y'";
-                                    sql += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                                    sql += " and a.wc_code = :p_wc_code";
-                                    sql += " and a.pddsgn_code = :p_pddsgn_code";
-                                    sql += " and b.por_status not in ('CLS','OCL')";
-                                    sql += " group by a.por_no , a.req_date , a.pdjit_grp , a.wc_code , pddsgn_code";
-                                    sql += " union";
-                                    sql += " select a.por_no , a.req_date , a.pdjit_grp , a.wc_code , pddsgn_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty";
-                                    sql += " from mps_det_wc a , por_mast b";
-                                    sql += " where a.por_no = b.por_no";
-                                    sql += " and a.entity = :p_entity ";
-                                    sql += " and trunc(a.req_date) = trunc(:p_req_date) ";
-                                    sql += " and a.pdjit_grp = :p_pdjit_grp";
-                                    sql += " and a.por_no = :p_por_no";
-                                    sql += " and a.mps_st='OCL'";
-                                    sql += " and nvl(a.build_type,'HMJIT') = :p_build_type";
-                                    sql += " and a.wc_code = :p_wc_code";
-                                    sql += " and a.pddsgn_code = :p_pddsgn_code";
-                                    sql += " and b.por_status not in ('CLS','OCL')";
-                                    sql += " group by a.por_no , a.req_date , a.pdjit_grp , a.wc_code , pddsgn_code";
-                                    sql += " ) group by por_no , req_date , pdjit_grp , wc_code , pddsgn_code";
-                                    sql += " order by req_date , pdjit_grp , por_no";
+                            detailViews.Add(dView);
+                        }
 
-                                    JobOperationDetailView jobcurrentView = ctx.Database.SqlQuery<JobOperationDetailView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", l.req_date), new OracleParameter("p_pdjit_grp", k.pdjit_grp), new OracleParameter("p_por_no", n.por_no), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pddsgn_code", m.pddsgn_code)).SingleOrDefault();
-
-
-
-                                    if (jobcurrentView == null)
-                                    {
-
-                                        view.dataGroups.Add(new ModelViews.JobOperationDetailView()
-                                        {
-                                            por_no = n.por_no,
-                                            display_group = k.group_name,
-                                            display_type = "",
-                                            req_date = l.req_date,
-                                            pdjit_grp = jobcurrentView.pdjit_grp,
-                                            pddsgn_code = m.pddsgn_code,
-                                            design_name = m.design_name,
-                                            //build_qty = 0,
-                                            plan_qty = 0,
-                                            act_qty = 0,
-                                            cancel_qty = 0,
-                                            defect_qty = 0,
-                                            diff_qty = 0,
-                                        });
-                                    }
-                                    else
-                                    {
-                                        
-                                        view.dataGroups.Add(new ModelViews.JobOperationDetailView()
-                                        {
-                                            por_no = n.por_no,
-                                            display_group = k.group_name,
-                                            display_type = "",
-                                            req_date = l.req_date,
-                                            pdjit_grp = jobcurrentView.pdjit_grp,
-                                            pddsgn_code = m.pddsgn_code,
-                                            design_name = m.design_name,
-                                            plan_qty = jobcurrentView.plan_qty,
-                                            //plan_qty = i.plan_qty,
-                                            act_qty = jobcurrentView.act_qty,
-                                            cancel_qty = jobcurrentView.cancel_qty,
-                                            defect_qty = jobcurrentView.defect_qty,
-                                            diff_qty = jobcurrentView.plan_qty - (jobcurrentView.act_qty + jobcurrentView.defect_qty) - jobcurrentView.cancel_qty,
-                                        });
-                                    }
-                                }
-                            }
+                        foreach (var x in totalView)
+                        {
+                            view.dataTotals.Add(new ModelViews.JobOperationTotalGroupView()
+                            {
+                                req_date = x.req_date,
+                                total_plan_qty = x.total_plan_qty,
+                                total_act_qty = x.total_act_qty,
+                                total_cancel_qty = x.total_cancel_qty,
+                                total_defect_qty = x.total_defect_qty,
+                                total_diff_qty = x.total_plan_qty - (x.total_act_qty + x.total_defect_qty) - x.total_cancel_qty,
+                                dataGroups = detailViews
+                            });
                         }
                     }
 
-
-
+                    
 
                 }
                 else if (model.build_type == "HMSTK")

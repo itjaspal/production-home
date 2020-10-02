@@ -20,12 +20,12 @@ namespace api.Controllers
             specService = new SpecDrawingService();
         }
 
-        [Route("spec/postdrawning")]
-        public HttpResponseMessage postdrawing(SpecDrawingSearchView model)
+        [Route("spec/getdrawning/{barcode}")]
+        public HttpResponseMessage getdrawing(string barcode)
         {
             try
             {
-                var result = specService.GetSpecInfo(model);
+                var result = specService.GetSpecInfo(barcode);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }

@@ -145,6 +145,14 @@ import { MenuService } from './_service/menu.service';
 import { BranchSearchAssignProductComponent } from './master-branch/branch-search-assignProduct/branch-search-assignProduct.component';
 import { UserSelectBranchComponent } from './user-select-branch/user-select-branch/user-select-branch.component';
 import { DefaultPrinterComponent } from './default-printer/default-printer/default-printer.component';
+import { SpecDrawingComponent } from './spec-drawing/spec-drawing/spec-drawing.component';
+import { InprocessScanAddComponent } from './scan-inprocess/inprocess-scan-add/inprocess-scan-add.component';
+import { InprocessScanCancelComponent } from './scan-inprocess/inprocess-scan-cancel/inprocess-scan-cancel.component';
+import { InprocessEntryAddComponent } from './scan-inprocess/inprocess-entry-add/inprocess-entry-add.component';
+import { InprocessEntryCancelComponent } from './scan-inprocess/inprocess-entry-cancel/inprocess-entry-cancel.component';
+import { InprocessSearchComponent } from './scan-inprocess/inprocess-search/inprocess-search.component';
+import { JobOperationComponent } from './job-operation/job-operation/job-operation.component';
+import { JobOrderDetailComponent } from './job-operation/job-order-detail/job-order-detail.component';
 
 
 
@@ -316,6 +324,14 @@ import { DefaultPrinterComponent } from './default-printer/default-printer/defau
     MenuViewComponent,
     UserSelectBranchComponent,
     DefaultPrinterComponent,
+    SpecDrawingComponent,
+    InprocessScanAddComponent,
+    InprocessScanCancelComponent,
+    InprocessEntryAddComponent,
+    InprocessEntryCancelComponent,
+    InprocessSearchComponent,
+    JobOperationComponent,
+    JobOrderDetailComponent,
     
 
   

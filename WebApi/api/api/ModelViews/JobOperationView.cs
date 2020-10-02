@@ -20,37 +20,30 @@ namespace api.ModelViews
     {
         public int pageIndex { get; set; }
         public int itemPerPage { get; set; }
-        public int totalItem { get; set; }
         public string wc_code { get; set; }
         public string wc_name { get; set; }
         public string build_type { get; set; }
-        public List<JobOperationDetailView> dataGroups { get; set; }
         public List<JobOperationTotalGroupView> dataTotals { get; set; }
     }
 
     public class JobOperationTotalGroupView
     {
         public DateTime req_date { get; set; }
-        public string pdjit_grp { get; set; }
-        public string pdgrp_tname { get; set; }
-        //public int total_build_qty { get; set; }
         public int total_plan_qty { get; set; }
         public int total_cancel_qty { get; set; }
         public int total_act_qty { get; set; }
         public int total_defect_qty { get; set; }
         public int total_diff_qty { get; set; }
-        
+        public List<JobOperationDetailView> dataGroups { get; set; }
+
     }
 
     public class JobOperationDetailView
     {
-        public string por_no { get; set; }
         public DateTime req_date { get; set; }
         public string display_group { get; set; }
         public string display_type { get; set; }
         public string pdjit_grp { get; set; }
-        public string pddsgn_code { get; set; }
-        public string design_name { get; set; }
         public int plan_qty { get; set; }
         public int cancel_qty { get; set; }
         public int act_qty { get; set; }
@@ -62,7 +55,7 @@ namespace api.ModelViews
     {
         public string pdjit_grp { get; set; }
         public string group_name { get; set; }
-        
+
     }
 
     public class PorGroupView
@@ -113,7 +106,7 @@ namespace api.ModelViews
     }
 
     public class OrderDetailView
-    {   
+    {
         public string por_no { get; set; }
         public int line_no { get; set; }
         public string prod_code { get; set; }
@@ -146,7 +139,7 @@ namespace api.ModelViews
         public int pack { get; set; }
         public int qty_ord { get; set; }
         public string uom_code { get; set; }
-        
+
     }
 
     public class OrderSpecialView
@@ -168,5 +161,49 @@ namespace api.ModelViews
         public string trcmt_desc { get; set; }
     }
 
-    
+    public class OrderSumSearchView
+    {
+        public string entity_code { get; set; }
+        public string build_type { get; set; }
+        public DateTime req_date { get; set; }
+        public string pdjit_grp { get; set; }
+    }
+
+    public class OrderSumView
+    {
+        public DateTime req_date { get; set; }
+        public string pdjit_grp { get; set; }
+        public string build_type { get; set; }
+        public int total_plan_qty { get; set; }
+        public int total_actual_qty { get; set; }
+        public int total_diff_qty { get; set; }
+        public List<OrderProductView> productDetail { get; set; }
+    }
+
+    public class OrderProductView
+    {
+        public string prod_code { get; set; }
+        public string prod_name { get; set; }
+        public string style { get; set; }
+        public decimal weight { get; set; }
+        public string model { get; set; }
+        public string size_name { get; set; }
+        public string spec { get; set; }
+        //public int qty { get; set; }
+        public decimal weight_kg { get; set; }
+        public int plan_qty { get; set; }
+        public int act_qty { get; set; }
+        public int diff_qty { get; set; }
+        public List<PorDetailView> porDetail { get; set; }
+    }
+       
+    public class PorDetailView
+    {
+        public string por_no { get; set; }
+        public int qty_req { get; set; } 
+        public decimal weight { get; set; }
+        public string special_order { get; set; }
+    }
+
+
 }

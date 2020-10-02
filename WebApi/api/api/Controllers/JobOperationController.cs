@@ -81,5 +81,20 @@ namespace api.Controllers
             }
         }
 
+        [Route("job-operation/orderSummary")]
+        public HttpResponseMessage postOrderSummary(OrderSumSearchView model)
+        {
+            try
+            {
+                var result = jobService.OrderSummary(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
     }
 }

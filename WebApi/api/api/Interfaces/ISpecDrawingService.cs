@@ -9,6 +9,6 @@ namespace api.Interfaces
 {
     interface ISpecDrawingService
     {
-        SpecDrawingView GetSpecInfo(SpecDrawingSearchView model);
+        SpecDrawingView GetSpecInfo(string barcode);
     }
 }
