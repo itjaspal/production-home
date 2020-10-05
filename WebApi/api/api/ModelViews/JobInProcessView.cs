@@ -23,6 +23,7 @@ namespace api.ModelViews
         public string bar_code { get; set; }
         public string wc_code { get; set; }
         public string user_id { get; set; }
+        public int qty { get; set; }
 
     }
 }

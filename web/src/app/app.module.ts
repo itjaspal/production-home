@@ -153,6 +153,7 @@ import { InprocessEntryCancelComponent } from './scan-inprocess/inprocess-entry-
 import { InprocessSearchComponent } from './scan-inprocess/inprocess-search/inprocess-search.component';
 import { JobOperationComponent } from './job-operation/job-operation/job-operation.component';
 import { JobOrderDetailComponent } from './job-operation/job-order-detail/job-order-detail.component';
+import { InprocessComponent } from './scan-inprocess/inprocess/inprocess.component';
 
 
 
@@ -332,6 +333,7 @@ import { JobOrderDetailComponent } from './job-operation/job-order-detail/job-or
     InprocessSearchComponent,
     JobOperationComponent,
     JobOrderDetailComponent,
+    InprocessComponent,
     
 
   

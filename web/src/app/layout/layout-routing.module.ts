@@ -38,6 +38,13 @@ import { MenuSearchComponent } from '../master-menu/menu-search/menu-search.comp
 import { MenuViewComponent } from '../master-menu/menu-view/menu-view.component';
 import { MenuCreateComponent } from '../master-menu/menu-create/menu-create.component';
 import { MenuUpdateComponent } from '../master-menu/menu-update/menu-update.component';
+import { InprocessEntryAddComponent } from '../scan-inprocess/inprocess-entry-add/inprocess-entry-add.component';
+import { InprocessScanAddComponent } from '../scan-inprocess/inprocess-scan-add/inprocess-scan-add.component';
+import { InprocessScanCancelComponent } from '../scan-inprocess/inprocess-scan-cancel/inprocess-scan-cancel.component';
+import { InprocessSearchComponent } from '../scan-inprocess/inprocess-search/inprocess-search.component';
+import { InprocessEntryCancelComponent } from '../scan-inprocess/inprocess-entry-cancel/inprocess-entry-cancel.component';
+import { JobOperationComponent } from '../job-operation/job-operation/job-operation.component';
+import { InprocessComponent } from '../scan-inprocess/inprocess/inprocess.component';
 
 
 
@@ -100,6 +107,16 @@ const routes: Routes = [
       //Default Printer
       { path: 'default-printer', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/default-printer" } },
        
+      //Job-operation and View Spec
+      { path: 'job', component: JobOperationComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+      
+      //Scan Inprocess
+      { path: 'scaninproc', component: InprocessComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      { path: 'scaninproc/scan-add/:req_date/:pdjit_grp/:wc_code', component: InprocessScanAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" } },     
+      { path: 'scaninproc/scan-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessScanCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },
+      { path: 'scaninproc/entry-add/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
+      { path: 'scaninproc/entry-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },          
+      { path: 'scaninproc/inprocess-serach/:req_date/:wc_code', component: InprocessSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
 
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]
