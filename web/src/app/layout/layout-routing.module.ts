@@ -116,7 +116,12 @@ const routes: Routes = [
       { path: 'scaninproc/scan-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessScanCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },
       { path: 'scaninproc/entry-add/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
       { path: 'scaninproc/entry-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },          
-      { path: 'scaninproc/inprocess-serach/:req_date/:wc_code', component: InprocessSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
+      
+      { path: 'scaninproc/inprocserach/:req_date/:wc_code', component: InprocessSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
+      { path: 'scaninproc/inprocserach/:req_date/:wc_code/scan-add/:req_date/:pdjit_grp/:wc_code', component: InprocessScanAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" } },     
+      { path: 'scaninproc/inprocserach/:req_date/:wc_code/scan-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessScanCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },
+      { path: 'scaninproc/inprocserach/:req_date/:wc_code/entry-add/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
+      { path: 'scaninproc/inprocserach/:req_date/:wc_code/entry-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },          
 
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

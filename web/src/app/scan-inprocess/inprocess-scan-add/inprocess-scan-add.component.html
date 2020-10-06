@@ -15,6 +15,14 @@
           <!-- Row 1-->
           <div class="col-11 col-lg-11">
 
+            <!-- <mat-form-field class="full-width">
+              <input matInput placeholder="In Process Tag" formControlName="qr" name="qr" #qr
+                (keydown.enter)="onQrEntered(qr.value); qr.value = ''" type="none">
+              <button mat-button *ngIf="qr.value != ''" matSuffix mat-icon-button aria-label="Clear" type="button"
+                (click)="qr.value = ''" >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field> -->
             <mat-form-field class="full-width">
               <input matInput placeholder="In Process Tag" formControlName="qr" name="qr" #qr
                 (keydown.enter)="onQrEntered(qr.value); qr.value = ''" type="none">
@@ -23,29 +31,28 @@
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
-
           </div>
          
 
         </div> 
 
         <div class="row card-table-body">
-          <div class="col-2 col-lg-1">
+          <div class="col-3 col-lg-2">
             <small>Barcode</small>  
-            <!-- <dd>{{model.springtype_code}}</dd> -->
+            <dd>{{datas.bar_code}}</dd>
           </div>
-          <div class="col-2 col-lg-2">
+          <div class="col-3 col-lg-3">
               <small>Product Code</small>  
-              <!-- <dd>{{model.pdsize_desc}}</dd> -->
+              <dd>{{datas.prod_code}}</dd>
            </div>
-           <div class="col-3 col-lg-3">
+           <div class="col-4 col-lg-4">
             <small>Product Name</small>  
-            <!-- <dd>{{model.pdsize_desc}}</dd> -->
+            <dd>{{datas.prod_name}}</dd>
          </div>
 
-           <div class="col-2 col-lg-1">
+           <div class="col-1 col-lg-1">
             <small>Qty</small>  
-           <!-- <dd>{{model.qty}}</dd> -->
+           <dd>{{datas.qty}}</dd>
          </div>
          <div class="col-2 col-lg-2">
          
@@ -84,12 +91,17 @@
                     <th style="width: 150px" class="text-center">ชื่อสินค้า</th>
                     <th style="width: 50px" class="text-center">Scan Qty</th>
                   </tr>
-                  <!-- <tr *ngFor="let x of model_scan.datas">
-                    <td>{{x.pcs_barcode}}</td>
-                    <td>{{x.prod_code}}</td> 
-                  </tr>  -->
-                  
-                  
+                  <tr *ngFor="let x of model_scan.datas; let i = index;">
+                    <td>{{i+1}}</td>
+                    <!-- <td>{{x.prod_code}}</td>
+                    <td>{{x.prod_name}}</td> 
+                    <td>{{x.qty}}</td>  -->
+                    <td>{{x.prod_code}}</td>
+                    <td>{{x.prod_name}}</td>
+                    <td>{{x.qty}}</td>
+                  </tr> 
+                   
+                   
                 </tbody>
               </table>
             

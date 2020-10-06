@@ -27,8 +27,8 @@ export class InprocessComponent implements OnInit {
 
   public model: JobOperationSearchView = new JobOperationSearchView();
   public dataCurrent: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
-  public dataPending: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
-  public dataForward: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
+  // public dataPending: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
+  // public dataForward: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
   
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
@@ -70,8 +70,8 @@ export class InprocessComponent implements OnInit {
     
     this.model.user_id = this.user.username;
     this.dataCurrent.dataTotals  = [];
-    this.dataPending.dataTotals  = [];
-    this.dataForward.dataTotals  = [];
+    // this.dataPending.dataTotals  = [];
+    // this.dataForward.dataTotals  = [];
 
     sessionStorage.setItem('jobOperation-reqDate', "");
     sessionStorage.setItem('jobOperation-wcCode', "");
@@ -84,10 +84,10 @@ export class InprocessComponent implements OnInit {
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent.dataTotals);
-    this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
-    console.log(this.dataPending);
-    this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
-    console.log(this.dataForward);
+    // this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
+    // console.log(this.dataPending);
+    // this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
+    // console.log(this.dataForward);
      
   }
   
@@ -103,8 +103,8 @@ export class InprocessComponent implements OnInit {
     
     this.model.user_id = this.user.username;
     this.dataCurrent.dataTotals  = [];
-    this.dataPending.dataTotals  = [];
-    this.dataForward.dataTotals  = [];
+    // this.dataPending.dataTotals  = [];
+    // this.dataForward.dataTotals  = [];
 
     sessionStorage.setItem('jobOperation-reqDate', this.req_date.nativeElement.value);
     sessionStorage.setItem('jobOperation-wcCode', this.validationForm.get('wc_code').value);
@@ -121,10 +121,10 @@ export class InprocessComponent implements OnInit {
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent.dataTotals);
-    this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
-    console.log(this.dataPending);
-    this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
-    console.log(this.dataForward);
+    // this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
+    // console.log(this.dataPending);
+    // this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
+    // console.log(this.dataForward);
 
     this.req_date.nativeElement.value = this.model.req_date;
    

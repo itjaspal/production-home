@@ -162,10 +162,10 @@ namespace api.Services
                 string vwc_code = model.wc_code;
                 string vuser_id = model.user_id;
 
-                string sqlp = "select bar_code , pcs_barcode, prod_tname prod_name ,prod_code";
+                string sqlp = "select bar_code , pcs_barcode, prod_name prod_name ,prod_code";
                 sqlp += " from mps_det_wc";
                 sqlp += " where  entity = :p_entity";
-                sqlp += " and req_date = to_date(:p_req_date,'dd/mm/yyyy')";
+                sqlp += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                 sqlp += " and pdjit_grp = :p_pdjit_grp";
                 sqlp += " and wc_code =:p_wc_code";
                 sqlp += " and bar_code =:p_bar_code";
@@ -176,7 +176,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("Barcodeไม่ถูกต้อง");
+                    throw new Exception("Barcode ไม่ถูกต้อง");
                 }
 
 

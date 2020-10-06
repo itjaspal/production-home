@@ -1,4 +1,5 @@
 ﻿using api.Interfaces;
+using api.ModelViews;
 using api.Services;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,22 @@ namespace api.Controllers
 
             inprocessService = new JobInProcessService();
         }
+
+        [Route("job-inproces/postSearchScanAdd")]
+        public HttpResponseMessage postSearchScanAdd(JobInProcessSearchView model)
+        {
+            try
+            {
+                var result = inprocessService.ScanAdd(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
+        
     }
 }

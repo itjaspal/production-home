@@ -1,7 +1,7 @@
 <div class="container-fluid no-breadcrumbs"> <!-- container-->
   <mat-card> <!-- mat-card 1 -->
       <mat-card-title>
-         <h6>Job Operation</h6>
+         <h6>Scan บันทึกผลผลิต In Process</h6>
       </mat-card-title>
       
 
@@ -53,9 +53,9 @@
       </mat-card> <!-- mat-card 2 -->  
       <br />
       <mat-card> <!-- mat-card current --> 
-          <mat-card-title>
+          <!-- <mat-card-title>
             <h5>ปัจจุบัน</h5>
-          </mat-card-title>
+          </mat-card-title> -->
           <div class="row" *ngIf="dataCurrent.dataTotals.length == 0;else show_current_content">
               <div class="col-12 text-center">
                   <h4>ไม่พบรายการ</h4>
@@ -98,10 +98,10 @@
                                     <mat-icon class="material-icons">more_horiz</mat-icon> 
                                   </button>
                                   <mat-menu #appMenu1="matMenu">
-                                    <button mat-menu-item [routerLink]="['sacn-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
+                                    <button mat-menu-item [routerLink]="['scan-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
                                       <mat-icon class="material-icons">save</mat-icon> <span>บันทึกผลผลิต - Scan</span>
                                     </button>
-                                    <button mat-menu-item [routerLink]="['sacn-cancel/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.act_qty != 0 )">
+                                    <button mat-menu-item [routerLink]="['scan-cancel/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.act_qty != 0 )">
                                       <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต - Scan</span>
                                     </button>
                                     <button mat-menu-item [routerLink]="['entry-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
@@ -132,159 +132,6 @@
           </ng-template> <!-- <ng-template #show_current_content> --> 
        </mat-card> <!-- mat-card current --> 
 
-      <br />
-      <mat-card> <!-- mat-card current --> 
-          <mat-card-title>
-            <h5>ค้างผลิต</h5>
-          </mat-card-title>
-          <div class="row" *ngIf="dataPending.dataTotals.length == 0;else show_pending_content">
-              <div class="col-12 text-center">
-                  <h4>ไม่พบรายการ</h4>
-              </div>
-          </div>    
-          <ng-template #show_pending_content>
-            <div class="panel panel-default" *ngFor="let x of dataPending.dataTotals; let i = index;">
-              <div class="row">
-                <div class="col-lg-2 col-sm-2 col-6">
-                    <dt>Req Date</dt>
-                    <dd>{{x.req_date  | date:'dd/MM/yyyy'}}</dd>
-                </div>
-              </div>
-              <!--INSERT Table (Privious) -->  
-              <!-- Table -->
-              <table style="width: 100%" > 
-                 <tbody> 
-                      <tr>
-                          <th style="width: 150px" class="text-center">JIT Group</th>
-                          <th style="width: 60px"  class="text-center">Plan QTY</th>
-                          <th style="width: 60px"  class="text-center">Act QTY</th>
-                          <th style="width: 60px" class="text-center">Diff QTY</th>
-                          <th style="width: 10px">&nbsp;</th>
-                      </tr>
-                      <tr *ngFor="let y of x.dataGroups; let j = index;">
-                          <td>
-                               {{y.display_group}}
-                          </td>
-                          <td class="text-center">
-                            {{y.plan_qty}}
-                          </td>
-                          <td class="text-center">
-                               {{y.act_qty}}
-                          </td>
-                          <td class="text-center">
-                               {{y.diff_qty}}
-                          </td>
-                          <td class="text-center">
-                              <button mat-icon-button [matMenuTriggerFor]="appMenu1">
-                                <mat-icon class="material-icons">more_horiz</mat-icon> 
-                              </button>
-                              <mat-menu #appMenu1="matMenu">
-                                <button mat-menu-item [routerLink]="['sacn-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
-                                  <mat-icon class="material-icons">save</mat-icon> <span>บันทึกผลผลิต - Scan</span>
-                                </button>
-                                <button mat-menu-item [routerLink]="['sacn-cancel/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.act_qty != 0 )">
-                                  <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต - Scan</span>
-                                </button>
-                                <button mat-menu-item [routerLink]="['entry-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
-                                  <mat-icon class="material-icons">save</mat-icon> <span>บันทึกผลผลิต - Manual</span>
-                                </button>
-                                <button mat-menu-item [routerLink]="['entry-cancel/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.act_qty != 0 )">
-                                  <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต -Manual</span>
-                                </button>
-                              </mat-menu>
-                          </td>
-                      </tr>
-                      <tr>
-                          <th colspan="1" class="text-center">รวม</th>
-                          <th class="text-center"> {{x.total_plan_qty}} </th>
-                          <th class="text-center"> {{x.total_act_qty}} </th>
-                          <th class="text-center"> {{x.total_diff_qty}} </th>
-                          <th class="text-center">
-                              &nbsp;
-                          </th>
-                      </tr>
-                 </tbody>
-              </table>
-          </div>  <!-- <div class="panel panel-default"> --> 
-          </ng-template>
-      </mat-card> <!-- mat-card current --> 
-
-      <br />
-      <mat-card> <!-- mat-card current --> 
-          <mat-card-title>
-            <h5>ล่วงหน้า</h5>
-          </mat-card-title>
-          <div class="row" *ngIf="dataForward.dataTotals.length == 0;else show_Forward_content">
-              <div class="col-12 text-center">
-                  <h4>ไม่พบรายการ</h4>
-              </div>
-          </div>    
-          <ng-template #show_Forward_content>
-            <div class="panel panel-default" *ngFor="let x of dataForward.dataTotals; let i = index;">
-              <div class="row">
-                <div class="col-lg-2 col-sm-2 col-6">
-                    <dt>Req Date</dt>
-                    <dd>{{x.req_date  | date:'dd/MM/yyyy'}}</dd>
-                </div>
-              </div>
-              <!--INSERT Table (Privious) -->  
-              <!-- Table -->
-              <table style="width: 100%" > 
-                 <tbody> 
-                      <tr>
-                          <th style="width: 150px" class="text-center">JIT Group</th>
-                          <th style="width: 60px"  class="text-center">Plan QTY</th>
-                          <th style="width: 60px"  class="text-center">Act QTY</th>
-                          <th style="width: 60px" class="text-center">Diff QTY</th>
-                          <th style="width: 10px">&nbsp;</th>
-                      </tr>
-                      <tr *ngFor="let y of x.dataGroups; let j = index;">
-                          <td>
-                               {{y.display_group}}
-                          </td>
-                          <td class="text-center">
-                            {{y.plan_qty}}
-                          </td>
-                          <td class="text-center">
-                               {{y.act_qty}}
-                          </td>
-                          <td class="text-center">
-                               {{y.diff_qty}}
-                          </td>
-                          <td class="text-center">
-                              <button mat-icon-button [matMenuTriggerFor]="appMenu1">
-                                <mat-icon class="material-icons">more_horiz</mat-icon> 
-                              </button>
-                              <mat-menu #appMenu1="matMenu">
-                                <button mat-menu-item [routerLink]="['sacn-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
-                                  <mat-icon class="material-icons">save</mat-icon> <span>บันทึกผลผลิต - Scan</span>
-                                </button>
-                                <button mat-menu-item [routerLink]="['sacn-cancel/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.act_qty != 0 )">
-                                  <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต - Scan</span>
-                                </button>
-                                <button mat-menu-item [routerLink]="['entry-add/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.plan_qty > y.act_qty )">
-                                  <mat-icon class="material-icons">save</mat-icon> <span>บันทึกผลผลิต - Manual</span>
-                                </button>
-                                <button mat-menu-item [routerLink]="['entry-cancel/'+ y.req_date + '/' + y.pdjit_grp + '/' + model.wc_code]" action *ngIf="(y.act_qty != 0 )">
-                                  <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต -Manual</span>
-                                </button>
-                              </mat-menu>
-                          </td>
-                      </tr>
-                      <tr>
-                          <th colspan="1" class="text-center">รวม</th>
-                          <th class="text-center"> {{x.total_plan_qty}} </th>
-                          <th class="text-center"> {{x.total_act_qty}} </th>
-                          <th class="text-center"> {{x.total_diff_qty}} </th>
-                          <th class="text-center">
-                              &nbsp;
-                          </th>
-                      </tr>
-                 </tbody>
-              </table>
-          </div>  <!-- <div class="panel panel-default"> -->
-          </ng-template>
-      </mat-card> <!-- mat-card current --> 
       
     
  

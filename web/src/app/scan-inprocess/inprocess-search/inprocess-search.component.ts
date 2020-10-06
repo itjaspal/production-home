@@ -20,25 +20,25 @@ export class InprocessSearchComponent implements OnInit {
   constructor(
     private _jobOperationMacSvc: JobOperationService,
     private _authSvc: AuthenticationService,
-    private _activateRoute: ActivatedRoute,
+    private _actRoute: ActivatedRoute,
     private _router: Router,
     private _formBuilder: FormBuilder,
   ) { }
 
   public model: JobOperationSearchView = new JobOperationSearchView();
   public dataCurrent: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
-  public dataPending: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
-  public dataForward: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
+  // public dataPending: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
+  // public dataForward: JobOperationDetailView<JobOperationDataTotalView> = new JobOperationDetailView<JobOperationDataTotalView>();
   
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
   public validationForm: FormGroup;
 
+
   ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser(); 
     this.model.build_type = this.user.branch.entity_code;
-    
     this.searchJobOperation();
     
   }   
@@ -70,24 +70,26 @@ export class InprocessSearchComponent implements OnInit {
     
     this.model.user_id = this.user.username;
     this.dataCurrent.dataTotals  = [];
-    this.dataPending.dataTotals  = [];
-    this.dataForward.dataTotals  = [];
+    // this.dataPending.dataTotals  = [];
+    // this.dataForward.dataTotals  = [];
 
     sessionStorage.setItem('jobOperation-reqDate', "");
     sessionStorage.setItem('jobOperation-wcCode', "");
     sessionStorage.setItem('jobOperation-build_type', this.user.branch.entity_code);
 
     this.model.build_type = this.user.branch.entity_code;
-    this.model.wc_code    = "";
-    this.model.req_date   = "";
-
-
+    this.model.wc_code    = this._actRoute.snapshot.params.wc_code;
+    this.model.req_date   = this.datePipe.transform(this._actRoute.snapshot.params.req_date, 'dd/MM/yyyy');
+   
+    
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent.dataTotals);
-    this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
-    console.log(this.dataPending);
-    this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
-    console.log(this.dataForward);
+    // this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
+    // console.log(this.dataPending);
+    // this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
+    // console.log(this.dataForward);
+    
+    this.req_date.nativeElement.value = this.model.req_date;
      
   }
   
@@ -103,8 +105,8 @@ export class InprocessSearchComponent implements OnInit {
     
     this.model.user_id = this.user.username;
     this.dataCurrent.dataTotals  = [];
-    this.dataPending.dataTotals  = [];
-    this.dataForward.dataTotals  = [];
+    // this.dataPending.dataTotals  = [];
+    // this.dataForward.dataTotals  = [];
 
     sessionStorage.setItem('jobOperation-reqDate', this.req_date.nativeElement.value);
     sessionStorage.setItem('jobOperation-wcCode', this.validationForm.get('wc_code').value);
@@ -121,10 +123,10 @@ export class InprocessSearchComponent implements OnInit {
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent.dataTotals);
-    this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
-    console.log(this.dataPending);
-    this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
-    console.log(this.dataForward);
+    // this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
+    // console.log(this.dataPending);
+    // this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
+    // console.log(this.dataForward);
 
     this.req_date.nativeElement.value = this.model.req_date;
    

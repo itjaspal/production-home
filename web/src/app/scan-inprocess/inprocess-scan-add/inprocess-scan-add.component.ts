@@ -3,8 +3,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
+import { JobInProcessScanFinView, JobInProcessScanView, JobInProcessSearchView, JobInProcessView } from '../../_model/job-inprocess';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { MessageService } from '../../_service/message.service';
+import { ScanInprocessService } from '../../_service/scan-inprocess.service';
 
 @Component({
   selector: 'app-inprocess-scan-add',
@@ -20,25 +22,27 @@ export class InprocessScanAddComponent implements OnInit {
     private _msgSvc: MessageService,
     private _router: Router,
     private _actRoute: ActivatedRoute,
-    //private _jobInprocessSvc: JobinprocessService,
+    private _jobInprocessSvc: ScanInprocessService,
     //private snackBar: MatSnackBar
   ) { }
 
   public validationForm: FormGroup;
   public user: any;
-  // public model: JobInProcessView = new JobInProcessView();
-  // searchModel: JobInProcessSearchView = new JobInProcessSearchView();
+   public model: JobInProcessView = new JobInProcessView();
+   public searchModel: JobInProcessSearchView = new JobInProcessSearchView();
 
   public data: any = {};
-  // public model_scan: JobInProcessScanFinView = new JobInProcessScanFinView();
+  public model_scan: JobInProcessScanFinView = new JobInProcessScanFinView();
 
   public datas: any = {};
   public count = 0;
+
+  public result: any = {};
   
   @ViewChild('qr') qrElement:ElementRef;
+
   ngAfterViewInit(){
-    this.qrElement.nativeElement.focus();
-    //this.qrElement.nativeElement.dismissSoftInput();
+    //this.qrElement.nativeElement.focus();
   }
 
   ngOnInit() {
@@ -60,46 +64,56 @@ export class InprocessScanAddComponent implements OnInit {
 
     var datePipe = new DatePipe("en-US");
     
-    // this.searchModel.req_date = this._actRoute.snapshot.params.req_date;
-    // this.searchModel.wc_code = this.user.def_wc_code;
-    // this.searchModel.pcs_barcode = _qr;
-    // this.searchModel.req_date  = datePipe.transform(this.searchModel.req_date, 'dd/MM/yyyy');
-    // this.searchModel.mc_code = this.user.mc_code;
-    // this.searchModel.user_id = this.user.username;
-    // this.searchModel.spring_grp = this._actRoute.snapshot.params.spring_grp;
-    // this.searchModel.springtype_code = this._actRoute.snapshot.params.springtype_code;
-    // this.searchModel.size_code = this._actRoute.snapshot.params.size_code;
-   
+     //this.searchModel.req_date = this._actRoute.snapshot.params.req_date;
+     this.searchModel.wc_code = this._actRoute.snapshot.params.wc_code;
+     this.searchModel.bar_code = _qr;
+     this.searchModel.req_date  = datePipe.transform(this._actRoute.snapshot.params.req_date, 'dd/MM/yyyy').toString();
+    
+     this.searchModel.user_id = this.user.username;
+     this.searchModel.build_type = this.user.branch.entity_code;
+     this.searchModel.pdjit_grp = this._actRoute.snapshot.params.pdjit_grp;
 
 
     
-    // this.datas = await this._jobInprocessSvc.searchscanpcs(this.searchModel);
+    this.datas = await this._jobInprocessSvc.searchscanadd(this.searchModel);
     
     this.qrElement.nativeElement.focus();
     
-    
+
     this.add(this.datas);
     
   }
 
   add(datas: any) {
 
-        // let newProd: JobInProcessScanView = new JobInProcessScanView();
-        // newProd.pcs_barcode = datas.pcs_barcode;
-        // newProd.prod_code = datas.prod_code;
+        let newProd: JobInProcessScanView = new JobInProcessScanView();
+        newProd.prod_code = datas.prod_code;
+        newProd.prod_name = datas.prod_name;
+        newProd.qty = datas.qty;
      
         
+        this.model_scan.datas.push(newProd);
         
-        // this.model_scan.datas.push(newProd);
+        // Group By Product
+        var result = [];
+        this.model_scan.datas.forEach(function (a) {
+          if ( !this[a.prod_code] && !this[a.prod_name] ) {
+              this[a.prod_code] = { prod_code: a.prod_code, prod_name: a.prod_name, qty: 0 };
+              result.push(this[a.prod_code]);
+          } 
+          this[a.prod_code].qty += a.qty;
+          
+        }, Object.create(null));
+       
+        this.model_scan.datas = result;
+        //console.log(result)
+        console.log(this.model_scan.datas);
         
-        // this.count = this.model_scan.datas.length;
   
   }
 
-  close() {
-  
-    this._router.navigateByUrl('/app/scaninproc/inprocsearch/'+this._actRoute.snapshot.params.req_date);
-
+  close() { 
+    this._router.navigateByUrl('/app/scaninproc/inprocserach/'+this._actRoute.snapshot.params.req_date+'/'+this._actRoute.snapshot.params.wc_code);
   }
 
   
