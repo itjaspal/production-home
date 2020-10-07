@@ -26,4 +26,19 @@ namespace api.ModelViews
         public int qty { get; set; }
 
     }
+
+    public class ProductSearchView
+    {
+        public string entity { get; set; }
+        public string req_date { get; set; }
+        public string wc_code { get; set; }
+        public string pdjit_grp { get; set; }
+    }
+
+    public class ProductView
+    {
+        public string prod_code { get; set; }
+        public string bar_code { get; set; }
+        public string prod_name { get; set; }
+    }
 }

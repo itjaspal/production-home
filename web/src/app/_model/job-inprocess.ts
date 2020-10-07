@@ -18,6 +18,7 @@ export class JobInProcessSearchView
     public bar_code : string = "";
     public wc_code : string = "";
     public user_id : string = "";
+    public qty : number = 0;
 
 }
 
@@ -36,4 +37,12 @@ export class JobInProcessScanView
     public prod_code : string = "";  
     public prod_name : string = "";  
     public qty : number = 0;
+}
+
+export class ProductSearchView
+{
+    public entity : string = AppSetting.entity;
+    public req_date : any = null;
+    public wc_code : string = "";
+    public pdjit_grp: string = "";
 }

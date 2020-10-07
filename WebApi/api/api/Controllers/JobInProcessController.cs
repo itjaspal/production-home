@@ -35,6 +35,36 @@ namespace api.Controllers
             }
         }
 
-        
+        [Route("job-inproces/postSearchScanCancel")]
+        public HttpResponseMessage postSearchScanCancel(JobInProcessSearchView model)
+        {
+            try
+            {
+                var result = inprocessService.ScanCancel(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
+        [Route("job-inproces/getProduct")]
+        public HttpResponseMessage postGetProduct(ProductSearchView model)
+        {
+            try
+            {
+                var result = inprocessService.getProduct(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+
     }
 }

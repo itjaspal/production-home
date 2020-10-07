@@ -154,6 +154,7 @@ import { InprocessSearchComponent } from './scan-inprocess/inprocess-search/inpr
 import { JobOperationComponent } from './job-operation/job-operation/job-operation.component';
 import { JobOrderDetailComponent } from './job-operation/job-order-detail/job-order-detail.component';
 import { InprocessComponent } from './scan-inprocess/inprocess/inprocess.component';
+import { ProductSearchComponent } from './scan-inprocess/product-search/product-search.component';
 
 
 
@@ -334,6 +335,7 @@ import { InprocessComponent } from './scan-inprocess/inprocess/inprocess.compone
     JobOperationComponent,
     JobOrderDetailComponent,
     InprocessComponent,
+    ProductSearchComponent,
     
 
   
@@ -343,7 +345,7 @@ import { InprocessComponent } from './scan-inprocess/inprocess/inprocess.compone
   entryComponents: [
     PopupMessageComponent,
     ConfirmMessageComponent,
-    //RawmatSearchComponent
+    ProductSearchComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -28,8 +28,8 @@ export class InprocessScanAddComponent implements OnInit {
 
   public validationForm: FormGroup;
   public user: any;
-   public model: JobInProcessView = new JobInProcessView();
-   public searchModel: JobInProcessSearchView = new JobInProcessSearchView();
+  public model: JobInProcessView = new JobInProcessView();
+  public searchModel: JobInProcessSearchView = new JobInProcessSearchView();
 
   public data: any = {};
   public model_scan: JobInProcessScanFinView = new JobInProcessScanFinView();
