@@ -59,12 +59,12 @@ namespace api.Services
 
 
                 //file_paths = "c:\\temp\\";
-                file_paths = "\\\\192.168.8.20\\DataCenter\\PDV_DataShare\\NewDesignSpec\\PDV\\";
+                //file_paths = "\\\\192.168.8.20\\DataCenter\\PDV_DataShare\\NewDesignSpec\\PDV\\";
                 string file = "*"+datas.design_code+".pdf";
                 
 
                 //string[] file_names = Directory.GetFiles(@"c:\temp\", "*.pdf",SearchOption.AllDirectories);
-                string[] file_names = Directory.GetFiles(@file_paths, file, SearchOption.AllDirectories);
+                string[] file_names = Directory.GetFiles(@file_path, file, SearchOption.AllDirectories);
                 
                 foreach (string file_name in file_names)
                 {

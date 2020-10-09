@@ -43,17 +43,7 @@ export class InprocessEntryAddComponent implements OnInit {
 
   public result: any = {};
 
-  // @ViewChild('bar_code') barcodeElement:ElementRef;
-
-  // ngAfterViewInit() {
-   
-  //   this.cdr.detectChanges();
-  // }
-  // ngAfterViewChecked(){
-  //       //your code to update the model
-  //       this.cdr.detectChanges();
-  //    }
-
+  
   ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
@@ -131,12 +121,12 @@ export class InprocessEntryAddComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.length > 0) {
-        this.add_raw(result);
+        this.add_prod(result);
       }
     })
   }
 
-  add_raw(datas: any) {
+  add_prod(datas: any) {
 
     console.log(datas);
     this.searchModel.bar_code = datas[0].bar_code;

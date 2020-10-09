@@ -71,7 +71,7 @@ namespace api.Services
 
                 foreach (var i in por_det)
                 {
-
+                    vspec = "";
                     // Find Special Order
                     string sqlp = "select spc_desc from por_special_det where pd_entity = :p_entity and por_no = :p_por_no and prod_code = :p_prod_code order by item ";
                     List<SpecialDescView> special = ctx.Database.SqlQuery<SpecialDescView>(sqlp, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", por_no), new OracleParameter("p_prod_code", i.prod_code)).ToList();
