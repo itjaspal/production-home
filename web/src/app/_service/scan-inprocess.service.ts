@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Dropdownlist } from '../_model/dropdownlist';
-import { JobInProcessSearchView, JobInProcessView, ProductSearchView } from '../_model/job-inprocess';
+import { JobInProcessSearchView, JobInProcessView, ProductSearchView, ProductView } from '../_model/job-inprocess';
 import { AuthenticationService } from './authentication.service';
+import { CommonSearchView } from '../_model/common-search-view';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,14 @@ export class ScanInprocessService {
     return await this.http.post<JobInProcessView>(environment.API_URL + 'job-inproces/postSearchEntryCancel', _model).toPromise();
   }
 
+  
   public async getproduct(_model: ProductSearchView) {
-    return await this.http.post<Dropdownlist[]>(environment.API_URL + 'job-inproces/getProduct', _model).toPromise();
+    return await this.http.post<ProductView[]>(environment.API_URL + 'job-inproces/postGetProduct', _model).toPromise();
   }
+
+  public async getproductcancel(_model: ProductSearchView) {
+    return await this.http.post<ProductView[]>(environment.API_URL + 'job-inproces/postGetProductCancel', _model).toPromise();
+  }
+
+  
 }

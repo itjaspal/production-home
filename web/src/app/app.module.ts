@@ -155,6 +155,7 @@ import { JobOperationComponent } from './job-operation/job-operation/job-operati
 import { JobOrderDetailComponent } from './job-operation/job-order-detail/job-order-detail.component';
 import { InprocessComponent } from './scan-inprocess/inprocess/inprocess.component';
 import { ProductSearchComponent } from './scan-inprocess/product-search/product-search.component';
+import { ProductCancelSearchComponent } from './scan-inprocess/product-cancel-search/product-cancel-search.component';
 
 
 
@@ -336,6 +337,7 @@ import { ProductSearchComponent } from './scan-inprocess/product-search/product-
     JobOrderDetailComponent,
     InprocessComponent,
     ProductSearchComponent,
+    ProductCancelSearchComponent,
     
 
   
@@ -345,7 +347,8 @@ import { ProductSearchComponent } from './scan-inprocess/product-search/product-
   entryComponents: [
     PopupMessageComponent,
     ConfirmMessageComponent,
-    ProductSearchComponent
+    ProductSearchComponent,
+    ProductCancelSearchComponent
   ],
   bootstrap: [AppComponent]
 })

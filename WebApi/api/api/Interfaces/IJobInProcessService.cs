@@ -11,8 +11,9 @@ namespace api.Interfaces
     {
         JobInProcessView ScanAdd(JobInProcessSearchView model);
         JobInProcessView ScanCancel(JobInProcessSearchView model);
-        JobInProcessView EntyAdd(JobInProcessSearchView model);
+        JobInProcessView EntryAdd(JobInProcessSearchView model);
         JobInProcessView EntryCancel(JobInProcessSearchView model);
-        CommonSearchView<ProductView> getProduct(ProductSearchView model);
+        ProductModalView getProduct(ProductSearchView model);
+        CommonSearchView<ProductView> getProductCancel(ProductSearchView model);
     }
 }

@@ -46,3 +46,10 @@ export class ProductSearchView
     public wc_code : string = "";
     public pdjit_grp: string = "";
 }
+
+export class ProductView
+{
+    public prod_code : string = "";
+    public bar_code : string = "";
+    public prod_name : string = "";
+}

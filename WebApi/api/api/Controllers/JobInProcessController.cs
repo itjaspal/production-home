@@ -50,7 +50,7 @@ namespace api.Controllers
             }
         }
 
-        [Route("job-inproces/getProduct")]
+        [Route("job-inproces/postGetProduct")]
         public HttpResponseMessage postGetProduct(ProductSearchView model)
         {
             try
@@ -65,6 +65,52 @@ namespace api.Controllers
             }
         }
 
+        
+        [Route("job-inproces/postGetProductCancel")]
+        public HttpResponseMessage postGetProductCancel(ProductSearchView model)
+        {
+            try
+            {
+                var result = inprocessService.getProductCancel(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+
+        [Route("job-inproces/postSearchEntryAdd")]
+        public HttpResponseMessage postSearchEntryAdd(JobInProcessSearchView model)
+        {
+            try
+            {
+                var result = inprocessService.EntryAdd(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
+        [Route("job-inproces/postSearchEntryCancel")]
+        public HttpResponseMessage postSearchEntryCancel(JobInProcessSearchView model)
+        {
+            try
+            {
+                var result = inprocessService.EntryCancel(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
 
     }
 }

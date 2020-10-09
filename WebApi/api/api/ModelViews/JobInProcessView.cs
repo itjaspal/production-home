@@ -35,6 +35,15 @@ namespace api.ModelViews
         public string pdjit_grp { get; set; }
     }
 
+
+    public class ProductModalView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public List<ProductView> datas { get; set; }
+    }
+
     public class ProductView
     {
         public string prod_code { get; set; }

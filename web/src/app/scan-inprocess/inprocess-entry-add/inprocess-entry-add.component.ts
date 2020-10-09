@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild  } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JobInProcessView, JobInProcessSearchView, JobInProcessScanFinView, JobInProcessScanView } from '../../_model/job-inprocess';
@@ -8,6 +8,7 @@ import { MessageService } from '../../_service/message.service';
 import { ScanInprocessService } from '../../_service/scan-inprocess.service';
 import { DatePipe } from '@angular/common';
 import { ProductSearchComponent } from '../product-search/product-search.component';
+
 
 
 @Component({
@@ -25,6 +26,8 @@ export class InprocessEntryAddComponent implements OnInit {
     private _router: Router,
     private _actRoute: ActivatedRoute,
     private _jobInprocessSvc: ScanInprocessService,
+    private cdr: ChangeDetectorRef
+    
   ) { }
 
   public validationForm: FormGroup;
@@ -42,9 +45,14 @@ export class InprocessEntryAddComponent implements OnInit {
 
   // @ViewChild('bar_code') barcodeElement:ElementRef;
 
-  ngAfterViewInit(){
-    //this.qrElement.nativeElement.focus();
-  }
+  // ngAfterViewInit() {
+   
+  //   this.cdr.detectChanges();
+  // }
+  // ngAfterViewChecked(){
+  //       //your code to update the model
+  //       this.cdr.detectChanges();
+  //    }
 
   ngOnInit() {
     this.buildForm();
@@ -53,7 +61,7 @@ export class InprocessEntryAddComponent implements OnInit {
 
   private buildForm() {
     this.validationForm = this._fb.group({
-      bar_code: [null, []],
+      bar_code: [null, [Validators.required]],
       qty: [null, []]
     });
   }
@@ -69,8 +77,11 @@ export class InprocessEntryAddComponent implements OnInit {
     this.searchModel.pdjit_grp = this._actRoute.snapshot.params.pdjit_grp;
     //console.log(this.searchModel);
     
-    this.data = await this._jobInprocessSvc.searchentryadd(this.searchModel);
-    this.add(this.data.datas);
+    this.datas = await this._jobInprocessSvc.searchentryadd(this.searchModel);
+
+    this.add(this.datas);
+    this.searchModel.bar_code = "";
+    this.searchModel.qty = 0;
 
   }
 
@@ -102,7 +113,8 @@ export class InprocessEntryAddComponent implements OnInit {
 
   }
 
-  openSearchProductModal()
+
+  openSearchProductModal(SaleTransactionItemView = null)
   {
     const dialogRef = this._dialog.open(ProductSearchComponent, {
       maxWidth: '100vw',

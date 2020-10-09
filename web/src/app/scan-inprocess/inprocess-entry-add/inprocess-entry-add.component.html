@@ -2,7 +2,7 @@
 
   <mat-card>
     <mat-card-title>
-      <h6>Scan In Process</h6>
+      <h6>บันทึกผลผลิต In Process - Manual</h6>
     </mat-card-title>
 
     <mat-card-content class="no-margin">
@@ -35,7 +35,7 @@
 
               <div class="col-2 col-lg-2">
                 <mat-card-actions class="no-margin">
-                  <button mat-raised-button color="primary" type="button" (click)="save()">
+                  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!validationForm.valid">
                     <mat-icon class="material-icons">save</mat-icon> บันทึก
                   </button>
                 </mat-card-actions>
