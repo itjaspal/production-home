@@ -10,7 +10,8 @@ namespace api.Interfaces
     interface IDropdownlistService
     {
        
-        List<Dropdownlist> GetDdlMobilePrnt();
-        
+        List<Dropdownlist> GetDdlMobilePrntJIT();
+        List<Dropdownlist> GetDdlMobilePrntSTK();
+
     }
 }

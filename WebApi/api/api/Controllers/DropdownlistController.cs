@@ -124,12 +124,27 @@ namespace api.Controllers
         //    }
         //}
 
-        [Route("dropdownlist/getDdlMobilePrnt")]
-        public HttpResponseMessage getDdlMobilePrnt()
+        [Route("dropdownlist/getDdlMobilePrntJIT")]
+        public HttpResponseMessage getDdlMobilePrntJIT()
         {
             try
             {
-                var result = ddlSvc.GetDdlMobilePrnt();
+                var result = ddlSvc.GetDdlMobilePrntJIT();
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("dropdownlist/getDdlMobilePrntSTK")]
+        public HttpResponseMessage getDdlMobilePrntSTK()
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlMobilePrntSTK();
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }

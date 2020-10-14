@@ -1,4 +1,92 @@
-<p>
-  default-printer works!
-</p>
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>Set Default Printer</h6>
+    </mat-card-title>
+  
+      <mat-card-content class="no-margin">
+        <div class="row">
+          <div class="col-lg-4 col-sm-10">
+            <dt>รายละเอียดข้อมูล Printer Default ปัจจุบัน</dt>
+          </div>
+        </div>
+    
+          <mat-card >
+          <mat-card-content>
+              
+            
+            <div class="row card-table-body" >
+                <div class="col-lg-2 col-sm-2">
+                    <dt>User</dt>
+                    <dd>{{this.user.username}}</dd>
+                </div>
+                <div class="col-lg-5 col-sm-10 col-10"> 
+                    <dt>Printer</dt>
+                    <dd>{{model.serial_no}} - {{model.prnt_point_name}}</dd>
+                </div>
+    
+            </div> 
+    
+          </mat-card-content>
+          </mat-card> 
+          </mat-card-content> 
+
+ 
+          <br />  
+
+          <mat-card-content class="no-margin">
+            <div class="row">
+              <div class="col-lg-3 col-sm-2">
+                <dt>กำหนด Default Printer</dt>
+              </div>
+            </div>
+      
+            <mat-card >
+            <mat-card-content>
+              <form [formGroup]="validationForm">   
+                <div class="row card-table-body" >
+                    <!-- Row 1-->
+                    <div class="col-lg-3 col-sm-4 col-12">
+                        <mat-form-field class="full-width">
+                          <mat-select placeholder="กำหนดเครื่องพิมพ์" [(ngModel)]="modelUpdate.serial_no"
+                          formControlName="serial_no">
+                            <mat-option>ทั้งหมด</mat-option>
+                            <mat-option *ngFor="let x of ddlDefaultPrinter" [value]="x.key">{{x.value}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-error class="error-message"
+                            *ngIf="validationForm.get('serial_no').hasError('required') && (validationForm.get('serial_no').dirty || validationForm.get('serial_no').touched)">
+                            โปรดระบุข้อมูล 
+                        </mat-error>
+                    </div>
+                </div> 
+              </form>     
+            </mat-card-content>
+            </mat-card> 
+            </mat-card-content>
+
+            <br />
+            <mat-card-actions class="no-margin">
+              <div class="row">
+                <div class="col-4 col-sm-2">
+                  <button (click)="close();" mat-raised-button color="primary">
+                    <mat-icon class="material-icons">close</mat-icon> ปิด
+                  </button>
+                </div>
+                <div class="col-2 col-sm-6">
+                  <button mat-raised-button color="default" (click)="save()"
+                  [disabled]="!validationForm.valid">
+                    <mat-icon class="material-icons">save</mat-icon> บันทึกข้อมูล
+                  </button>
+                </div>
+              </div>
+            </mat-card-actions>
+
+ 
+  </mat-card>
+
+   
+</div>
+
 

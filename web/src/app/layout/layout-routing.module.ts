@@ -45,6 +45,8 @@ import { InprocessSearchComponent } from '../scan-inprocess/inprocess-search/inp
 import { InprocessEntryCancelComponent } from '../scan-inprocess/inprocess-entry-cancel/inprocess-entry-cancel.component';
 import { JobOperationComponent } from '../job-operation/job-operation/job-operation.component';
 import { InprocessComponent } from '../scan-inprocess/inprocess/inprocess.component';
+import { PrintInprocessComponent } from '../print-inprocess-tag/print-inprocess/print-inprocess.component';
+import { PrintInprocessDetailComponent } from '../print-inprocess-tag/print-inprocess-detail/print-inprocess-detail.component';
 
 
 
@@ -104,9 +106,11 @@ const routes: Routes = [
       { path: 'menu/update/:menuFunctionId', component: MenuUpdateComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/menu" } },
       { path: 'menu/view/:menuFunctionId', component: MenuViewComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/menu" } },
 
+            
       //Default Printer
-      { path: 'default-printer', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/default-printer" } },
-       
+      { path: 'defprinter', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },     
+
+      
       //Job-operation and View Spec
       { path: 'job', component: JobOperationComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
       
@@ -122,6 +126,12 @@ const routes: Routes = [
       { path: 'scaninproc/inprocserach/:req_date/:wc_code/scan-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessScanCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },
       { path: 'scaninproc/inprocserach/:req_date/:wc_code/entry-add/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
       { path: 'scaninproc/inprocserach/:req_date/:wc_code/entry-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },          
+
+      //Print Inprocess Tag
+      { path: 'taginproc', component: PrintInprocessComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      { path: 'taginproc/inprocess-detail/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
+      { path: 'taginproc/print-inprocess-tag/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
+
 
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

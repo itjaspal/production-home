@@ -37,15 +37,34 @@ namespace api.Services
 
         
 
-        public List<Dropdownlist> GetDdlMobilePrnt()
+        public List<Dropdownlist> GetDdlMobilePrntJIT()
         {
             using (var ctx = new ConXContext())
             {
 
-                string sql = "select series_no key , series_no||' - '||prnt_point_name value from whmobileprnt_ctl where grp_type = 'SPRING'";
+                string sql = "select series_no key , series_no||' - '||prnt_point_name value from whmobileprnt_ctl where grp_type = 'HMJIT'";
           
                 List<Dropdownlist> ddl = ctx.Database.SqlQuery<Dropdownlist>(sql)
                                             .Select(x=> new Dropdownlist()
+                                            {
+                                                key = x.key,
+                                                value = x.value,
+                                            })
+                                            .ToList();
+
+                return ddl;
+            }
+        }
+
+        public List<Dropdownlist> GetDdlMobilePrntSTK()
+        {
+            using (var ctx = new ConXContext())
+            {
+
+                string sql = "select series_no key , series_no||' - '||prnt_point_name value from whmobileprnt_ctl where grp_type = 'HMSKT'";
+
+                List<Dropdownlist> ddl = ctx.Database.SqlQuery<Dropdownlist>(sql)
+                                            .Select(x => new Dropdownlist()
                                             {
                                                 key = x.key,
                                                 value = x.value,

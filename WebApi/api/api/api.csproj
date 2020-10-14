@@ -266,6 +266,7 @@
     <Compile Include="Controllers\JobInProcessController.cs" />
     <Compile Include="Controllers\JobOperationController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PrintInProcessTagController.cs" />
     <Compile Include="Controllers\PrintRawTagController.cs" />
     <Compile Include="Controllers\SpecDrawingController.cs" />
     <Compile Include="DataAccess\ConXContext.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="Interfaces\IJobInProcessService.cs" />
     <Compile Include="Interfaces\IJobOperationService.cs" />
     <Compile Include="Interfaces\IMenuService.cs" />
+    <Compile Include="Interfaces\IPrintInProcessTagService.cs" />
     <Compile Include="Interfaces\IPrintRawTagService.cs" />
     <Compile Include="Interfaces\ISpecDrawingService.cs" />
     <Compile Include="ModelViews\AuthenticationView.cs" />
@@ -290,6 +292,7 @@
     <Compile Include="ModelViews\JobInProcessView.cs" />
     <Compile Include="ModelViews\JobOperationView.cs" />
     <Compile Include="ModelViews\MasterMenuView.cs" />
+    <Compile Include="ModelViews\PrintInProcessTagView.cs" />
     <Compile Include="ModelViews\PrintRawTagView.cs" />
     <Compile Include="ModelViews\SpecDrawingView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -299,6 +302,7 @@
     <Compile Include="Services\JobInProcessService.cs" />
     <Compile Include="Services\JobOperationService.cs" />
     <Compile Include="Services\MenuService.cs" />
+    <Compile Include="Services\PrintInProcessTagService.cs" />
     <Compile Include="Services\PrintRawTagService.cs" />
     <Compile Include="Services\SpecDrawingService.cs" />
     <Compile Include="Util\DataIgnoreAttribute.cs" />

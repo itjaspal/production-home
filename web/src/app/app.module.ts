@@ -156,6 +156,10 @@ import { JobOrderDetailComponent } from './job-operation/job-order-detail/job-or
 import { InprocessComponent } from './scan-inprocess/inprocess/inprocess.component';
 import { ProductSearchComponent } from './scan-inprocess/product-search/product-search.component';
 import { ProductCancelSearchComponent } from './scan-inprocess/product-cancel-search/product-cancel-search.component';
+import { PrintInprocessComponent } from './print-inprocess-tag/print-inprocess/print-inprocess.component';
+import { PrintInprocessDetailComponent } from './print-inprocess-tag/print-inprocess-detail/print-inprocess-detail.component';
+import { PrintInprocessTagComponent } from './print-inprocess-tag/print-inprocess-tag/print-inprocess-tag.component';
+import { InprocessTagProductSearchComponent } from './print-inprocess-tag/inprocess-tag-product-search/inprocess-tag-product-search.component';
 
 
 
@@ -338,6 +342,10 @@ import { ProductCancelSearchComponent } from './scan-inprocess/product-cancel-se
     InprocessComponent,
     ProductSearchComponent,
     ProductCancelSearchComponent,
+    PrintInprocessComponent,
+    PrintInprocessDetailComponent,
+    PrintInprocessTagComponent,
+    InprocessTagProductSearchComponent,
     
 
   
