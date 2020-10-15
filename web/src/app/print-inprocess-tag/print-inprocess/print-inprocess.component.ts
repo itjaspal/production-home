@@ -1,12 +1,13 @@
 import { DatePipe } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PageEvent } from '@angular/material';
+import { MatDialog, MatDialogRef, PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { YourValidator } from '../../scan-inprocess/inprocess-search/inprocess-search.component';
 import { JobOperationSearchView, JobOperationDetailView, JobOperationDataTotalView } from '../../_model/job-operation';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { JobOperationService } from '../../_service/job-operation.service';
+import { PrintInprocessDetailComponent } from '../print-inprocess-detail/print-inprocess-detail.component';
 
 @Component({
   selector: 'app-print-inprocess',
@@ -23,6 +24,8 @@ export class PrintInprocessComponent implements OnInit {
     private _activateRoute: ActivatedRoute,
     private _router: Router,
     private _formBuilder: FormBuilder,
+    private _dialog: MatDialog,
+    //public dialogRef: MatDialogRef<any>,
   ) { }
 
   public model: JobOperationSearchView = new JobOperationSearchView();
@@ -33,6 +36,7 @@ export class PrintInprocessComponent implements OnInit {
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
   public validationForm: FormGroup;
+  //dialogRef : any;
 
   ngOnInit() {
     this.buildForm();
@@ -129,5 +133,31 @@ export class PrintInprocessComponent implements OnInit {
     this.req_date.nativeElement.value = this.model.req_date;
    
   }
+
+  openOrderSummaryDialog(p_build_type: string, p_pdjit_grp: string, p_req_date: string, p_pdjit_grp_desc: string, _isEdit: boolean = false, _index: number = -1) {
+    const dialogRef = this._dialog.open(PrintInprocessDetailComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh', 
+      height: '100%',
+      width: '100%',
+      data: {
+        build_type: p_build_type,
+        pdjit_grp: p_pdjit_grp,
+        req_date: p_req_date,
+        pdjit_grp_desc: p_pdjit_grp_desc,
+        isEdit: _isEdit,
+       // editItem: _editItem,
+        hideSerialNo: true,
+        isSaleBed: false
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => { 
+      if (result) {
+        
+      }
+    });
+  }
+
 
 }

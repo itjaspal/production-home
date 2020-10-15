@@ -98,7 +98,7 @@
                                     <mat-icon class="material-icons">more_horiz</mat-icon> 
                                   </button>
                                   <mat-menu #appMenu1="matMenu">
-                                    <button mat-menu-item  action>
+                                    <button mat-menu-item (click)="openOrderSummaryDialog(this.model.build_type, y.pdjit_grp, x.req_date, y.display_group);" action>
                                         <mat-icon class="material-icons">search</mat-icon> <span>Order Summary</span>
                                     </button>
                                   </mat-menu>
@@ -170,9 +170,9 @@
                                 <mat-icon class="material-icons">more_horiz</mat-icon> 
                               </button>
                               <mat-menu #appMenu1="matMenu">
-                                <button mat-menu-item  action>
-                                    <mat-icon class="material-icons">search</mat-icon> <span>Order Summary</span>
-                                </button>
+                                <button mat-menu-item (click)="openOrderSummaryDialog(this.model.build_type, y.pdjit_grp, x.req_date, y.display_group);" action>
+                                  <mat-icon class="material-icons">search</mat-icon> <span>Order Summary</span>
+                               </button>
                               </mat-menu>
                           </td>
                       </tr>
@@ -238,8 +238,8 @@
                                 <mat-icon class="material-icons">more_horiz</mat-icon> 
                               </button>
                               <mat-menu #appMenu1="matMenu">
-                                <button mat-menu-item  action>
-                                    <mat-icon class="material-icons">search</mat-icon> <span>Order Summary</span>
+                                <button mat-menu-item (click)="openOrderSummaryDialog(this.model.build_type, y.pdjit_grp, x.req_date, y.display_group);" action>
+                                  <mat-icon class="material-icons">search</mat-icon> <span>Order Summary</span>
                                 </button>
                               </mat-menu>
                           </td>

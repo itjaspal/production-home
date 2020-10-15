@@ -19,7 +19,8 @@ export class ProductSearchComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ProductSearchView,
     private _fb: FormBuilder,
     private _jobInprocessSvc: ScanInprocessService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+
   ) { }
 
   

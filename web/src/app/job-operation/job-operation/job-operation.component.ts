@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common'
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobOperationSearchView, JobOperationDetailView, JobOperationDataTotalView } from '../../_model/job-operation';
 import * as moment from 'moment';
+import { JobOrderSummaryComponent } from '../job-order-summary/job-order-summary.component';
 
 @Component({
   selector: 'app-job-operation',
@@ -33,7 +34,7 @@ export class JobOperationComponent implements OnInit {
     private _activateRoute: ActivatedRoute,
     private _router: Router,
     private _formBuilder: FormBuilder,
-    
+    private _dialog: MatDialog,
     
    // @Inject(MAT_DIALOG_DATA) public paramData: ViewSpecDrawingParamView
   ) { }
@@ -71,8 +72,8 @@ export class JobOperationComponent implements OnInit {
   
   ngOnDestroy() {
     //console.log("Close Program ");
-    sessionStorage.removeItem('spect-drawing-reqDate');
-    sessionStorage.removeItem('spect-drawing-pcsBarcode');
+    //sessionStorage.removeItem('spect-drawing-reqDate');
+    //sessionStorage.removeItem('spect-drawing-pcsBarcode');
   }
 
   async searchJobOperation(event: PageEvent = null) {   
@@ -147,6 +148,32 @@ export class JobOperationComponent implements OnInit {
     //this.validationForm.get('wc_code').setValue(this.model.wc_code);
     //this.validationForm.get('build_type').setValue(this.model.build_type);
 
+  }
+
+
+  openOrderSummaryDialog(p_build_type: string, p_pdjit_grp: string, p_req_date: string, p_pdjit_grp_desc: string, _isEdit: boolean = false, _index: number = -1) {
+    const dialogRef = this._dialog.open(JobOrderSummaryComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh', 
+      height: '100%',
+      width: '100%',
+      data: {
+        build_type: p_build_type,
+        pdjit_grp: p_pdjit_grp,
+        req_date: p_req_date,
+        pdjit_grp_desc: p_pdjit_grp_desc,
+        isEdit: _isEdit,
+       // editItem: _editItem,
+        hideSerialNo: true,
+        isSaleBed: false
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => { 
+      if (result) {
+        
+      }
+    });
   }
 
  

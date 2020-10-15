@@ -20,7 +20,7 @@ namespace api.Services
 
             string type = "";
             string file_path = "";
-            string file_paths = "";
+            //string file_paths = "";
             string vfile_name = "";
 
             using (var ctx = new ConXContext())
@@ -60,8 +60,9 @@ namespace api.Services
 
                 //file_paths = "c:\\temp\\";
                 //file_paths = "\\\\192.168.8.20\\DataCenter\\PDV_DataShare\\NewDesignSpec\\PDV\\";
-                string file = "*"+datas.design_code+".pdf";
-                
+                string file = "*" + datas.design_code + ".pdf";
+                //string file = "Test.pdf";
+
 
                 //string[] file_names = Directory.GetFiles(@"c:\temp\", "*.pdf",SearchOption.AllDirectories);
                 string[] file_names = Directory.GetFiles(@file_path, file, SearchOption.AllDirectories);

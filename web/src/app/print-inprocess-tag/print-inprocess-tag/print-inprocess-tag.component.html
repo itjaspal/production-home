@@ -2,7 +2,7 @@
 
   <mat-card>
     <mat-card-title>
-      <h6>บันทึกผลผลิต In Process - Manual</h6>
+      <h6>Pring In Process Tag</h6>
     </mat-card-title>
 
     <mat-card-content class="no-margin">
@@ -20,7 +20,7 @@
               </div>
               <div class="col-2 col-lg-2">
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="Qty" formControlName="qty" name="qty" [(ngModel)] ="searchModel.qty">
+                  <input matInput placeholder="Qty" formControlName="qty" name="qty" [(ngModel)] ="model.qty">
                 </mat-form-field>
                 
               </div>
@@ -35,8 +35,8 @@
 
               <div class="col-2 col-lg-2">
                 <mat-card-actions class="no-margin">
-                  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!validationForm.valid">
-                    <mat-icon class="material-icons">save</mat-icon> บันทึก
+                  <button mat-raised-button color="primary" type="button" (click)="print()" [disabled]="!validationForm.valid">
+                    <mat-icon class="material-icons">print</mat-icon> Print
                   </button>
                 </mat-card-actions>
               </div>
@@ -45,7 +45,7 @@
             <div class="row card-table-body">
               <div class="col-8 col-lg-8">
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="รายละเอียดอื่น ๆ" name="description" [(ngModel)]="model.description">
+                  <input matInput placeholder="รายละเอียดอื่น ๆ" formControlName="description" name="description" [(ngModel)]="model.description">
                 </mat-form-field>
               </div>
             </div>
@@ -54,23 +54,37 @@
 
 
             <div class="row card-table-body">
-              <div class="col-3 col-lg-2">
-                <small>Barcode</small>
-                <dd>{{datas.bar_code}}</dd>
-              </div>
+              
               <div class="col-3 col-lg-3">
                 <small>Product Code</small>
-                <dd>{{datas.prod_code}}</dd>
+                <dd>{{model.prod_code}}</dd>
               </div>
-              <div class="col-4 col-lg-4">
+              <div class="col-5 col-lg-5">
                 <small>Product Name</small>
-                <dd>{{datas.prod_name}}</dd>
+                <dd>{{model.prod_name}}</dd>
               </div>
 
-              <div class="col-1 col-lg-1">
-                <small>Qty</small>
-                <dd>{{datas.qty}}</dd>
+              
+
+            </div>
+            <div class="row card-table-body">
+              <div class="col-3 col-lg-3">
+                <small>Size</small>
+                <dd>{{model.size_name}}</dd>
               </div>
+              <div class="col-4 col-lg-4">
+                <small>Design</small>
+                <dd>{{model.design_name}}</dd>
+              </div>
+
+            </div>
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-4">
+                <small>Order No.</small>
+                <dd>JIT : {{model.req_date}}</dd>
+              </div>
+             
 
             </div>
           </form>
@@ -84,7 +98,7 @@
     <mat-card-actions class="no-margin">
       <div class="row">
         <div class="col-2 col-sm-2">
-          <button (click)="close();" mat-raised-button color="primary">
+          <button (click)="close_print();" mat-raised-button color="primary">
             <mat-icon class="material-icons">close</mat-icon> ปิด
           </button>
         </div>

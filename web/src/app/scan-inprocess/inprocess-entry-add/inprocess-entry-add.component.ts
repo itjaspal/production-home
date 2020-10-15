@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild  } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JobInProcessView, JobInProcessSearchView, JobInProcessScanFinView, JobInProcessScanView } from '../../_model/job-inprocess';
 import { AuthenticationService } from '../../_service/authentication.service';
@@ -26,7 +26,7 @@ export class InprocessEntryAddComponent implements OnInit {
     private _router: Router,
     private _actRoute: ActivatedRoute,
     private _jobInprocessSvc: ScanInprocessService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
     
   ) { }
 

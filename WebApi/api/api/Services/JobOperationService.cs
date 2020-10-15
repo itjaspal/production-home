@@ -195,7 +195,7 @@ namespace api.Services
                     productDetail = new List<ModelViews.OrderProductView>()
                 };
 
-                string sqld = "select a.prod_code , a.prod_tname prod_name , a.model_name model , a.tick_no spec, a.size_name , b.style_code style , b.weight_net weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , a.model_name , a.tick_no , a.size_name , b.style_code , b.weight_net";
+                string sqld = "select a.prod_code , a.prod_tname prod_name , b.bar_code , a.model_name model , a.tick_no spec, a.size_name , b.style_code style , b.weight_net weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , b.bar_code , a.model_name , a.tick_no , a.size_name , b.style_code , b.weight_net";
                 List<OrderProductView> prod = ctx.Database.SqlQuery<OrderProductView>(sqld, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
 
                 foreach(var x in prod)
@@ -230,6 +230,7 @@ namespace api.Services
                     {
                         prod_code  = x.prod_code,
                         prod_name = x.prod_name,
+                        bar_code = x.bar_code,
                         style = x.style,
                         weight = x.weight,
                         model = x.model,

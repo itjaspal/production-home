@@ -47,6 +47,8 @@ import { JobOperationComponent } from '../job-operation/job-operation/job-operat
 import { InprocessComponent } from '../scan-inprocess/inprocess/inprocess.component';
 import { PrintInprocessComponent } from '../print-inprocess-tag/print-inprocess/print-inprocess.component';
 import { PrintInprocessDetailComponent } from '../print-inprocess-tag/print-inprocess-detail/print-inprocess-detail.component';
+import { JobOrderDetailComponent } from '../job-operation/job-order-detail/job-order-detail.component';
+import { JobOrderSummaryComponent } from '../job-operation/job-order-summary/job-order-summary.component';
 
 
 
@@ -111,8 +113,11 @@ const routes: Routes = [
       { path: 'defprinter', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },     
 
       
-      //Job-operation and View Spec
+      //Job-operation and View Spec and Info
       { path: 'job', component: JobOperationComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+      { path: 'ordersum', component: JobOrderSummaryComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+      { path: 'ordersum/viewInfo', component: JobOrderDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/ordersum" }  },
+      
       
       //Scan Inprocess
       { path: 'scaninproc', component: InprocessComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 

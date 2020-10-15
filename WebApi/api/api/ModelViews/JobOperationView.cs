@@ -184,6 +184,7 @@ namespace api.ModelViews
     {
         public string prod_code { get; set; }
         public string prod_name { get; set; }
+        public string bar_code { get; set; }
         public string style { get; set; }
         public decimal weight { get; set; }
         public string model { get; set; }

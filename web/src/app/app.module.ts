@@ -160,6 +160,7 @@ import { PrintInprocessComponent } from './print-inprocess-tag/print-inprocess/p
 import { PrintInprocessDetailComponent } from './print-inprocess-tag/print-inprocess-detail/print-inprocess-detail.component';
 import { PrintInprocessTagComponent } from './print-inprocess-tag/print-inprocess-tag/print-inprocess-tag.component';
 import { InprocessTagProductSearchComponent } from './print-inprocess-tag/inprocess-tag-product-search/inprocess-tag-product-search.component';
+import { JobOrderSummaryComponent } from './job-operation/job-order-summary/job-order-summary.component';
 
 
 
@@ -346,6 +347,7 @@ import { InprocessTagProductSearchComponent } from './print-inprocess-tag/inproc
     PrintInprocessDetailComponent,
     PrintInprocessTagComponent,
     InprocessTagProductSearchComponent,
+    JobOrderSummaryComponent,
     
 
   
@@ -356,7 +358,10 @@ import { InprocessTagProductSearchComponent } from './print-inprocess-tag/inproc
     PopupMessageComponent,
     ConfirmMessageComponent,
     ProductSearchComponent,
-    ProductCancelSearchComponent
+    ProductCancelSearchComponent,
+    PrintInprocessTagComponent,
+    PrintInprocessDetailComponent,
+    InprocessTagProductSearchComponent
   ],
   bootstrap: [AppComponent]
 })

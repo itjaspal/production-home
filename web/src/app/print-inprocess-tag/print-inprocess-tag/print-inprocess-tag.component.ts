@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PrintInProcessTagView, PrintInProcessTagSearchView } from '../../_model/print-inprocess-tag';
+import { OrderSummaryParamView } from '../../_model/job-operation';
+import { PrintInProcessTagView, PrintInProcessTagSearchView, TagProductSearchView } from '../../_model/print-inprocess-tag';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { MessageService } from '../../_service/message.service';
+import { PrintInprocessTagService } from '../../_service/print-inprocess-tag.service';
 import { ScanInprocessService } from '../../_service/scan-inprocess.service';
 import { InprocessTagProductSearchComponent } from '../inprocess-tag-product-search/inprocess-tag-product-search.component';
 
@@ -14,6 +16,7 @@ import { InprocessTagProductSearchComponent } from '../inprocess-tag-product-sea
   styleUrls: ['./print-inprocess-tag.component.scss']
 })
 export class PrintInprocessTagComponent implements OnInit {
+  //dialogRef2 : any;
 
   constructor(
     private _fb: FormBuilder,
@@ -22,8 +25,10 @@ export class PrintInprocessTagComponent implements OnInit {
     private _msgSvc: MessageService,
     private _router: Router,
     private _actRoute: ActivatedRoute,
-    private _jobInprocessSvc: ScanInprocessService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public dialogRef: MatDialogRef<any>,
+    private _printInprocessSvc: PrintInprocessTagService,
+    @Inject(MAT_DIALOG_DATA) public data: TagProductSearchView
   ) { }
 
   public validationForm: FormGroup;
@@ -31,7 +36,7 @@ export class PrintInprocessTagComponent implements OnInit {
   public model: PrintInProcessTagView = new PrintInProcessTagView();
   public searchModel: PrintInProcessTagSearchView = new PrintInProcessTagSearchView();
 
-  public data: any = {};
+  //public data_product: any;
   //public model_scan: JobInProcessScanFinView = new JobInProcessScanFinView();
 
   public datas: any = {};
@@ -40,9 +45,17 @@ export class PrintInprocessTagComponent implements OnInit {
   //public result: any = {};
 
   
-  ngOnInit() {
+  async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
+    this.searchModel.bar_code = this.data.bar_code;
+
+    this.model = await this._printInprocessSvc.getproductinfo(this.data.bar_code);
+    this.model.req_date = this.data.req_date;
+    this.model.user_id = this.user.username;
+
+  
+    console.log(this.model);
   }
 
   private buildForm() {
@@ -54,8 +67,8 @@ export class PrintInprocessTagComponent implements OnInit {
   }
 
 
-  async save() {
-
+  async print() {
+    console.log(this.model);
     // var datePipe = new DatePipe("en-US");
     // this.searchModel.wc_code = this._actRoute.snapshot.params.wc_code;
     // this.searchModel.req_date = datePipe.transform(this._actRoute.snapshot.params.req_date, 'dd/MM/yyyy').toString();
@@ -100,24 +113,27 @@ export class PrintInprocessTagComponent implements OnInit {
   // }
 
 
-  openSearchProductModal(SaleTransactionItemView = null)
+  openSearchProductModal(_index: number = -1)
   {
-    const dialogRef = this._dialog.open(InprocessTagProductSearchComponent, {
+    const dialogRef2 = this._dialog.open(InprocessTagProductSearchComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '80%',
       width: '80%',
       data: {
-        req_date: this._actRoute.snapshot.params.req_date,
-        wc_code:this._actRoute.snapshot.params.wc_code,
-        pdjit_grp:this._actRoute.snapshot.params.pdjit_grp
+         req_date: this.data.req_date,
+         pdjit_grp:this.data.pdjit_grp,
+         entity : this.data.entity
       }
 
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.length > 0) {
-        this.add_prod(result);
+    dialogRef2.afterClosed().subscribe(result => {
+      // if (result.length > 0) {
+      //   this.add_prod(result);
+      // }
+      if (result) {
+        
       }
     })
   }
@@ -130,7 +146,9 @@ export class PrintInprocessTagComponent implements OnInit {
   }  
 
 
-  close() {
+  close_print() {
+    //window.history.back();
+    this.dialogRef.close();
     // this._router.navigateByUrl('/app/taginproc/inprocserach/' + this._actRoute.snapshot.params.req_date + '/' + this._actRoute.snapshot.params.wc_code);
   }
 

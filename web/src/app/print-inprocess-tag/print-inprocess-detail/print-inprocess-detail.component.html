@@ -1,3 +1,101 @@
-<p>
-  print-inprocess-detail works!
-</p>
+<div class="container-fluid no-breadcrumbs"> <!-- container-->
+  <mat-card> <!-- mat-card 1 -->
+      <mat-card-title>
+         <h6> Order Summary  ( Req Date : {{this.datePipe.transform(this.paramData.req_date, 'dd/MM/yyyy')}}    หน่วย : {{this.paramData.pdjit_grp_desc}} )</h6>
+      </mat-card-title>
+      <br /> 
+
+      <mat-card-content class="no-margin">
+          <mat-card-content>
+            <!--<div class="scrollable-child-display-mac" >  -->
+            <table style="width: 100%" >
+              <tbody *ngFor="let x of dataOrderSummary.productDetail; let i = index;"> 
+                 <tr>
+                      <td style="width: 100px" class="text-center"><dt>รหัสสินค้า</dt></td>
+                      <td style="width: 70px"  class="text-center"><b>Style</b></td>
+                      <td style="width: 70px" class="text-center"><b>Model</b></td>
+                      <td style="width: 70px" class="text-center"><dt>Size</dt></td>
+                      <td style="width: 50px" class="text-center"><b>Plan Qty</b></td>
+                      <td style="width: 50px" class="text-center"><b>Weight (Kgs)</b></td>
+                      <td style="width: 50px" class="text-center"><b>Act Qty</b></td>
+                      <td style="width: 50px" class="text-center"><b>Dift Qty</b></td>
+                      <th style="width: 2px">&nbsp;</th>
+                 </tr> 
+                 <tr>
+                      <td>{{x.prod_code}}</td>
+                      <td class="text-center">{{x.style}}</td>
+                      <td class="text-center">{{x.model}}</td>
+                      <td class="text-center">{{x.size_name}}</td>
+                      <td class="text-center">{{ x.plan_qty | number }}</td>
+                      <td class="text-center">{{ x.weight_kg | number }}</td>
+                      <td class="text-center">{{ x.act_qty | number }}</td>
+                      <td class="text-center">{{ x.diff_qty | number }}</td>
+                      <td class="text-center">
+                        <button mat-icon-button [matMenuTriggerFor]="appMenu2">
+                          <mat-icon class="material-icons">more_horiz</mat-icon> 
+                        </button>
+                        <mat-menu #appMenu2="matMenu">
+                          <button mat-menu-item  (click)="openPrintTagDialog(this.entityCode ,this.datePipe.transform(this.paramData.req_date, 'dd/MM/yyyy').toString() , x.bar_code , this.paramData.pdjit_grp );" action>
+                              <mat-icon class="material-icons">print</mat-icon> <span>Print Inprocess Tag</span>
+                          </button>
+                        </mat-menu>
+                  </td>
+                 </tr>
+                 <!-- <tr class="no-margin">
+                      <td colspan="9">&nbsp;
+                              <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <dt>ชื่อสินค้า :  {{x.prod_name}}</dt>
+                                </mat-expansion-panel-header>    
+                                 <table style="width: 70%;">
+                                  <tbody>
+                                        <tr>
+                                            <th style="width: 5px" class="text-center">Por No</th>
+                                            <th style="width: 5px"  class="text-center">Qty Req</th>
+                                            <th style="width: 5px"  class="text-center">Weight (Gms)</th>
+                                            <th style="width: 200px"  class="text-center">คำสั่งพิเศษ</th>
+                                            <th style="width: 2px">&nbsp;</th>
+                    
+                                        </tr>
+                                        <tr *ngFor="let y of x.porDetail; let j = index;">
+                                            <td class="text-center">{{y.por_no}}</td>
+                                            <td class="text-center">{{y.qty_req | number }}</td>
+                                            <td class="text-center">{{y.weight  | number }}</td>
+                                            <td>{{y.special_order}}</td>
+                                            <td class="text-center">
+                                                <button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                                                  <mat-icon class="material-icons">more_horiz</mat-icon> 
+                                                </button>
+                                                <mat-menu #appMenu1="matMenu">
+                                                  <button mat-menu-item  (click)="openOrderInfoDialog(this.entityCode, y.por_no);" action>
+                                                      <mat-icon class="material-icons">search</mat-icon> <span>SO/Por Detail</span>
+                                                  </button>
+                                                </mat-menu>
+                                          </td>
+                                        </tr>
+                                  </tbody> 
+                                </table>  
+
+                          </mat-expansion-panel>
+                      </td>
+                 </tr> -->
+                 
+             </tbody>
+          </table>
+          <!--</div> --> 
+          </mat-card-content>
+    </mat-card-content> <!--  <mat-card-content class="no-margin"> --> 
+   
+    
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+    </div>
+    </mat-card-actions>  
+
+    </mat-card> <!-- mat-card 1 -->
+ </div> <!-- container-->      
