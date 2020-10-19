@@ -52,8 +52,8 @@ namespace api.ModelViews
         public string prod_code { get; set; }
         public string prod_name { get; set; }
         public string bar_code { get; set; }
-        public string size { get; set; }
-        public string design { get; set; }
+        public string size_name { get; set; }
+        public string design_name { get; set; }
 
     }
 

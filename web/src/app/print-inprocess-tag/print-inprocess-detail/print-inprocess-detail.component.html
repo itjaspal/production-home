@@ -35,7 +35,7 @@
                           <mat-icon class="material-icons">more_horiz</mat-icon> 
                         </button>
                         <mat-menu #appMenu2="matMenu">
-                          <button mat-menu-item  (click)="openPrintTagDialog(this.entityCode ,this.datePipe.transform(this.paramData.req_date, 'dd/MM/yyyy').toString() , x.bar_code , this.paramData.pdjit_grp );" action>
+                          <button mat-menu-item  (click)="openPrintTagDialog(this.entityCode ,this.datePipe.transform(this.paramData.req_date, 'dd/MM/yyyy') , x.bar_code , this.paramData.pdjit_grp );" action>
                               <mat-icon class="material-icons">print</mat-icon> <span>Print Inprocess Tag</span>
                           </button>
                         </mat-menu>

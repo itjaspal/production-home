@@ -30,7 +30,7 @@ namespace api.Services
                     datas = new List<ModelViews.TagProductView>()
                 };
 
-                string sql = "select distinct a.prod_code , a.prod_tname prod_name , b.bar_code , a.size_name size , a.model_name design  from mps_det a , product b where a.prod_code=b.prod_code and  a.entity = :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.pdjit_grp = :p_pdjit_grp";
+                string sql = "select distinct a.prod_code , a.prod_tname prod_name , b.bar_code , a.size_name , a.model_name design_name  from mps_det a , product b where a.prod_code=b.prod_code and  a.entity = :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.pdjit_grp = :p_pdjit_grp";
                 List<TagProductView> prod = ctx.Database.SqlQuery<TagProductView>(sql, new Oracle.ManagedDataAccess.Client.OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date),  new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
 
                 foreach (var i in prod)
@@ -42,8 +42,8 @@ namespace api.Services
                         prod_code = i.prod_code,
                         prod_name = i.prod_name,
                         bar_code = i.bar_code,
-                        size = i.size,
-                        design = i.design
+                        size_name = i.size_name,
+                        design_name = i.design_name
 
                     });
                 }

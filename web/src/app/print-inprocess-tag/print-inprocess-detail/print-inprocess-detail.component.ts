@@ -69,6 +69,7 @@ export class PrintInprocessDetailComponent implements OnInit {
     this.model.pdjit_grp  = this.paramData.pdjit_grp;
     this.model.req_date   = this.paramData.req_date;
 
+    console.log(this.model.req_date);
 
     this.dataOrderSummary =  await this._jobOrderSummarySvc.searchOrderSummary(this.model);
     //console.log(this.dataOrderSummary.productDetail);

@@ -161,6 +161,9 @@ import { PrintInprocessDetailComponent } from './print-inprocess-tag/print-inpro
 import { PrintInprocessTagComponent } from './print-inprocess-tag/print-inprocess-tag/print-inprocess-tag.component';
 import { InprocessTagProductSearchComponent } from './print-inprocess-tag/inprocess-tag-product-search/inprocess-tag-product-search.component';
 import { JobOrderSummaryComponent } from './job-operation/job-order-summary/job-order-summary.component';
+import { ScanSendComponent } from './scan-send/scan-send/scan-send.component';
+import { ScanSendSetnoSearchComponent } from './scan-send/scan-send-setno-search/scan-send-setno-search.component';
+import { ViewSpecDrawingComponent } from './job-operation/view-spec-drawing/view-spec-drawing.component';
 
 
 
@@ -348,6 +351,9 @@ import { JobOrderSummaryComponent } from './job-operation/job-order-summary/job-
     PrintInprocessTagComponent,
     InprocessTagProductSearchComponent,
     JobOrderSummaryComponent,
+    ScanSendComponent,
+    ScanSendSetnoSearchComponent,
+    ViewSpecDrawingComponent,
     
 
   

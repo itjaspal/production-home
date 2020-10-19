@@ -49,6 +49,8 @@ import { PrintInprocessComponent } from '../print-inprocess-tag/print-inprocess/
 import { PrintInprocessDetailComponent } from '../print-inprocess-tag/print-inprocess-detail/print-inprocess-detail.component';
 import { JobOrderDetailComponent } from '../job-operation/job-order-detail/job-order-detail.component';
 import { JobOrderSummaryComponent } from '../job-operation/job-order-summary/job-order-summary.component';
+import { SpecDrawingComponent } from '../spec-drawing/spec-drawing/spec-drawing.component';
+import { ViewSpecDrawingComponent } from '../job-operation/view-spec-drawing/view-spec-drawing.component';
 
 
 
@@ -113,11 +115,14 @@ const routes: Routes = [
       { path: 'defprinter', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },     
 
       
-      //Job-operation and View Spec and Info
-      { path: 'job', component: JobOperationComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
-      { path: 'ordersum', component: JobOrderSummaryComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
-      { path: 'ordersum/viewInfo', component: JobOrderDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/ordersum" }  },
-      
+       //Job-operation and View Spec and Info
+       { path: 'job', component: JobOperationComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+       { path: 'ordersum', component: JobOrderSummaryComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+       { path: 'ordersum/viewInfo', component: JobOrderDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/ordersum" }  },
+       { path: 'ordersum/viewSpec', component: ViewSpecDrawingComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/ordersum" }  },
+ 
+       //Spec Drawing
+       { path: 'spec', component: SpecDrawingComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
       
       //Scan Inprocess
       { path: 'scaninproc', component: InprocessComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 

@@ -30,7 +30,7 @@ export class PrintInProcessTagSearchView
 export class TagProductSearchView
 {
     public entity : string = AppSetting.entity;
-    public req_date : any = null;
+    public req_date : string = null;
     public wc_code : string = "";
     public pdjit_grp: string = "";
     public bar_code : string = "";

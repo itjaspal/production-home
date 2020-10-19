@@ -30,12 +30,15 @@ export class InprocessTagProductSearchComponent implements OnInit {
   async ngOnInit() {
     //this.buildForm();
     var datePipe = new DatePipe("en-US");
-    this.model.req_date  = datePipe.transform(this.data.req_date, 'dd/MM/yyyy').toString();
+    //this.model.req_date  = datePipe.transform(this.data.req_date, 'dd/MM/yyyy').toString();
+    this.model.req_date = this.data.req_date; 
     this.model.pdjit_grp = this.data.pdjit_grp;
-    this.model.wc_code = this.data.wc_code;
-    
+    //this.model.wc_code = this.data.wc_code;
+    console.log(this.model);
+
     this.datas = await this._printTagSvc.getproduct(this.model);
-    //console.log(this.datas);
+    //this.datas = await this._jobInprocessSvc.getproduct(this.model);
+    console.log(this.datas);
     //this.search();
         
   }

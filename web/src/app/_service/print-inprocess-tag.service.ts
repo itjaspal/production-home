@@ -17,7 +17,12 @@ export class PrintInprocessTagService {
     return await this.http.post<TagProductView[]>(environment.API_URL + 'print-inproces-tag/postGetProduct', _model).toPromise();
   }
 
+  
   public async getproductinfo(_code: string) {
     return await this.http.get<PrintInProcessTagView>(environment.API_URL + 'print-inprocess-tag/getProductInfo/' + _code).toPromise(); 
+  }
+
+  public async PringTag(_model: PrintInProcessTagView) {
+    return await this.http.post(environment.API_URL + 'print-inprocess-tag/postPrintTag', _model).toPromise();  
   }
 }

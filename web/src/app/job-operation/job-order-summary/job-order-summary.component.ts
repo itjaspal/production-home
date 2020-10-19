@@ -1,13 +1,20 @@
+import { ViewSpecDrawingComponent } from './../view-spec-drawing/view-spec-drawing.component';
+import { SpecDrawingComponent } from './../../spec-drawing/spec-drawing/spec-drawing.component';
+import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, PageEvent } from '@angular/material';
 import { Router } from '@angular/router';
 import { AppSetting } from '../../_constants/app-setting';
-import { OrderSummaryParamView, OrderSummaryProdDetailView, OrderSummaryProductDetailView, OrderSummarySearchView } from '../../_model/job-operation';
+import { OrderSummaryParamView, OrderSummaryProdDetailView, OrderSummaryProductDetailView, OrderSummarySearchView, SpecDrawingView } from '../../_model/job-operation';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { JobOrderSummaryService } from '../../_service/job-order-summary.service';
 import { JobOrderDetailComponent } from '../job-order-detail/job-order-detail.component';
+
+
+declare var require: any
+const FileSaver = require('file-saver');
 
 @Component({
   selector: 'app-job-order-summary',
@@ -18,10 +25,12 @@ export class JobOrderSummaryComponent implements OnInit {
 
   public model: OrderSummarySearchView = new OrderSummarySearchView(); 
   public dataOrderSummary: OrderSummaryProdDetailView<OrderSummaryProductDetailView> = new OrderSummaryProdDetailView<OrderSummaryProductDetailView>();
+  public specDrawingData: SpecDrawingView = new SpecDrawingView();
 
   public user: any;
   public entityCode: any = AppSetting.entity;
   public datePipe = new DatePipe('en-US');
+  
 
   constructor(
     private _jobOrderSummarySvc: JobOrderSummaryService,
@@ -46,7 +55,6 @@ export class JobOrderSummaryComponent implements OnInit {
      this.searchOrderSummary();
 
   }
-
 
   close() { 
     //window.history.back();
@@ -102,5 +110,70 @@ export class JobOrderSummaryComponent implements OnInit {
       }
     });
   }
+
+  openSpecDrawingDialog(p_barCode: string, _isEdit: boolean = false, _index: number = -1) {
+    const dialogRef = this._dialog.open(ViewSpecDrawingComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh', 
+      height: '100%',
+      width: '100%',
+      data: {
+        bar_code: p_barCode,
+        isEdit: _isEdit,
+       // editItem: _editItem,
+        hideSerialNo: true,
+        isSaleBed: false
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => { 
+      if (result) {
+        
+      }
+    });
+  }
+
+  getSpecDrawingURL(pBarcode: string) : string {
+      var  vURL : string = "";
+      //this.getSpecDrawing(pBarcode);
+
+      //vURL = this.specDrawingData.file_name;
+
+      vURL = "\\\\192.168.8.20\\DataCenter\\DataScan\\ITD\\Test.pdf";
+    
+      return vURL; 
+    }  
+  
+  /*
+  openSpecDrawing(PBarcode: string) { 
+    //fileURL = "D:\data\Test.pdf";  //"\\\\192.168.8.20\\DataCenter\\DataScan\\ITD\\Test.pdf";
+    //fileURL = "file://192.168.8.20/DataCenter/DataScan/ITD/"; // @"\"
+    //fileURL = "http://file://///192.168.8.20/DataCenter/DataScan/ITD/Test.pdf";
+    //fileURL = "http:////file://192.168.8.20/DataCenter/DataScan/ITD/Test.pdf";
+    //fileURL = "http:\\\\file:\\\\192.168.8.20\\DataCenter\\DataScan\\ITD\\Test.pdf";
+    //fileURL   = "http://192.168.9.5:8887/Test.pdf";
+    //fileURL = "file://///192.168.8.20/DataCenter/DataScan/ITD/Test.pdf";
+    var fileURL = "file://///192.168.8.20/DataCenter/DataScan/ITD/Test.pdf"
+
+   // file:\\\\192.168.8.20\\DataCenter\\DataScan\\ITD\\Test.pdf
+   //\\\\192.168.8.20\\DataCenter\\DataScan\\ITD\\Test.pdf
+    //window.open(fileURL);
+    window.location.href = fileURL;
+  
+  }
+
+  
+  downloadPdf() {
+    /*const pdfUrl = './assets/Test.pdf';
+    const pdfName = 'filename';
+    FileSaver.saveAs(pdfUrl, pdfName); */
+
+  /*  var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    FileSaver.saveAs(blob, "hello world.txt");
+    
+  }
+  */
+
+ 
 
 }

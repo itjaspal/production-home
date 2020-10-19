@@ -98,6 +98,20 @@ export class OrderSummaryPorDetailView{
     public weight: number = 0;
     public special_order: string = "";
 }
+
+export class SpecDrawingView{ 
+    public prod_code: string = "";
+    public prod_name: string = "";
+    public bar_code: string = "";
+    public sd_no: string = "";
+    public design_no: string = "";
+    public type: string = "";
+    public file_path: string = "";
+    public design_code: string = "";
+    public file_name: string = "";
+}
+
+
 // ****** end *******
 
 // Order InFo
@@ -193,7 +207,13 @@ export class OrderDetailParamView {
     public isEdit: boolean = false;
     public hideSerialNo: boolean = false;
     public isSaleBed: boolean = false;
+}
 
+export class SpecDrawingParamView {
+    public bar_code: string = "";
+    public isEdit: boolean = false;
+    public hideSerialNo: boolean = false;
+    public isSaleBed: boolean = false;
 }
 
 

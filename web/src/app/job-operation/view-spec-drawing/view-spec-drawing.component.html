@@ -1,0 +1,95 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+      <mat-card-title>
+        <h6> Spec Drawing</h6>
+      </mat-card-title> 
+
+      <mat-card-content class="no-margin">
+          <form> 
+            <div class="row card-table-body" >
+              <!-- Row 1-->
+              <div class="col-3 col-lg-3">
+              <form [formGroup]="validationForm">  
+                <mat-form-field class="full-width"> 
+                  <input #scan_barcode   matInput placeholder="barcode" [(ngModel)]="scanPcsModel.scan_barcode" formControlName="scan_barcode"  (keyup.enter)="searchViewSpec()">
+                </mat-form-field>
+                <mat-error class="error-message"
+                            *ngIf="validationForm.get('scan_barcode').hasError('required') && (validationForm.get('scan_barcode').dirty || validationForm.get('scan_barcode').touched)">
+                            โปรดระบุข้อมูล 
+                </mat-error>
+              </form>  
+              </div>
+              <div class="col-3 col-lg-3">
+                  <button (click)="searchViewSpec();" mat-raised-button color="primary" [disabled]="!validationForm.valid">
+                    <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                  </button>
+              </div>
+            </div> 
+          </form> 
+          <br />
+
+          <mat-card-content class="no-margin">
+            <div class="row">
+              <div class="col-lg-2 col-sm-2">
+                <dt>รายละเอียดสินค้า</dt>
+              </div>
+            </div>
+            <mat-card >
+              <mat-card-content>
+                  <div class="row card-table-body">
+                      <div class="col-lg-3 col-sm-12 col-12"> 
+                        <small>รหัสสินค้า</small>
+                        <dd>{{specDrawingData.prod_code}}</dd>
+                      </div>
+                      <div class="col-lg-7 col-sm-12 col-12">
+                        <small>รายละเอียดสินค้า</small>  
+                        <dd>{{specDrawingData.prod_name}}</dd>
+                      </div>
+                      <div class="col-lg-3 col-sm-12 col-12"> 
+                        <small>SD No.</small>  
+                        <dd>{{specDrawingData.sd_no}}</dd>
+                      </div>
+                      <div class="col-lg-7 col-sm-12 col-12">
+                          <div *ngIf="specDrawingData.file_name;  else elseBlock">
+                             <small>View Spec Drawing</small> 
+                              <dd><a href="{{specDrawingData.file_name}}" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
+                          </div>  
+                          <ng-template #elseBlock>
+                              <small>&nbsp;</small>  
+                              <dd><p style="color:red;">File Spec Not Found!!</p></dd>
+                          </ng-template>
+                      </div>
+                      <div class="col-12">
+                        <hr />
+                      </div>
+                      <div class="col-lg-3 col-sm-12 col-12">
+                        <small>Type</small>  
+                        <dd>{{specDrawingData.type}}</dd>
+                      </div>
+                      <div class="col-lg-7 col-sm-12 col-12">
+                        <small>Design</small>  
+                        <dd>{{specDrawingData.design_code}}</dd>
+                      </div>
+
+                  </div>   
+              </mat-card-content>
+            </mat-card> 
+        </mat-card-content>
+
+
+      </mat-card-content>
+
+
+      <mat-card-actions class="no-margin">
+        <div class="row">
+          <div class="col-2 col-sm-2">
+            <button (click)="close();" mat-raised-button color="primary">
+              <mat-icon class="material-icons">close</mat-icon> ปิด
+            </button>
+          </div>
+      </div>
+      </mat-card-actions>
+       
+  </mat-card>
+
+</div> 

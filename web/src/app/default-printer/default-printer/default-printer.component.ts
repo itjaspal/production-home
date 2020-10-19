@@ -36,34 +36,36 @@ export class DefaultPrinterComponent implements OnInit {
     this.user = this._authSvc.getLoginUser();
     this.getDefaultPrinter();
 
-    // if(this.user.build_type == "HMJIT")
-    // {
-    //   forkJoin([
-    //     this._ddlSvc.getDdlDefaultPrinterJIT()
-      
-    //   ]).subscribe(result => {
-    //     this.ddlDefaultPrinter = result[0];
-    
-    //   });
-    // }
-    // else
-    // {
-    //   forkJoin([
-    //     this._ddlSvc.getDdlDefaultPrinterSTK()
-      
-    //   ]).subscribe(result => {
-    //     this.ddlDefaultPrinter = result[0];
-    
-    //   });
-    // }
+    console.log(this.user)
 
-    forkJoin([
-      this._ddlSvc.getDdlDefaultPrinterJIT()
+    if(this.user.branch.entity_code == "HMJIT")
+    {
+      forkJoin([
+        this._ddlSvc.getDdlDefaultPrinterJIT()
+      
+      ]).subscribe(result => {
+        this.ddlDefaultPrinter = result[0];
     
-    ]).subscribe(result => {
-      this.ddlDefaultPrinter = result[0];
+      });
+    }
+    else
+    {
+      forkJoin([
+        this._ddlSvc.getDdlDefaultPrinterSTK()
+      
+      ]).subscribe(result => {
+        this.ddlDefaultPrinter = result[0];
+    
+      });
+    }
+
+    // forkJoin([
+    //   this._ddlSvc.getDdlDefaultPrinterJIT()
+    
+    // ]).subscribe(result => {
+    //   this.ddlDefaultPrinter = result[0];
   
-    });
+    // });
     
     console.log(this.ddlDefaultPrinter);
 
@@ -103,6 +105,7 @@ export class DefaultPrinterComponent implements OnInit {
   async getDefaultPrinter() {
     this.model = await this._defaultPrinterSvc.getDefaultPrinter(this.user.username);
     console.log(this.model);
+    
   }
 
   

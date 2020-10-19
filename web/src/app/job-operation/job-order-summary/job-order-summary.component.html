@@ -12,6 +12,7 @@
               <tbody *ngFor="let x of dataOrderSummary.productDetail; let i = index;"> 
                  <tr>
                       <td style="width: 100px" class="text-center"><dt>รหัสสินค้า</dt></td>
+                      <td style="width: 5px" class="text-center"><dt>&nbsp;</dt></td>
                       <td style="width: 70px"  class="text-center"><b>Style</b></td>
                       <td style="width: 70px" class="text-center"><b>Model</b></td>
                       <td style="width: 70px" class="text-center"><dt>Size</dt></td>
@@ -22,6 +23,16 @@
                  </tr> 
                  <tr>
                       <td>{{x.prod_code}}</td>
+                      <td class="text-center">
+                          <button mat-icon-button [matMenuTriggerFor]="appMenu2">
+                            <mat-icon class="material-icons">more_horiz</mat-icon> 
+                          </button>
+                          <mat-menu #appMenu2="matMenu">
+                            <button mat-menu-item  (click)="openSpecDrawingDialog(x.bar_code);" action>
+                                <mat-icon class="material-icons">search</mat-icon> <span>SD/Design</span>
+                            </button>
+                          </mat-menu>
+                      </td>
                       <td class="text-center">{{x.style}}</td>
                       <td class="text-center">{{x.model}}</td>
                       <td class="text-center">{{x.size_name}}</td>

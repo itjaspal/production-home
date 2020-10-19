@@ -69,19 +69,8 @@ export class PrintInprocessTagComponent implements OnInit {
 
   async print() {
     console.log(this.model);
-    // var datePipe = new DatePipe("en-US");
-    // this.searchModel.wc_code = this._actRoute.snapshot.params.wc_code;
-    // this.searchModel.req_date = datePipe.transform(this._actRoute.snapshot.params.req_date, 'dd/MM/yyyy').toString();
-    // this.searchModel.user_id = this.user.username;
-    // this.searchModel.build_type = this.user.branch.entity_code;
-    // this.searchModel.pdjit_grp = this._actRoute.snapshot.params.pdjit_grp;
-      
-    // this.datas = await this._jobInprocessSvc.searchentryadd(this.searchModel);
-
-    // this.add(this.datas);
-    // this.searchModel.bar_code = "";
-    // this.searchModel.qty = 0;
-
+    this.datas = await this._printInprocessSvc.PringTag(this.model);
+    
   }
 
   // add(datas: any) {
@@ -115,6 +104,7 @@ export class PrintInprocessTagComponent implements OnInit {
 
   openSearchProductModal(_index: number = -1)
   {
+    
     const dialogRef2 = this._dialog.open(InprocessTagProductSearchComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -129,20 +119,23 @@ export class PrintInprocessTagComponent implements OnInit {
     });
 
     dialogRef2.afterClosed().subscribe(result => {
-      // if (result.length > 0) {
-      //   this.add_prod(result);
-      // }
-      if (result) {
-        
+      if (result.length > 0) {
+        this.add_prod(result);
       }
+      
     })
   }
 
   add_prod(datas: any) {
 
     console.log(datas);
-    // this.searchModel.bar_code = datas[0].bar_code;
-    // this.searchModel.qty = 1;
+    this.searchModel.bar_code = datas[0].bar_code;
+    this.model.prod_code = datas[0].prod_code;
+    this.model.prod_name = datas[0].prod_name;
+    this.model.design_name = datas[0].design_name;
+    this.model.size_name = datas[0].size_name;
+    //this.model.req_date = datas[0].req_date;
+    //this.searchModel.qty = 1;
   }  
 
 

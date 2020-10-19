@@ -61,7 +61,7 @@ namespace api.Services
             using (var ctx = new ConXContext())
             {
 
-                string sql = "select series_no key , series_no||' - '||prnt_point_name value from whmobileprnt_ctl where grp_type = 'HMSKT'";
+                string sql = "select series_no key , series_no||' - '||prnt_point_name value from whmobileprnt_ctl where grp_type = 'HMSTK'";
 
                 List<Dropdownlist> ddl = ctx.Database.SqlQuery<Dropdownlist>(sql)
                                             .Select(x => new Dropdownlist()

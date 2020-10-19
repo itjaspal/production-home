@@ -35,7 +35,7 @@
 
               <div class="col-2 col-lg-2">
                 <mat-card-actions class="no-margin">
-                  <button mat-raised-button color="primary" type="button" (click)="print()" [disabled]="!validationForm.valid">
+                  <button mat-raised-button color="primary" type="button" (click)="print()" [disabled]="model.qty==0">
                     <mat-icon class="material-icons">print</mat-icon> Print
                   </button>
                 </mat-card-actions>
