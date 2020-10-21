@@ -15,7 +15,7 @@
                 <mat-select autocomplete="off" [(value)]="model.wc_code" placeholder="หน่วย" [(ngModel)]="model.wc_code"
                 formControlName="wc_code">
                   <mat-option value="0">ไม่ระบุ</mat-option>
-                  <mat-option *ngFor="let x of user.userWcPrvlgList" [value]="x.wc_code">{{x.wc_name}}</mat-option>
+                  <mat-option *ngFor="let x of wclist" [value]="x.key">{{x.key}} - {{x.value}}</mat-option>
                 </mat-select>
               </mat-form-field>
            </div>

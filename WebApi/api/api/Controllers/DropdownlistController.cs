@@ -154,6 +154,36 @@ namespace api.Controllers
             }
         }
 
+        [Route("dropdownlist/getDdlWCInprocess/{user}")]
+        public HttpResponseMessage getDdlWCInprocess(string user)
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlWCInprocess(user);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("dropdownlist/getDdlWCSend/{user}")]
+        public HttpResponseMessage getDdlWCSend(string user)
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlWCSend(user);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
 
     }
 }

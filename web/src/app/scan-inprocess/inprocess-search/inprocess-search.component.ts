@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { JobOperationSearchView, JobOperationDetailView, JobOperationDataTotalView } from '../../_model/job-operation';
 import { AuthenticationService } from '../../_service/authentication.service';
+import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { JobOperationService } from '../../_service/job-operation.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class InprocessSearchComponent implements OnInit {
     private _actRoute: ActivatedRoute,
     private _router: Router,
     private _formBuilder: FormBuilder,
+    private _dll: DropdownlistService,
   ) { }
 
   public model: JobOperationSearchView = new JobOperationSearchView();
@@ -33,12 +35,13 @@ export class InprocessSearchComponent implements OnInit {
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
   public validationForm: FormGroup;
+  public wclist: any;   
 
-
-  ngOnInit() {
+  async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser(); 
     this.model.build_type = this.user.branch.entity_code;
+    this.wclist = await this._dll.getDdlWCInprocess(this.user.username);
     this.searchJobOperation();
     
   }   

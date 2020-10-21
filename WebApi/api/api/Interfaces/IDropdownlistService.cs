@@ -12,6 +12,9 @@ namespace api.Interfaces
        
         List<Dropdownlist> GetDdlMobilePrntJIT();
         List<Dropdownlist> GetDdlMobilePrntSTK();
+        List<Dropdownlist> GetDdlWCInprocess(string user);
+        List<Dropdownlist> GetDdlWCSend(string user);
+
 
     }
 }

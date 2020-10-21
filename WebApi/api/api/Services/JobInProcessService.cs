@@ -123,6 +123,7 @@ namespace api.Services
                     sqlc += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                     sqlc += " and pdjit_grp = :p_pdjit_grp";
                     sqlc += " and wc_code =:p_wc_code";
+                    sqlc += " and bar_code =:p_bar_code";
                     sqlc += " and mps_st =  'Y'";
                     sqlc += " and pcs_barcode in (select distinct b.pcs_barcode from  mps_det_wc b";
                     sqlc += " where b.req_date = to_date(:p_req_date2,'dd/mm/yyyy')";
@@ -132,7 +133,7 @@ namespace api.Services
                     sqlc += " and b.mps_st = 'N')";
 
 
-                    int cnt = ctx.Database.SqlQuery<int>(sqlc, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_entity2", ventity), new OracleParameter("p_next_wc", vnext_wc), new OracleParameter("p_pdjit_grp2", vpdjit_grp)).FirstOrDefault();
+                    int cnt = ctx.Database.SqlQuery<int>(sqlc, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_bar_code", vbar_code), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_entity2", ventity), new OracleParameter("p_next_wc", vnext_wc), new OracleParameter("p_pdjit_grp2", vpdjit_grp)).FirstOrDefault();
 
 
                     if (vqty > cnt)
@@ -323,6 +324,7 @@ namespace api.Services
                     sqlc += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                     sqlc += " and pdjit_grp = :p_pdjit_grp";
                     sqlc += " and wc_code =:p_wc_code";
+                    sqlc += " and bar_code =:p_bar_code";
                     sqlc += " and mps_st =  'N'";
                     sqlc += " and pcs_barcode in (select distinct b.pcs_barcode from  mps_det_wc b";
                     sqlc += " where b.req_date = to_date(:p_req_date2,'dd/mm/yyyy')";
@@ -332,7 +334,7 @@ namespace api.Services
                     sqlc += " and b.mps_st = 'Y')";
                     
 
-                    int cnt = ctx.Database.SqlQuery<int>(sqlc, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_entity2", ventity), new OracleParameter("p_prev_wc", vprev_wc), new OracleParameter("p_pdjit_grp2", vpdjit_grp)).FirstOrDefault(); ;
+                    int cnt = ctx.Database.SqlQuery<int>(sqlc, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_bar_code", vbar_code), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_entity2", ventity), new OracleParameter("p_prev_wc", vprev_wc), new OracleParameter("p_pdjit_grp2", vpdjit_grp)).FirstOrDefault(); ;
 
 
                     if (vqty > cnt)
@@ -340,7 +342,7 @@ namespace api.Services
                         throw new Exception("บันทึกจำนวนเกินผลผลิต");
                     }
 
-                    string sqlp = "select bar_code , pcs_barcode, prod_name prod_name ,prod_code";
+                    string sqlp = "select bar_code , pcs_barcode, prod_name ,prod_code";
                     sqlp += " from mps_det_wc";
                     sqlp += " where  entity = :p_entity";
                     sqlp += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
@@ -356,7 +358,7 @@ namespace api.Services
                     sqlp += " and b.mps_st = 'Y')";
                     sqlp += " and rownum <= :p_qty";
 
-                    List<JobInProcessView> mps_in_process = ctx.Database.SqlQuery<JobInProcessView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", model.req_date), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_bar_code", vbar_code), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_entity2", ventity), new OracleParameter("p_prev_wc", vprev_wc), new OracleParameter("p_pdjit_grp2", vpdjit_grp)).ToList();
+                    List<JobInProcessView> mps_in_process = ctx.Database.SqlQuery<JobInProcessView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", model.req_date), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_bar_code", vbar_code), new OracleParameter("p_req_date2", vreq_date), new OracleParameter("p_entity2", ventity), new OracleParameter("p_prev_wc", vprev_wc), new OracleParameter("p_pdjit_grp2", vpdjit_grp), new OracleParameter("p_qty", vqty)).ToList();
 
                                 
 

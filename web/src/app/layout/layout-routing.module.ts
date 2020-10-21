@@ -51,6 +51,7 @@ import { JobOrderDetailComponent } from '../job-operation/job-order-detail/job-o
 import { JobOrderSummaryComponent } from '../job-operation/job-order-summary/job-order-summary.component';
 import { SpecDrawingComponent } from '../spec-drawing/spec-drawing/spec-drawing.component';
 import { ViewSpecDrawingComponent } from '../job-operation/view-spec-drawing/view-spec-drawing.component';
+import { ScanSendComponent } from '../scan-send/scan-send/scan-send.component';
 
 
 
@@ -142,6 +143,9 @@ const routes: Routes = [
       { path: 'taginproc/inprocess-detail/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
       { path: 'taginproc/print-inprocess-tag/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
 
+
+      //Scan Send
+      { path: 'scansend', component: ScanSendComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

@@ -54,6 +54,15 @@ export class DropdownlistService {
     return await this.http.post(environment.API_URL + 'dropdownlist/inquiryDdlUserRole', ownerRole).toPromise();
   }
 
+  public async getDdlWCInprocess(_user: string) {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlWCInprocess/' + _user).toPromise();
+  }
+
+  public async getDdlWCSend(_user: string) {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlWCSend/' + _user).toPromise();
+  }
+
+
   // public async getDdlProductAttributesTypes() {
   //   return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlProductAttributeType').toPromise();
   // }
