@@ -12,5 +12,7 @@ namespace api.Interfaces
         ScanSendView ScanSendAdd(ScanSendSearchView model);
         SetNoView getSetNo(SetNoSearchView model);
         void PringSticker(ScanSendView model);
+        void delete(ScanSendView scan);
+        ScanQtyView getScanQty(ScanSendView model);
     }
 }

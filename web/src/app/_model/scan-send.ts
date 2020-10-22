@@ -1,6 +1,7 @@
 import { AppSetting } from "../_constants/app-setting";
 
 export class ScanSendView {
+    public entity:string = AppSetting.entity;
     public pcs_barcode: string = "";
     public prod_code: string = "";
     public prod_name: string = "";
@@ -8,12 +9,20 @@ export class ScanSendView {
     public set_no: string = "";
     public set_qty: number = 0;
     public req_date: string = "";
+    public scan_qty : number = 0;
+    public bar_code: string = "";
+    public fin_date: string = "";
+    public wc_code: string = "";
+    public show_qty: string = "";
+    public user_id:string = "";
 }
 
 export class ScanSendSearchView {
     public entity: string = AppSetting.entity;
-    public req_date: string = "";
-    public psc_barcode: string = "";
+    public req_date: any = "";
+    public pcs_barcode: string = "";
+    public wc_code : string = "";
+    public user_id : string = "";   
 }
 
 export class SetNoSearchView {
@@ -25,4 +34,22 @@ export class SetNoView {
     public set_no: string = "";
     public req_date: string = "";
 
+}
+
+export class ScanSendFinView
+{
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public totalItem : number = 0;
+    public datas: ScanSendFinDataView[] = [];
+}
+
+export class ScanSendFinDataView
+{
+    public pcs_barcode: string = "";
+    public prod_code: string = "";
+    public prod_name: string = "";
+    public job_no: string = "";
+    public req_date: string = "";
+    public wc_code: string = "";
 }

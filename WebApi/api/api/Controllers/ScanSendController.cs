@@ -34,12 +34,64 @@ namespace api.Controllers
             }
         }
 
+        [Route("scan-send/postPrintSticker")]
+        public HttpResponseMessage postPrintSticker(ScanSendView model)
+        {
+            try
+            {
+                sendService.PringSticker(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, "ส่งข้อมูลไปยังเครื่องพิมพ์เรียบร้อยแล้ว");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
         [Route("scan-send/postSearchSetNo")]
         public HttpResponseMessage postSearchSetNo(SetNoSearchView model)
         {
             try
             {
                 var result = sendService.getSetNo(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
+        [Route("scan-send/post/Delete")]
+        public HttpResponseMessage postDelete(ScanSendView model)
+        {
+            try
+            {
+
+                sendService.delete(model);
+
+                CommonResponseView res = new CommonResponseView()
+                {
+                    status = CommonStatus.SUCCESS,
+                    message = "ยกเลิกบันทึกส่งมอบสำเร็จ"
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("scan-send/postGetScanQty")]
+        public HttpResponseMessage postGetScanQty(ScanSendView model)
+        {
+            try
+            {
+                var result = sendService.getScanQty(model);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }

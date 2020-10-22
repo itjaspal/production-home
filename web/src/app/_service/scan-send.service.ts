@@ -21,4 +21,17 @@ export class ScanSendService {
     return await this.http.post<SetNoView>(environment.API_URL + 'scan-send/postSearchSetNo', _model).toPromise();
   }
 
+  public async PrintSticker(_model: ScanSendView) {
+    return await this.http.post(environment.API_URL + 'scan-send/postPrintSticker', _model).toPromise();  
+  }
+
+  public async delete(params) {
+    return await this.http.post(environment.API_URL + 'scan-send/post/Delete',params).toPromise();
+  }
+
+  public async getscanqty(_model: ScanSendView) {
+    return await this.http.post<SetNoView>(environment.API_URL + 'scan-send/postGetScanQty', _model).toPromise();
+  }
+
+
 }

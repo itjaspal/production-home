@@ -4,7 +4,7 @@
         <h6> SPEC DRAWING</h6>
       </mat-card-title> 
 
-      <mat-card-content class="no-margin"> 
+      <mat-card-content class="no-margin">
           <form> 
             <div class="row card-table-body" >
               <!-- Row 1-->
@@ -37,38 +37,39 @@
               <mat-card >
                 <mat-card-content>
                     <div class="row card-table-body">
-                        <div class="col-lg-3 col-sm-12 col-12"> 
+                        <div class="col-lg-3 col-sm-3 col-12"> 
                           <small>รหัสสินค้า</small>
-                          <dd>{{specDrawingData.prod_code}}</dd>
+                          <dd *ngIf="specDrawingData;">{{specDrawingData.prod_code}}</dd>
                         </div>
-                        <div class="col-lg-7 col-sm-12 col-12">
+                        <div class="col-lg-7 col-sm-3 col-12">
                           <small>รายละเอียดสินค้า</small>  
-                          <dd>{{specDrawingData.prod_name}}</dd>
+                          <dd *ngIf="specDrawingData;">{{specDrawingData.prod_name}}</dd>
                         </div>
-                        <div class="col-lg-3 col-sm-12 col-12"> 
-                          <small>SD No.</small>  
-                          <dd>{{specDrawingData.sd_no}}</dd>
-                        </div>
-                        <div class="col-lg-7 col-sm-12 col-12">
-                            <div *ngIf="specDrawingData.file_name;  else elseBlock">
-                               <small>View Spec Drawing</small> 
-                                <dd><a href="{{specDrawingData.file_name}}" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
-                            </div>  
-                            <ng-template #elseBlock>
-                                <small>&nbsp;</small>  
-                                <dd><p style="color:red;">File Spec Not Found!!</p></dd>
-                            </ng-template>
+
+                        <div class="col-lg-3 col-sm-7 col-12">
+                            <small>Type</small>  
+                            <div *ngIf="specDrawingData;">
+                                <div *ngIf="specDrawingData.type == 'SD';  else DesignSpec">
+                                   <dd>{{specDrawingData.sd_no}}</dd>
+                                </div> 
+                                <ng-template #DesignSpec>
+                                   <dd>{{specDrawingData.design_no}}</dd>
+                                </ng-template>  
+
+                            </div>
                         </div>
                         <div class="col-12">
                           <hr />
                         </div>
-                        <div class="col-lg-3 col-sm-12 col-12">
-                          <small>Type</small>  
-                          <dd>{{specDrawingData.type}}</dd>
-                        </div>
-                        <div class="col-lg-7 col-sm-12 col-12">
-                          <small>Design</small>  
-                          <dd>{{specDrawingData.design_code}}</dd>
+                        <div class="col-lg-3 col-sm-3 col-12" *ngIf="specDrawingData;">
+                          <div *ngIf="specDrawingData.file_name;  else elseBlock">
+                             <small>View Spec Drawing</small> 
+                              <dd><a href="{{specDrawingData.file_name}}" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
+                          </div>  
+                          <ng-template #elseBlock>
+                              <small>&nbsp;</small>  
+                              <dd><p style="color:red;">File Spec Not Found!!</p></dd>
+                          </ng-template>
                         </div>
 
                     </div>   
