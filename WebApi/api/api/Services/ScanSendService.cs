@@ -94,9 +94,80 @@ namespace api.Services
             }
         }
 
-        public SetNoView getSetNo(SetNoSearchView model)
+        public List<SetNoView> getSetNo(SetNoSearchView model)
         {
-            throw new NotImplementedException();
+            using (var ctx = new ConXContext())
+            {
+                var ventity = model.entity;
+                var vtran_date = model.tran_date;
+                var vwc_code = model.wc_code;
+
+                string sql = "select distinct a.pkg_barcode_set set_no , a.prod_code , count(*) scan_qty , b.pcs_per_pack set_qty " +
+                    "from pkg_barcode a , product b " +
+                    "where a.prod_code = b.prod_code " +
+                    "and  a.entity = :p_entity " +
+                    "and  a.tran_date = to_date(:p_tran_date,'dd/mm/yyyy') " +
+                    "and a.wc_code = :p_wc_code  " +
+                    "and a.pkg_barcode_set is not null " +
+                    "group by a.pkg_barcode_set , a.prod_code , b.pcs_per_pack " +
+                    "order by a.pkg_barcode_set";
+                List<SetNoView> set_no = ctx.Database.SqlQuery<SetNoView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_tran_date", vtran_date), new OracleParameter("p_wc_code", vwc_code)).ToList();
+
+                List<SetNoView> setViews = new List<SetNoView>();
+               
+
+
+                foreach (var x in set_no)
+                {
+                    string sqld = "select a.entity , a.prod_code , b.prod_tname prod_name , a.tran_no pcs_barcode , a.por_no job_no , to_char(a.tran_date,'dd/mm/yyyy') req_date , a.bar_code , a.wc_code , to_char(a.fin_date,'dd/mm/yyyy') fin_date " +
+                        "from pkg_barcode a , product b " +
+                        "where a.prod_code = b.prod_code " +
+                        "and a.entity = :p_entity " +
+                        "and a.wc_code = :p_wc_code " +
+                        "and a.pkg_barcode_set = :p_set_no";
+
+                    List<SetNoDataView> data = ctx.Database.SqlQuery<SetNoDataView>(sqld, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_set_no", x.set_no)).ToList();
+
+                    List<SetNoDataView> dataViews = new List<SetNoDataView>();
+
+                    foreach (var z in data)
+                    {
+                        SetNoDataView dView = new SetNoDataView()
+                        {
+                           entity = z.entity,
+                           prod_code = z.prod_code,
+                           prod_name = z.prod_name,
+                           pcs_barcode = z.pcs_barcode,
+                           job_no = z.job_no,
+                           bar_code = z.bar_code,
+                           req_date = z.req_date,
+                           fin_date = z.fin_date,
+                           wc_code = z.wc_code
+
+                        };
+                        dataViews.Add(dView);
+
+                    }
+                    
+
+                    SetNoView view = new SetNoView()
+                    {
+                        set_no = x.set_no,
+                        tran_date = vtran_date,
+                        set_qty = x.set_qty,
+                        scan_qty = x.scan_qty,
+                        datas = dataViews
+
+                    };
+
+                    setViews.Add(view);
+
+                }    
+
+      
+                return setViews;
+
+            }
         }
 
         public void PringSticker(ScanSendView model)
@@ -197,7 +268,56 @@ namespace api.Services
                 Console.WriteLine("Data File", printer.filepath_txt);
 
 
-                string txt = vprod_code + "@" + "@" + vbar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" +  vset_no + "@" + vprod_name + "@" + vbar_code + "|" + vprod_name + "|" + model.set_no + "" + vqty + "|" + vreq_date + "|" + vjob_no;
+                string txt = vprod_code + "@" + "@" + vbar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" +  vset_no + "@" + vprod_name + "@" + vbar_code + "|" + vprod_name + "|" + model.set_no + "|" + vqty + "|" + vreq_date + "|" + vjob_no;
+
+
+                //File.WriteAllText(Path.Combine(dataPath), all_txt);
+                //File.WriteAllText(Path.Combine(txtPath), "");
+                File.WriteAllText(dataPath, txt);
+                File.WriteAllText(txtPath, "");
+            }
+        }
+
+        public void RePringSticker(PringSetNoView model)
+        {
+            System.Diagnostics.Process.Start("net.exe", @"use L: / delete");
+            System.Diagnostics.Process.Start("net.exe", @"use L: \\192.168.8.14\Data TOP@007* /USER:192.168.8.14\webadmin").WaitForExit();
+
+            using (var ctx = new ConXContext())
+            {
+                var vuser_id = model.user_id;
+                var vreq_date = model.req_date;
+                var vmfg_date = "";
+                var vqty = model.scan_qty;
+                //var vset_no = "Set No." + model.set_no;
+                var vset_no = model.set_no;
+                //var vjob_no = model.job_no;
+                var vwc_code = model.wc_code;
+                var ventity = model.entity;
+
+
+                string sqlp = "select  a.prnt_point_name printer_name , filepath_data , filepath_txt  from whmobileprnt_ctl a , whmobileprnt_default b where a.series_no = b.series_no and b.mc_code= :p_mc_code";
+                PrinterDataView printer = ctx.Database.SqlQuery<PrinterDataView>(sqlp, new OracleParameter("p_mc_code", vuser_id)).SingleOrDefault();
+
+                if (printer == null)
+                {
+                    throw new Exception("ยังไม่ได้กำหนด Default Printer");
+                }
+
+
+                string sql = "select a.prod_code , a.bar_code , b.prod_tname prod_name , a.por_no job_no , to_char(fin_date,'dd/mm/yyyy') fin_date from pkg_barcode a , product b where a.prod_code=b.prod_code and a.entity = :p_entity and wc_code = :p_wc_code and tran_date = to_date(:p_tran_date,'dd/mm/yyyy') and pkg_barcode_set = :p_set_no and rownum = 1";
+                ScanSendView prod = ctx.Database.SqlQuery<ScanSendView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_tran_date", vreq_date), new OracleParameter("p_set_no", vset_no)).SingleOrDefault();
+
+                string txtPath = @printer.filepath_txt;
+                string dataPath = @printer.filepath_data;
+
+
+                Console.WriteLine("Data File", printer.filepath_data);
+                Console.WriteLine("Data File", printer.filepath_txt);
+
+                vmfg_date = "MFG Date " + prod.fin_date;
+
+                string txt = prod.prod_code + "@" + "@" + prod.bar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" + vset_no + "@" + prod.prod_name + "@" + prod.bar_code + "|" + prod.prod_name + "|" + model.set_no + "|" + vqty + "|" + vreq_date + "|" + prod.job_no;
 
 
                 //File.WriteAllText(Path.Combine(dataPath), all_txt);
@@ -216,11 +336,27 @@ namespace api.Services
                 var vreq_date = model.req_date;
                 var vuser_id = model.user_id;
                 var vwc_code = model.wc_code;
+                var vbuild_type = model.build_type;
                 var vpcs_barcode = model.pcs_barcode;
                 var vset_no = "";
 
               
                 
+                if(vpcs_barcode.Length < 11)
+                {
+                    String[] strlist = model.req_date.Split('/');
+                    int running = 5;
+                   
+                    string RunningNo = "";
+                    string preFix = strlist[0]+ strlist[1]+ strlist[2].Substring(2,2);
+                    string formatRuning = "00000000000000000000000";
+                    formatRuning = formatRuning.Substring(1, running);
+
+                    int psc_no = int.Parse(vpcs_barcode);
+                    RunningNo = psc_no.ToString(formatRuning);
+                    vpcs_barcode = preFix + RunningNo;
+
+                }
 
                 string sqlw = "select wc_prev from PD_WCCTL_SEQ  where pd_entity = :p_entity and wc_code = :p_wc_code";
                 string vprev_wc = ctx.Database.SqlQuery<string>(sqlw, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code))
@@ -304,12 +440,13 @@ namespace api.Services
                         new OracleParameter("p_por_no", prod.job_no),
                         new OracleParameter("p_prod_code", prod.prod_code),
                         new OracleParameter("p_bar_code", prod.bar_code),
-                        new OracleParameter("p_pkg_item_no", vitem)
+                        new OracleParameter("p_pkg_item_no", vitem),
+                        new OracleParameter("p_build_type", vbuild_type)
                     };
 
                     oraCommand_barcode.BindByName = true;
                     oraCommand_barcode.Parameters.AddRange(param_barcode);
-                    oraCommand_barcode.CommandText = "insert into pkg_barcode (entity , tran_no , tran_date , wc_code , por_no , prod_code , bar_code , pkg_item_no , pkg_barcode_set , prt_flag , fin_date) values (:p_entity , :p_tran_no , to_date(:p_tran_date,'dd/mm/yyyy') , :p_wc_code , :p_por_no , :p_prod_code , :p_bar_code , :p_pkg_item_no , '' , 'N' , sysdate)";
+                    oraCommand_barcode.CommandText = "insert into pkg_barcode (entity , tran_no , tran_date , wc_code , por_no , prod_code , bar_code , pkg_item_no , pkg_barcode_set , prt_flag , fin_date , build_type) values (:p_entity , :p_tran_no , to_date(:p_tran_date,'dd/mm/yyyy') , :p_wc_code , :p_por_no , :p_prod_code , :p_bar_code , :p_pkg_item_no , '' , 'N' , sysdate , :p_build_type)";
 
 
                     oraCommand_barcode.ExecuteNonQuery();

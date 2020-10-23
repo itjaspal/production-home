@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<preserve resultType="2" virtualPath="/Areas/HelpPage/Views/Help/DisplayTemplates/InvalidSample.cshtml" hash="ffffffffe8b3c0cb" filehash="fa1778f2307" flags="110000" assembly="Production_api" type="ASP._Page_Areas_HelpPage_Views_Help_DisplayTemplates_InvalidSample_cshtml">
+<preserve resultType="2" virtualPath="/Areas/HelpPage/Views/Help/DisplayTemplates/InvalidSample.cshtml" hash="ffffffffe8b3c0cb" filehash="ffffef3a952b3064" flags="110000" assembly="Production_api" type="ASP._Page_Areas_HelpPage_Views_Help_DisplayTemplates_InvalidSample_cshtml">
   <filedeps>
     <filedep name="/Areas/HelpPage/Views/Help/DisplayTemplates/InvalidSample.cshtml" />
   </filedeps>

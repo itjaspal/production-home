@@ -1,0 +1,85 @@
+<div class="container-fluid no-breadcrumbs"> <!-- container-->
+  <mat-card> <!-- mat-card 1 -->
+      <mat-card-title>
+         <h6> รายละเอียดสินค้า ( วันที่ส่งมอบ : {{this.datePipe.transform(this.paramData.doc_date, 'dd/MM/yyyy')}}    เลขที่ส่งมอบ : {{this.paramData.doc_no}} )</h6>
+      </mat-card-title>
+      <br /> 
+
+      <mat-card-content class="no-margin">
+          <mat-card-content>
+            <!--<div class="scrollable-child-display-mac" >  -->
+            <table style="width: 100%" >
+              <tbody *ngFor="let x of datas.recDetails; let i = index;"> 
+                 <tr>
+                      <td style="width: 5px" class="text-center"><dt>Item</dt></td>
+                      <td style="width: 200px"  class="text-center"><b>รหัสสินค้า</b></td>
+                      <td style="width: 50px" class="text-center"><b>หน่วย</b></td>
+                      <td style="width: 30px" class="text-center"><dt>จำนวนส่งมอบ</dt></td>
+                      <td style="width: 30px" class="text-center"><b>MPS Date</b></td>
+                      <td style="width: 30px" class="text-center"><b>Job No</b></td>
+                 </tr> 
+                 <tr>
+                      <td class="text-center">{{i+1}}</td>
+                      <td>{{x.prod_code}}</td>
+                      <td class="text-center">{{x.uom_code}}</td>
+                      <td class="text-center">{{x.qty_pdt | number }}</td>
+                      <td class="text-center">{{x.mps_date  | date:'dd/MM/yyyy'}}</td>
+                      <td class="text-center">{{x.por_no}}</td>
+                 </tr>
+                 <tr class="no-margin">
+                      <td colspan="9">&nbsp;
+                              <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <dt>ชื่อสินค้า :  {{x.prod_tname}}</dt>
+                                </mat-expansion-panel-header>    
+                                 <table style="width: 40%;">
+                                  <tbody>
+                                        <tr>
+                                            <th style="width: 50px" class="text-center">Set No</th>
+                                            <th style="width: 5px"  class="text-center">จำนวน</th>
+                                        </tr>
+                                        <tr *ngFor="let y of x.setDetails; let j = index;">
+                                            <td class="text-center">{{y.pkg_barcode_set}}</td>
+                                            <td class="text-center">{{y.confirm_qty | number }}</td>
+                                        </tr>
+                                  </tbody> 
+                                </table>  
+
+                          </mat-expansion-panel>
+                      </td>
+                 </tr>
+                 <tr>
+                  <th colspan="2" class="text-center">รวม</th>
+                  <th class="text-center">{{datas.total_prod_item}}  Item</th>
+                  <th class="text-center">{{datas.total_rec_qty}}</th>
+                  <th class="text-center">&nbsp;</th>
+                  <th class="text-center">&nbsp;</th>
+                </tr>
+                 
+             </tbody>
+          </table>
+          <!--</div> --> 
+          </mat-card-content>
+    </mat-card-content> <!--  <mat-card-content class="no-margin"> --> 
+
+
+      <br />
+    
+      <mat-card-content *ngIf="datas.recDetails != undefined">
+      <ngb-pagination [collectionSize]="datas.totalItem" [pageSize]="model.itemPerPage" [maxSize]="5"
+            [(page)]="model.pageIndex" (pageChange)="searchProductionRecListDetail()" [boundaryLinks]="true"></ngb-pagination>
+      </mat-card-content>
+   
+      <br />
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+    </div>
+    </mat-card-actions>  
+
+    </mat-card> <!-- mat-card 1 -->
+ </div> <!-- container-->

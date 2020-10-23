@@ -1,4 +1,4 @@
-import { SetNoSearchView, SetNoView } from './../_model/scan-send';
+import { PrintSetNoView, SetNoSearchView, SetNoView } from './../_model/scan-send';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
@@ -18,11 +18,16 @@ export class ScanSendService {
   }
 
   public async searchsetno(_model: SetNoSearchView) {
-    return await this.http.post<SetNoView>(environment.API_URL + 'scan-send/postSearchSetNo', _model).toPromise();
+    //return await this.http.post<SetNoView>(environment.API_URL + 'scan-send/postSearchSetNo', _model).toPromise();
+    return await this.http.post(environment.API_URL + 'scan-send/postSearchSetNo', _model).toPromise();
   }
 
   public async PrintSticker(_model: ScanSendView) {
     return await this.http.post(environment.API_URL + 'scan-send/postPrintSticker', _model).toPromise();  
+  }
+
+  public async RePrintSticker(_model: PrintSetNoView) {
+    return await this.http.post(environment.API_URL + 'scan-send/postRePrintSticker', _model).toPromise();  
   }
 
   public async delete(params) {
@@ -30,7 +35,8 @@ export class ScanSendService {
   }
 
   public async getscanqty(_model: ScanSendView) {
-    return await this.http.post<SetNoView>(environment.API_URL + 'scan-send/postGetScanQty', _model).toPromise();
+    //return await this.http.post<SetNoView>(environment.API_URL + 'scan-send/postGetScanQty', _model).toPromise();
+    return await this.http.post(environment.API_URL + 'scan-send/postGetScanQty', _model).toPromise();
   }
 
 

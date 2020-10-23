@@ -49,6 +49,21 @@ namespace api.Controllers
             }
         }
 
+        [Route("scan-send/postRePrintSticker")]
+        public HttpResponseMessage postRePrintSticker(PringSetNoView model)
+        {
+            try
+            {
+                sendService.RePringSticker(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, "ส่งข้อมูลไปยังเครื่องพิมพ์เรียบร้อยแล้ว");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
         [Route("scan-send/postSearchSetNo")]
         public HttpResponseMessage postSearchSetNo(SetNoSearchView model)
         {

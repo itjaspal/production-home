@@ -23,11 +23,13 @@ export class ScanSendSearchView {
     public pcs_barcode: string = "";
     public wc_code : string = "";
     public user_id : string = "";   
+    public biuld_type: string = "";
 }
 
 export class SetNoSearchView {
     public entity: string = AppSetting.entity;
-    public req_date: string = "";
+    public tran_date: string = "";
+    public wc_code:string = "";
 }
 
 export class SetNoView {
@@ -52,4 +54,16 @@ export class ScanSendFinDataView
     public job_no: string = "";
     public req_date: string = "";
     public wc_code: string = "";
+    public entity:string= AppSetting.entity;
+}
+
+export class PrintSetNoView {
+    public entity :string= AppSetting.entity;
+    public set_no: string = "";
+    public req_date: string = "";
+    public wc_code : string ="";
+    public scan_qty : number = 0;
+    public set_qty : number = 0;
+    public user_id : string = "";
+
 }

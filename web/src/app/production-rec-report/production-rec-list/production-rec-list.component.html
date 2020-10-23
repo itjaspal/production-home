@@ -1,0 +1,104 @@
+<div class="container-fluid no-breadcrumbs"> <!-- container-->
+  <mat-card> <!-- mat-card 1 -->
+      <mat-card-title>
+         <h6>รายการส่งมอบสินค้า</h6>
+      </mat-card-title>
+      <br />
+      <mat-card> <!-- mat-card 2 -->
+        <div class="scrollable-child"> 
+          <div class="panel panel-default">
+             <form> 
+               <div class="row">
+                 <div class="col-lg-2 col-sm-5 col-5">
+                  
+                   <mat-form-field class="full-width">
+                     <input #doc_date matInput [matDatepicker]="picker" placeholder="วันที่ส่งมอบ" [(ngModel)]="model.doc_date"
+                       name="doc_date">
+                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                     <mat-datepicker #picker></mat-datepicker>
+                   </mat-form-field>
+                 </div>
+                 <div class="col-1 col-sm-1">
+                   <mat-card-actions class="no-margin">
+                     <button mat-raised-button color="primary"  type="button" (click)="searchProductionRecList()">
+                       <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                     </button>
+                   </mat-card-actions>
+                 </div>
+               </div>
+             </form> 
+
+         
+             <!-- Table -->
+             <table style="width: 100%" >
+               <tbody>
+                 <!-- In Process Movement -->
+                 <tr>
+                   <th colspan="8">รายการรอยืนยันส่งมอบสินค้า</th>
+                </tr>
+                <tr>
+                  <th style="width: 5px" class="text-center">ลำดับ</th>
+                  <th style="width: 30px" class="text-center">JIT Date</th>
+                  <th style="width: 50px"  class="text-center">เลขที่ใบส่งมอบ</th>
+                  <th style="width: 200px" class="text-center">หน่วยผลิต</th>
+                  <th style="width: 50px"  class="text-center">ผู้ส่งมอบ</th>
+                  <th style="width: 50px"  class="text-center">วัน/เวลา</th>
+                  <th style="width: 30px" class="text-center">จำนวน</th>
+                  <th style="width: 10px">&nbsp;</th>
+                </tr>
+                <tr *ngFor="let x of datas.recDetails let i = index;">
+                  <td class="text-center">{{i+1}}</td>
+                  <td class="text-center">{{x.jit_date  | date:'dd/MM/yyyy'}}</td>
+                  <td class="text-center">{{x.doc_no}}</td>
+                  <td class="text-center">{{x.wc_name}} ({{x.wc_code}})</td>
+                  <td class="text-center">{{x.gen_by}}</td>
+                  <td class="text-center">{{x.gen_date  | date:'dd/MM/yyyy hh:mm:ss'}}</td>
+                  <td class="text-center">{{x.conf_qty}}</td>
+                  <td class="text-center">
+                      <button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                        <mat-icon class="material-icons">more_horiz</mat-icon>
+                      </button>
+                      <mat-menu #appMenu1="matMenu">
+                        <button mat-menu-item (click)="openProductionRecListDetailDialog(x.doc_no, x.gen_date);" action *ngIf="(x.doc_no != '' || x.doc_no != null)">
+                          <mat-icon class="material-icons">search</mat-icon> <span>รายละเอียดสินค้า</span>
+                        </button>
+                      </mat-menu>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th colspan="6" class="text-center">รวม</th>
+                  <th class="text-center">{{datas.total_rec_qty}}</th>
+                  <th class="text-center">
+                    &nbsp;
+                  </th>
+                </tr>  
+              
+               </tbody>
+             </table>
+             
+             
+
+             <br />
+
+
+            </div> <!-- <div class="panel panel-default"></div> --> 
+         </div> <!-- <div class="scrollable-child"> -->
+
+
+      </mat-card> <!-- mat-card 2 -->  
+
+      <br />
+    
+      <mat-card-content *ngIf="datas.recDetails != undefined">
+        <ngb-pagination [collectionSize]="datas.totalItem" [pageSize]="model.itemPerPage" [maxSize]="5"
+            [(page)]="model.pageIndex" (pageChange)="searchProductionRecList()" [boundaryLinks]="true"></ngb-pagination>
+      </mat-card-content>
+
+
+
+
+
+
+  </mat-card> <!-- mat-card 1 -->
+</div> <!-- container-->      

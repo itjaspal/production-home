@@ -1,3 +1,57 @@
-<p>
-  scan-send-setno-search works!
-</p>
+<div class="container-fluid no-breadcrumbs">
+
+
+  <mat-card>
+
+    <mat-card-title>
+      <h6>เลือก Set No.</h6>
+    </mat-card-title>
+
+
+
+  </mat-card>
+
+  <mat-card style="margin-top:40px;">
+    <mat-card-subtitle class="no-margin">
+      <h6 class="no-margin">ผลการค้นหา</h6>
+    </mat-card-subtitle>
+    <mat-card-content>
+      <div class="row" *ngIf="datas.length == 0;else show_product">
+     
+        <div class="col-12 text-center">
+          <h4>ไม่พบรายการ</h4>
+        </div>
+      </div>
+
+      <ng-template #show_product >
+        <div class="row" *ngFor="let x of datas">
+
+
+          <div class="col-sm-1 col-1">
+            <dd>
+              <mat-checkbox [(ngModel)]="x.selected" (change)="add()"></mat-checkbox>
+            </dd>
+
+          </div>
+          <div class="col-sm-10 col-10">
+            <!-- <small>Set No.</small> -->
+            <dd>{{x.set_no}}</dd>
+          </div>
+
+
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="form-action">
+
+    <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+      <mat-icon class="material-icons">close</mat-icon> ปิด
+    </button>
+
+    
+
+  </div>
+
+</div>

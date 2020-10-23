@@ -52,6 +52,8 @@ import { JobOrderSummaryComponent } from '../job-operation/job-order-summary/job
 import { SpecDrawingComponent } from '../spec-drawing/spec-drawing/spec-drawing.component';
 import { ViewSpecDrawingComponent } from '../job-operation/view-spec-drawing/view-spec-drawing.component';
 import { ScanSendComponent } from '../scan-send/scan-send/scan-send.component';
+import { ProductionRecListDetailComponent } from '../production-rec-report/production-rec-list-detail/production-rec-list-detail.component';
+import { ProductionRecListComponent } from '../production-rec-report/production-rec-list/production-rec-list.component';
 
 
 
@@ -147,6 +149,13 @@ const routes: Routes = [
       //Scan Send
       { path: 'scansend', component: ScanSendComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
+
+       //Production Receive Report
+       { path: 'procRec', component: ProductionRecListComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+       { path: 'procRecDetail', component: ProductionRecListDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+
+
+       
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]
   }

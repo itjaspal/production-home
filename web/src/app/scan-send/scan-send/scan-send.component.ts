@@ -6,12 +6,13 @@ import { MatDialog } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductSearchComponent } from '../../scan-inprocess/product-search/product-search.component';
 import { JobInProcessScanView } from '../../_model/job-inprocess';
-import { ScanSendView, ScanSendSearchView, ScanSendFinView, ScanSendFinDataView } from '../../_model/scan-send';
+import { ScanSendView, ScanSendSearchView, ScanSendFinView, ScanSendFinDataView, SetNoView, PrintSetNoView } from '../../_model/scan-send';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { MessageService } from '../../_service/message.service';
 import { ScanSendService } from '../../_service/scan-send.service';
 import { DropdownlistService } from '../../_service/dropdownlist.service';
 import * as moment from 'moment';
+import { ScanSendSetnoSearchComponent } from '../scan-send-setno-search/scan-send-setno-search.component';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class ScanSendComponent implements OnInit {
 
   public data: any = {};
   public model_scan: ScanSendFinView = new ScanSendFinView();
-
+  public model_setno : PrintSetNoView = new PrintSetNoView();
   public datas: any = {};
   public datas_print: any = {};
   public wclist: any; 
@@ -86,14 +87,15 @@ export class ScanSendComponent implements OnInit {
     this.searchModel.pcs_barcode = "";
     this.model.show_qty = this.datas.scan_qty + " / " + this.datas.set_qty;
     this.searchModel.req_date = this.datas.req_date; 
-    
+    this.searchModel.biuld_type = this.user.branch.entity_code;
     if(this.datas.set_qty == this.datas.scan_qty)
     {
     
       this.datas_print = await this._scanSendSvc.PrintSticker(this.datas);
       this.model.show_qty = "";
+      
     }
-
+    this.model.set_no = "";
 
 
   }
@@ -107,6 +109,7 @@ export class ScanSendComponent implements OnInit {
     newProd.job_no = datas.job_no;
     newProd.wc_code = datas.wc_code;
     newProd.req_date = datas.req_date;
+    newProd.entity = datas.entity;
 
     this.model_scan.datas.push(newProd);  
     console.log(this.model_scan.datas);
@@ -114,22 +117,41 @@ export class ScanSendComponent implements OnInit {
   }
 
   async print(){
+    var datePipe = new DatePipe("en-US");
     this.datas.set_qty = this.datas.scan_qty;
-    this.datas_print = await this._scanSendSvc.PrintSticker(this.datas);
+    if(this.model.set_no == "")
+    {
+      this.datas_print = await this._scanSendSvc.PrintSticker(this.datas);
+    }
+    else
+    {
+      this.model_setno.set_no = this.model.set_no;
+      this.model_setno.req_date = datePipe.transform(this.searchModel.req_date, 'dd/MM/yyyy').toString();
+      this.model_setno.wc_code = this.searchModel.wc_code;
+      this.model_setno.user_id = this.user.username;
+      this.model_setno.set_qty = this.model.set_qty;
+      this.model_setno.scan_qty = this.model.scan_qty;
+      console.log(this.model_setno);
+      
+      this.datas_print = await this._scanSendSvc.RePrintSticker(this.model_setno);
+      
+      this.model.set_no = "";
+    }
+    
     this.model.show_qty = "";
   }
 
-  openSearchSetNoModal(SaleTransactionItemView = null)
+  openSearchSetNoModal(p_entity : string ,p_req_date: string, p_wc_code: string, _index: number = -1)
   {
-    const dialogRef = this._dialog.open(ProductSearchComponent, {
+    const dialogRef = this._dialog.open(ScanSendSetnoSearchComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '80%',
       width: '80%',
       data: {
-        req_date: this._actRoute.snapshot.params.req_date,
-        wc_code:this._actRoute.snapshot.params.wc_code,
-        pdjit_grp:this._actRoute.snapshot.params.pdjit_grp
+        tran_date: p_req_date,
+        wc_code:p_wc_code,
+        entity:p_entity
       }
 
     });
@@ -144,7 +166,11 @@ export class ScanSendComponent implements OnInit {
   add_prod(datas: any) {
 
     console.log(datas);
-    // this.searchModel.bar_code = datas[0].bar_code;
+    this.model.set_no = datas[0].set_no;
+    this.model.show_qty = datas[0].scan_qty + " / " + datas[0].set_qty;
+    this.model_scan = datas[0];
+    this.model.set_qty = datas[0].set_qty;
+    this.model.scan_qty = datas[0].scan_qty;
     // this.searchModel.qty = 1;
   }  
 

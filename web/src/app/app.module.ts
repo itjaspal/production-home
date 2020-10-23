@@ -164,6 +164,8 @@ import { JobOrderSummaryComponent } from './job-operation/job-order-summary/job-
 import { ScanSendComponent } from './scan-send/scan-send/scan-send.component';
 import { ScanSendSetnoSearchComponent } from './scan-send/scan-send-setno-search/scan-send-setno-search.component';
 import { ViewSpecDrawingComponent } from './job-operation/view-spec-drawing/view-spec-drawing.component';
+import { ProductionRecListComponent } from './production-rec-report/production-rec-list/production-rec-list.component';
+import { ProductionRecListDetailComponent } from './production-rec-report/production-rec-list-detail/production-rec-list-detail.component';
 
 
 
@@ -354,6 +356,8 @@ import { ViewSpecDrawingComponent } from './job-operation/view-spec-drawing/view
     ScanSendComponent,
     ScanSendSetnoSearchComponent,
     ViewSpecDrawingComponent,
+    ProductionRecListComponent,
+    ProductionRecListDetailComponent,
     
 
   
@@ -367,7 +371,8 @@ import { ViewSpecDrawingComponent } from './job-operation/view-spec-drawing/view
     ProductCancelSearchComponent,
     PrintInprocessTagComponent,
     PrintInprocessDetailComponent,
-    InprocessTagProductSearchComponent
+    InprocessTagProductSearchComponent,
+    ScanSendSetnoSearchComponent
   ],
   bootstrap: [AppComponent]
 })
