@@ -166,6 +166,11 @@ import { ScanSendSetnoSearchComponent } from './scan-send/scan-send-setno-search
 import { ViewSpecDrawingComponent } from './job-operation/view-spec-drawing/view-spec-drawing.component';
 import { ProductionRecListComponent } from './production-rec-report/production-rec-list/production-rec-list.component';
 import { ProductionRecListDetailComponent } from './production-rec-report/production-rec-list-detail/production-rec-list-detail.component';
+import { ScanApproveSendSearchComponent } from './scan-approve-send/scan-approve-send-search/scan-approve-send-search.component';
+import { ScanApproveSendCreateComponent } from './scan-approve-send/scan-approve-send-create/scan-approve-send-create.component';
+import { ScanApproveSendAddComponent } from './scan-approve-send/scan-approve-send-add/scan-approve-send-add.component';
+import { ScanApproveSendCancelComponent } from './scan-approve-send/scan-approve-send-cancel/scan-approve-send-cancel.component';
+import { ScanApproveSendDetailComponent } from './scan-approve-send/scan-approve-send-detail/scan-approve-send-detail.component';
 
 
 
@@ -358,6 +363,11 @@ import { ProductionRecListDetailComponent } from './production-rec-report/produc
     ViewSpecDrawingComponent,
     ProductionRecListComponent,
     ProductionRecListDetailComponent,
+    ScanApproveSendSearchComponent,
+    ScanApproveSendCreateComponent,
+    ScanApproveSendAddComponent,
+    ScanApproveSendCancelComponent,
+    ScanApproveSendDetailComponent,
     
 
   

@@ -54,6 +54,7 @@ import { ViewSpecDrawingComponent } from '../job-operation/view-spec-drawing/vie
 import { ScanSendComponent } from '../scan-send/scan-send/scan-send.component';
 import { ProductionRecListDetailComponent } from '../production-rec-report/production-rec-list-detail/production-rec-list-detail.component';
 import { ProductionRecListComponent } from '../production-rec-report/production-rec-list/production-rec-list.component';
+import { ScanApproveSendSearchComponent } from '../scan-approve-send/scan-approve-send-search/scan-approve-send-search.component';
 
 
 
@@ -148,6 +149,10 @@ const routes: Routes = [
 
       //Scan Send
       { path: 'scansend', component: ScanSendComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+
+      
+      //Scan Approve Send
+      { path: 'apvsend', component: ScanApproveSendSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
 
        //Production Receive Report
