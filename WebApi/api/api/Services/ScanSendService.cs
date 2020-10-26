@@ -268,7 +268,7 @@ namespace api.Services
                 Console.WriteLine("Data File", printer.filepath_txt);
 
 
-                string txt = vprod_code + "@" + "@" + vbar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" +  vset_no + "@" + vprod_name + "@" + vbar_code + "|" + vprod_name + "|" + model.set_no + "|" + vqty + "|" + vreq_date + "|" + vjob_no;
+                string txt = vprod_code + "@" + "@" + vbar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" +  vset_no + "@" + vprod_name + "@" + vbar_code + "|" + vprod_name + "|" + model.set_no + "" + vqty + "|" + vreq_date + "|" + vjob_no;
 
 
                 //File.WriteAllText(Path.Combine(dataPath), all_txt);
@@ -317,7 +317,7 @@ namespace api.Services
 
                 vmfg_date = "MFG Date " + prod.fin_date;
 
-                string txt = prod.prod_code + "@" + "@" + prod.bar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" + vset_no + "@" + prod.prod_name + "@" + prod.bar_code + "|" + prod.prod_name + "|" + model.set_no + "|" + vqty + "|" + vreq_date + "|" + prod.job_no;
+                string txt = prod.prod_code + "@" + "@" + prod.bar_code + "@QTY@" + vqty + "@" + vmfg_date + "@" + vset_no + "@" + prod.prod_name + "@" + prod.bar_code + "|" + prod.prod_name + "|" + model.set_no + "" + vqty + "|" + vreq_date + "|" + prod.job_no;
 
 
                 //File.WriteAllText(Path.Combine(dataPath), all_txt);
