@@ -10,5 +10,7 @@ namespace api.Interfaces
     interface IScanApproveSendService
     {
         ScanApproveSendView SearchDataScanSend(ScanApproveSendSearchView model);
+        ScanApproveFinView ScanApvSendNew(ScanApproveAddView model);
+        ScanApproveFinView ScanApvSendAdd(ScanApproveAddView model);
     }
 }

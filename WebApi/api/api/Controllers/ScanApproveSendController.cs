@@ -33,5 +33,35 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
+
+        [Route("scanapvsend/postScanApvSendNew")]
+        public HttpResponseMessage postScanApvSendNew(ScanApproveAddView model)
+        {
+            try
+            {
+                var result = apvsendService.ScanApvSendNew(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("scanapvsend/postScanApvSendAdd")]
+        public HttpResponseMessage postScanApvSendAdd(ScanApproveAddView model)
+        {
+            try
+            {
+                var result = apvsendService.ScanApvSendAdd(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
     }
 }
