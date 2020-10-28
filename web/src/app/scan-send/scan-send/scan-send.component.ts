@@ -72,6 +72,37 @@ export class ScanSendComponent implements OnInit {
     });
   }
 
+  async onQrEntered(_pcs_barcode: string) {
+
+    if (_pcs_barcode == null || _pcs_barcode == "") {
+      return;
+    }
+
+    var datePipe = new DatePipe("en-US");
+    this.searchModel.req_date = datePipe.transform(this.searchModel.req_date, 'dd/MM/yyyy').toString();
+    this.searchModel.user_id = this.user.username;
+    console.log(this.searchModel);
+    
+    this.datas = await this._scanSendSvc.scansendadd(this.searchModel);
+
+    console.log(this.datas); 
+
+    this.add(this.datas);
+    this.searchModel.pcs_barcode = "";
+    this.model.show_qty = this.datas.scan_qty + " / " + this.datas.set_qty;
+    this.searchModel.req_date = this.datas.req_date; 
+    this.searchModel.biuld_type = this.user.branch.entity_code;
+    if(this.datas.set_qty == this.datas.scan_qty)
+    {
+    
+      this.datas_print = await this._scanSendSvc.PrintSticker(this.datas);
+      this.model.show_qty = "";
+      
+    }
+    this.model.set_no = ""; 
+    
+  }
+
   async save() {
 
     var datePipe = new DatePipe("en-US");

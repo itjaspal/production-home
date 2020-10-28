@@ -45,6 +45,7 @@ namespace api.ModelViews
         public string build_type {get; set;}
         public string fin_date { get; set; }
         public string user_id { get; set; }
+        public string wc_code { get; set; }
     }
 
     public class SetDataView

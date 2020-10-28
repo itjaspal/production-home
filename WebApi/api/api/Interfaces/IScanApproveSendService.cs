@@ -12,5 +12,6 @@ namespace api.Interfaces
         ScanApproveSendView SearchDataScanSend(ScanApproveSendSearchView model);
         ScanApproveFinView ScanApvSendNew(ScanApproveAddView model);
         ScanApproveFinView ScanApvSendAdd(ScanApproveAddView model);
+        ScanApproveFinView ScanApvSendCancel(ScanApproveAddView model);
     }
 }

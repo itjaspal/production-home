@@ -38,7 +38,7 @@
               <div class="col-4 col-lg-3">
                 <mat-form-field class="full-width">
                   <input matInput placeholder="PCS Barcode" formControlName="pcs_barcode" name="pcs_barcode"
-                    #pcs_barcode [(ngModel)]="searchModel.pcs_barcode">
+                    #pcs_barcode (keydown.enter)="onQrEntered(pcs_barcode.value); pcs_barcode.value = ''" type="none" [(ngModel)]="searchModel.pcs_barcode">
                 </mat-form-field>
 
               </div>

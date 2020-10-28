@@ -382,7 +382,8 @@ import { ScanApproveSendDetailComponent } from './scan-approve-send/scan-approve
     PrintInprocessTagComponent,
     PrintInprocessDetailComponent,
     InprocessTagProductSearchComponent,
-    ScanSendSetnoSearchComponent
+    ScanSendSetnoSearchComponent,
+    ScanApproveSendCreateComponent
   ],
   bootstrap: [AppComponent]
 })
