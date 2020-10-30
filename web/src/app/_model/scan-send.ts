@@ -23,7 +23,7 @@ export class ScanSendSearchView {
     public pcs_barcode: string = "";
     public wc_code : string = "";
     public user_id : string = "";   
-    public biuld_type: string = "";
+    public build_type: string = "";
 }
 
 export class SetNoSearchView {

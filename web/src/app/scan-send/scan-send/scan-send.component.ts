@@ -91,7 +91,7 @@ export class ScanSendComponent implements OnInit {
     this.searchModel.pcs_barcode = "";
     this.model.show_qty = this.datas.scan_qty + " / " + this.datas.set_qty;
     this.searchModel.req_date = this.datas.req_date; 
-    this.searchModel.biuld_type = this.user.branch.entity_code;
+    this.searchModel.build_type = this.user.branch.entity_code;
     if(this.datas.set_qty == this.datas.scan_qty)
     {
     
@@ -118,7 +118,7 @@ export class ScanSendComponent implements OnInit {
     this.searchModel.pcs_barcode = "";
     this.model.show_qty = this.datas.scan_qty + " / " + this.datas.set_qty;
     this.searchModel.req_date = this.datas.req_date; 
-    this.searchModel.biuld_type = this.user.branch.entity_code;
+    this.searchModel.build_type = this.user.branch.entity_code;
     if(this.datas.set_qty == this.datas.scan_qty)
     {
     

@@ -85,6 +85,8 @@ namespace api.ModelViews
         public string prod_name { get; set; }
         public int qty { get; set; }
         public string fin_date { get; set; }
+        public string build_type { get; set; }
+        public string wc_code { get; set; }
     }
 
 

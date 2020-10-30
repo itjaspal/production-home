@@ -29,3 +29,43 @@ export class ScanApproveSendSearchView {
     public build_type: string = "";
     public user_id: string = "";
 }
+
+export class ScanApproveAddView {
+    public entity: string = AppSetting.entity;
+    public doc_no: string = "";
+    public set_no: string = "";
+    public build_type: string = "";
+    public fin_date: string = "";
+    public user_id: string = "";
+    public wc_code: string = "";
+}
+
+export class ScanApproveView {
+    public entity : string = AppSetting.entity;
+    public doc_no : string = "";  
+    public set_no : number = 0;  
+    public qty : number = 0;
+    public prod_code : string = "";  
+    public prod_name : string = "";  
+    public fin_date : string = "";  
+    public build_type: string = "";
+    public wc_code: string = "";
+}
+
+export class ScanApproveFinView
+{
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public totalItem : number = 0;
+    public datas: ScanApproveFinDataView[] = [];
+}
+
+export class ScanApproveFinDataView
+{
+    public doc_no : string = "";  
+    public set_no : number = 0;  
+    public qty : number = 0;
+    public prod_code : string = "";  
+    public prod_name : string = "";  
+    public fin_date : string = "";  
+}

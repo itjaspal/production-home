@@ -199,7 +199,9 @@ namespace api.Services
                         prod_code = mps.prod_code,
                         prod_name = mps.prod_name,
                         qty = vqty,
-                        fin_date = set_no.fin_date
+                        fin_date = set_no.fin_date,
+                        build_type = vbuild_type,
+                        wc_code = mps.wc_code
                     };
 
 
@@ -688,7 +690,9 @@ namespace api.Services
                         prod_code = mps.prod_code,
                         prod_name = mps.prod_name,
                         qty = vqty,
-                        fin_date = set_no.fin_date
+                        fin_date = set_no.fin_date,
+                        build_type = vbuild_type,
+                        wc_code = mps.wc_code
                     };
 
 
@@ -788,35 +792,35 @@ namespace api.Services
                     }
                     else
                     {
-                        string sql = "select entity , req_date , pdjit_grp , wc_code , doc_no , " +
-                            "(select sum(1) from pkg_barcode " +
-                            "where a.ref_pd_docno = doc_no" +
-                            "and a.entity = entity " +
-                            "and a.tran_date = req_date " +
-                            "and a.wc_code = wc_code) tot_qty " +
-                            "(select count(distinct a.pkg_barcode_set) " +
-                            "from pkg_barcode a " +
-                            "where a.ref_pd_docno = doc_no " +
-                            "and a.entity = entity " +
-                            "and a.tran_date = req_date " +
-                            "and a.wc_code = wc_code) tot_set " +
+                        string sql = "select entity , req_date , pdjit_grp , wc_code , doc_no  " +
+                            //"(select count(*) from pkg_barcode c " +
+                            //"where c.ref_pd_docno = doc_no" +
+                            //"and c.entity = entity " +
+                            //"and trunc(c.tran_date) = trunc(req_date) " +
+                            //"and c.wc_code = wc_code) tot_qty " +
+                            //"(select count(distinct a.pkg_barcode_set) " +
+                            //"from pkg_barcode a " +
+                            //"where a.ref_pd_docno = doc_no " +
+                            //"and a.entity = entity " +
+                            //"and trunc(a.tran_date) = trunc(req_date) " +
+                            //"and a.wc_code = wc_code) tot_set " +
                         "from mps_det_wc " +
                         "where entity = :p_entity " +
                         "and mps_st = 'Y' " +
                         "and (build_type in ('HMJIT','') or build_type is null) " +
                         "and doc_no like :p_doc_no " +
                         "and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy') " +
-                        "and wc_code in (select dept_code from auth_function where function_id = 'PDOPTHM' and doc_code = 'Y' and user_id = :p_user_id) " + 
+                        "and wc_code in (select dept_code from auth_function where function_id = 'PDOPTHM' and doc_code = 'Y' and user_id = :p_user_id) " +
                         "and (entity , req_date , wc_code , prod_code , doc_no) in " +
-                            "(select b.entity , b.tran_date , b.wc_code , b.prod_code , b.doc_no " +
+                            "(select b.entity , b.tran_date , b.wc_code , b.prod_code , b.ref_pd_docno " +
                             "from pkg_barcode b " +
                             "where b.wc_code = wc_code " +
                             "and b.tran_date = req_date " +
                             "and b.prod_code = prod_code " +
-                            "and (ref_pd_docno is not null or pd_ref_docno <> '')) " +
+                            "and (b.ref_pd_docno is not null or b.ref_pd_docno <> '')) " +
                         "group by entity , req_date , pdjit_grp , wc_code , doc_no";
 
-                        List<ScanApproveSendDataView> send = ctx.Database.SqlQuery<ScanApproveSendDataView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_fin_date", vfin_date), new OracleParameter("p_user_id", vuser), new OracleParameter("p_doc_no", "%" + vdoc_no + "%") ).ToList();
+                        List<ScanApproveSendDataView> send = ctx.Database.SqlQuery<ScanApproveSendDataView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_fin_date", vfin_date), new OracleParameter("p_user_id", vuser), new OracleParameter("p_doc_no", vdoc_no + "%") ).ToList();
 
                         foreach (var x in send)
                         {
