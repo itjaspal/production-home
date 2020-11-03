@@ -806,21 +806,21 @@ namespace api.Services
                             //"and a.wc_code = wc_code) tot_set " +
                         "from mps_det_wc " +
                         "where entity = :p_entity " +
-                        "and mps_st = 'Y' " +
-                        "and (build_type in ('HMJIT','') or build_type is null) " +
+                        //"and mps_st = 'Y' " +
+                        //"and (build_type in ('HMJIT','') or build_type is null) " +
                         "and doc_no like :p_doc_no " +
                         "and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy') " +
                         "and wc_code in (select dept_code from auth_function where function_id = 'PDOPTHM' and doc_code = 'Y' and user_id = :p_user_id) " +
-                        "and (entity , req_date , wc_code , prod_code , doc_no) in " +
-                            "(select b.entity , b.tran_date , b.wc_code , b.prod_code , b.ref_pd_docno " +
-                            "from pkg_barcode b " +
-                            "where b.wc_code = wc_code " +
-                            "and b.tran_date = req_date " +
-                            "and b.prod_code = prod_code " +
-                            "and (b.ref_pd_docno is not null or b.ref_pd_docno <> '')) " +
+                        //"and (entity , req_date , wc_code , prod_code , doc_no) in " +
+                        //    "(select b.entity , b.tran_date , b.wc_code , b.prod_code , b.ref_pd_docno " +
+                        //    "from pkg_barcode b " +
+                        //    "where b.wc_code = wc_code " +
+                        //    "and b.tran_date = req_date " +
+                        //    "and b.prod_code = prod_code " +
+                        //    "and (b.ref_pd_docno is not null or b.ref_pd_docno <> '')) " +
                         "group by entity , req_date , pdjit_grp , wc_code , doc_no";
 
-                        List<ScanApproveSendDataView> send = ctx.Database.SqlQuery<ScanApproveSendDataView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_fin_date", vfin_date), new OracleParameter("p_user_id", vuser), new OracleParameter("p_doc_no", vdoc_no + "%") ).ToList();
+                        List<ScanApproveSendDataView> send = ctx.Database.SqlQuery<ScanApproveSendDataView>(sql, new OracleParameter("p_entity", "H10"), new OracleParameter("p_fin_date", "28/10/2020"), new OracleParameter("p_user_id", "IT"), new OracleParameter("p_doc_no", "P%") ).ToList();
 
                         foreach (var x in send)
                         {
