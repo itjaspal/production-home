@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Transactions;
 using System.Web;
 
@@ -13,9 +15,41 @@ namespace api.Services
 {
     public class ScanReceiveService : IScanReceiveService
     {
-        public void ApproveReceive(ScanReceiveDataDetailView model)
+        public List<SendDataView> getProductDetail(string entity, string doc_no)
         {
-            throw new NotImplementedException();
+            using (var ctx = new ConXContext())
+            {
+                string sql1 = "select a.line_no , a.prod_code , a.qty_pdt , a.por_no job_no , b.prod_tname prod_name , b.uom_code , to_char(c.req_date,'dd/mm/yyyy') req_date from pd_det a , product b , por_mast c where a.prod_code = b.prod_code and a.pd_entity = c.pd_entity and a.plan_no = c.por_no and a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
+                List<SendDataView> send = ctx.Database.SqlQuery<SendDataView>(sql1, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).ToList();
+
+                List<SendDataView> sendViews = new List<SendDataView>();
+               
+
+                foreach (var x in send)
+                {
+                    // Find Set No.
+
+
+                    SendDataView view = new SendDataView()
+                    {
+                       
+                        line_no = x.line_no,
+                        prod_code = x.prod_code,
+                        prod_name = x.prod_name,
+                        uom_code = x.uom_code,
+                        qty_pdt = x.qty_pdt,
+                        req_date = x.req_date,
+                        job_no = x.job_no
+                        
+
+                    };
+
+                    sendViews.Add(view);
+                }
+
+                return sendViews;
+
+            }
         }
 
         public ScanReceiveView ScanReceiveAdd(ScanReceiveSearchView model)
@@ -26,251 +60,283 @@ namespace api.Services
             string vscan_data = model.scan_data;
             string vuser_id = model.user_id;
             int vscan_qty = model.scan_qty;
+            string vbuild_type = model.build_type;
 
-            string vset_no = "";
+            string vset_no = ""; 
 
 
             using (var ctx = new ConXContext())
             {
-
-                if (vscan_type == "SETNO")
+                if (vbuild_type == "HMJIT")
                 {
-                    String[] strlist = model.scan_data.Split('|');
-                    vset_no = strlist[2];
-
-                    string sql1 = "select max(prod_code) prod_code , max(bar_code) bar_code , max(pkg_barcode_set) set_no , count(*) scan_qty from pkg_barcode where entity = :p_entity and ref_pd_docno = :p_doc_no and pkg_barcode_set = :p_set_no";
-                    ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
-
-                    if (scan == null)
+                    if (vscan_type == "SETNO")
                     {
-                        throw new Exception("Set No. ไม่ถูกต้อง");
-                    }
+                        String[] strlist = model.scan_data.Split('|');
+                        vset_no = strlist[2];
 
-                    string sql2 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int qty_pdt = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
+                        string sql1 = "select max(prod_code) prod_code , max(bar_code) bar_code , to_char(max(pkg_barcode_set)) set_no , count(*) scan_qty from pkg_barcode where entity = :p_entity and ref_pd_docno = :p_doc_no and pkg_barcode_set = :p_set_no";
+                        ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
 
-
-                    string sql4 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int qty_rec = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
-
-
-                    if (scan.scan_qty > (qty_pdt - qty_rec))
-                    {
-                        throw new Exception("จำนวนรับ มากกว่า จำนวนส่งมอบ");
-                    }
-
-                    string sql3 = "select nvl(max(line_no),0)+1 from pd_det_whcf where pd_entity= :p_entity and doc_no=:p_doc_no";
-                    int vline_no = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
-
-                    // Insert into PD_DET_WHCF
-                    using (TransactionScope scope = new TransactionScope())
-                    {
-                        string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
-                        var dataConn = new OracleConnectionStringBuilder(strConn);
-                        OracleConnection conn = new OracleConnection(dataConn.ToString());
-
-                        conn.Open();
-
-
-                        OracleCommand oraCommand = conn.CreateCommand();
-                        OracleParameter[] param = new OracleParameter[]
+                        if (scan.prod_code == null)
                         {
-                                new OracleParameter("p_entity", ventity),
-                                new OracleParameter("p_doc_no", vdoc_no),
-                                new OracleParameter("p_line_no", vline_no),
-                                new OracleParameter("p_prod_code", scan.prod_code),
-                                new OracleParameter("p_bar_code", scan.bar_code),
-                                new OracleParameter("p_set_no", vset_no),
-                                new OracleParameter("p_qty", scan.scan_qty),
-                                new OracleParameter("p_cf_by", vuser_id),
-                                new OracleParameter("p_upd_by", vuser_id)
-                        };
-                        oraCommand.BindByName = true;
-                        oraCommand.Parameters.AddRange(param);
-                        oraCommand.CommandText = "insert into pd_det_whcf (pd_entity , doc_no , line_no , bar_code, prod_code , ref_set_no , qty_pdt_cf , cf_by , cf_date , upd_by , upd_date) values (:p_entity , :p_doc_no , :p_line_no , :p_bar_code, :p_prod_code , :p_set_no , :p_qty , :p_cf_by , sysdate , :p_upd_by , sysdate)";
+                            throw new Exception("Set No. ไม่ถูกต้อง");
+                        }
+
+                        string sql2 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                        int qty_pdt = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
 
 
-                        oraCommand.ExecuteNonQuery();
-
-                        conn.Close();
-
-
-                        scope.Complete();
+                        string sql4 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                        int qty_rec = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
 
 
-                    }
-
-                    ScanReceiveView view = new ModelViews.ScanReceiveView()
-                    {
-                        entity = ventity,
-                        doc_no = vdoc_no,
-                        set_no = vset_no,
-                        prod_code = scan.prod_code,
-                        qty = scan.scan_qty,
-                        line_no = vline_no
-
-                    };
-
-                    //return data to contoller
-                    return view;
-
-
-                }
-                else if (vscan_type == "PSC")
-                {
-
-                    string sql1 = "select prod_code , bar_code from mps_det_wc where entity = :p_entity and pcs_barcode = :p_pcs_barcode";
-                    ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_pcs_barcode", vscan_data)).FirstOrDefault();
-
-                    if (scan == null)
-                    {
-                        throw new Exception("PCS Barcode ไม่ถูกต้อง");
-                    }
-
-                    string sql2 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int qty_pdt = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
-
-                    string sql4 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int qty_rec = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
-
-
-                    if (scan.scan_qty > (qty_pdt - qty_rec))
-                    {
-                        throw new Exception("จำนวนรับ มากกว่า จำนวนส่งมอบ");
-                    }
-
-                    string sql3 = "select nvl(max(line_no),0)+1 from pd_det_whcf where pd_entity= :p_entity and doc_no=:p_doc_no";
-                    int vline_no = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
-
-                    // Insert into PD_DET_WHCF
-                    using (TransactionScope scope = new TransactionScope())
-                    {
-                        string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
-                        var dataConn = new OracleConnectionStringBuilder(strConn);
-                        OracleConnection conn = new OracleConnection(dataConn.ToString());
-
-                        conn.Open();
-
-
-                        OracleCommand oraCommand = conn.CreateCommand();
-                        OracleParameter[] param = new OracleParameter[]
+                        if (scan.scan_qty > (qty_pdt - qty_rec))
                         {
-                                new OracleParameter("p_entity", ventity),
-                                new OracleParameter("p_doc_no", vdoc_no),
-                                new OracleParameter("p_line_no", vline_no),
-                                new OracleParameter("p_prod_code", scan.prod_code),
-                                new OracleParameter("p_bar_code", scan.bar_code),
-                                new OracleParameter("p_qty", vscan_qty),
-                                new OracleParameter("p_cf_by", vuser_id),
-                                new OracleParameter("p_upd_by", vuser_id)
+                            throw new Exception("จำนวนรับ มากกว่า จำนวนส่งมอบ");
+                        }
+
+                        string sql3 = "select nvl(max(line_no),0)+1 from pd_det_whcf where pd_entity= :p_entity and doc_no=:p_doc_no";
+                        int vline_no = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
+
+                        // Insert into PD_DET_WHCF
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
+                            var dataConn = new OracleConnectionStringBuilder(strConn);
+                            OracleConnection conn = new OracleConnection(dataConn.ToString());
+
+                            conn.Open();
+
+
+                            OracleCommand oraCommand = conn.CreateCommand();
+                            OracleParameter[] param = new OracleParameter[]
+                            {
+                                    new OracleParameter("p_entity", ventity),
+                                    new OracleParameter("p_doc_no", vdoc_no),
+                                    new OracleParameter("p_line_no", vline_no),
+                                    new OracleParameter("p_prod_code", scan.prod_code),
+                                    new OracleParameter("p_bar_code", scan.bar_code),
+                                    new OracleParameter("p_set_no", vset_no),
+                                    new OracleParameter("p_qty", scan.scan_qty),
+                                    new OracleParameter("p_cf_by", vuser_id),
+                                    new OracleParameter("p_upd_by", vuser_id)
+                            };
+                            oraCommand.BindByName = true;
+                            oraCommand.Parameters.AddRange(param);
+                            oraCommand.CommandText = "insert into pd_det_whcf (pd_entity , doc_no , line_no , bar_code, prod_code , ref_set_no , qty_pdt_cf , cf_by , cf_date , upd_by , upd_date) values (:p_entity , :p_doc_no , :p_line_no , :p_bar_code, :p_prod_code , :p_set_no , :p_qty , :p_cf_by , sysdate , :p_upd_by , sysdate)";
+
+
+                            oraCommand.ExecuteNonQuery();
+
+                            conn.Close();
+
+
+                            scope.Complete();
+
+
+                        }
+
+                        ScanReceiveView view = new ModelViews.ScanReceiveView()
+                        {
+                            entity = ventity,
+                            doc_no = vdoc_no,
+                            set_no = vset_no,
+                            prod_code = scan.prod_code,
+                            qty = scan.scan_qty,
+                            line_no = vline_no
+
                         };
-                        oraCommand.BindByName = true;
-                        oraCommand.Parameters.AddRange(param);
-                        oraCommand.CommandText = "insert into pd_det_whcf (pd_entity , doc_no , line_no , bar_code, prod_code , ref_set_no , qty_pdt_cf , cf_by , cf_date , upd_by , upd_date) values (:p_entity , :p_doc_no , :p_line_no , :p_bar_code, :p_prod_code , '' , :p_qty , :p_cf_by , sysdate , :p_upd_by , sysdate)";
 
-
-                        oraCommand.ExecuteNonQuery();
-
-                        conn.Close();
-
-
-                        scope.Complete();
+                        //return data to contoller
+                        return view;
 
 
                     }
-
-                    ScanReceiveView view = new ModelViews.ScanReceiveView()
+                    else if (vscan_type == "PCS")
                     {
-                        entity = ventity,
-                        doc_no = vdoc_no,
-                        set_no = "",
-                        prod_code = scan.prod_code,
-                        qty = scan.scan_qty,
-                        line_no = vline_no
+
+                        string sql1 = "select prod_code , bar_code from mps_det_wc where entity = :p_entity and doc_no = :p_doc_no and pcs_barcode = :p_pcs_barcode";
+                        ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_pcs_barcode", vscan_data)).FirstOrDefault();
+
+                        if (scan == null)
+                        {
+                            throw new Exception("PCS Barcode ไม่ถูกต้อง");
+                        }
+
+                        string sql2 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                        int qty_pdt = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
+
+                        string sql4 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                        int qty_rec = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
 
 
-                    };
+                        if (vscan_qty > (qty_pdt - qty_rec))
+                        {
+                            throw new Exception("จำนวนรับ มากกว่า จำนวนส่งมอบ");
+                        }
 
-                    //return data to contoller
-                    return view;
+                        string sql3 = "select nvl(max(line_no),0)+1 from pd_det_whcf where pd_entity= :p_entity and doc_no=:p_doc_no";
+                        int vline_no = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
+
+                        // Insert into PD_DET_WHCF
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
+                            var dataConn = new OracleConnectionStringBuilder(strConn);
+                            OracleConnection conn = new OracleConnection(dataConn.ToString());
+
+                            conn.Open();
+
+
+                            OracleCommand oraCommand = conn.CreateCommand();
+                            OracleParameter[] param = new OracleParameter[]
+                            {
+                                    new OracleParameter("p_entity", ventity),
+                                    new OracleParameter("p_doc_no", vdoc_no),
+                                    new OracleParameter("p_line_no", vline_no),
+                                    new OracleParameter("p_prod_code", scan.prod_code),
+                                    new OracleParameter("p_bar_code", scan.bar_code),
+                                    new OracleParameter("p_qty", vscan_qty),
+                                    new OracleParameter("p_cf_by", vuser_id),
+                                    new OracleParameter("p_upd_by", vuser_id)
+                            };
+                            oraCommand.BindByName = true;
+                            oraCommand.Parameters.AddRange(param);
+                            oraCommand.CommandText = "insert into pd_det_whcf (pd_entity , doc_no , line_no , bar_code, prod_code , ref_set_no , qty_pdt_cf , cf_by , cf_date , upd_by , upd_date) values (:p_entity , :p_doc_no , :p_line_no , :p_bar_code, :p_prod_code , '' , :p_qty , :p_cf_by , sysdate , :p_upd_by , sysdate)";
+
+
+                            oraCommand.ExecuteNonQuery();
+
+                            conn.Close();
+
+
+                            scope.Complete();
+
+
+                        }
+
+                        ScanReceiveView view = new ModelViews.ScanReceiveView()
+                        {
+                            entity = ventity,
+                            doc_no = vdoc_no,
+                            set_no = "",
+                            prod_code = scan.prod_code,
+                            qty = vscan_qty,
+                            line_no = vline_no
+
+
+                        };
+
+                        //return data to contoller
+                        return view;
+                    }
+                    else
+                    {
+                        string sql1 = "select prod_code , bar_code from product where bar_code = :p_barcode";
+                        ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_bar_code", vscan_data)).FirstOrDefault();
+
+                        if (scan == null)
+                        {
+                            throw new Exception("Barcode ไม่ถูกต้อง");
+                        }
+
+                        string sql2 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                        int qty_pdt = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
+
+                        string sql4 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                        int qty_rec = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
+
+
+                        if (vscan_qty > (qty_pdt - qty_rec))
+                        {
+                            throw new Exception("จำนวนรับ มากกว่า จำนวนส่งมอบ");
+                        }
+
+                        string sql3 = "select nvl(max(line_no),0)+1 from pd_det_whcf where pd_entity= :p_entity and doc_no=:p_doc_no";
+                        int vline_no = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
+
+                        // Insert into PD_DET_WHCF
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
+                            var dataConn = new OracleConnectionStringBuilder(strConn);
+                            OracleConnection conn = new OracleConnection(dataConn.ToString());
+
+                            conn.Open();
+
+
+                            OracleCommand oraCommand = conn.CreateCommand();
+                            OracleParameter[] param = new OracleParameter[]
+                            {
+                                    new OracleParameter("p_entity", ventity),
+                                    new OracleParameter("p_doc_no", vdoc_no),
+                                    new OracleParameter("p_line_no", vline_no),
+                                    new OracleParameter("p_prod_code", scan.prod_code),
+                                    new OracleParameter("p_bar_code", scan.bar_code),
+                                    new OracleParameter("p_qty", vscan_qty),
+                                    new OracleParameter("p_cf_by", vuser_id),
+                                    new OracleParameter("p_upd_by", vuser_id)
+                            };
+                            oraCommand.BindByName = true;
+                            oraCommand.Parameters.AddRange(param);
+                            oraCommand.CommandText = "insert into pd_det_whcf (pd_entity , doc_no , line_no , bar_code, prod_code , ref_set_no , qty_pdt_cf , cf_by , cf_date , upd_by , upd_date) values (:p_entity , :p_doc_no , :p_line_no , :p_bar_code, :p_prod_code , '' , :p_qty , :p_cf_by , sysdate , :p_upd_by , sysdate)";
+
+
+                            oraCommand.ExecuteNonQuery();
+
+                            conn.Close();
+
+
+                            scope.Complete();
+
+
+                        }
+
+
+                        string sql5 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no";
+                        int total_qty_pdt = ctx.Database.SqlQuery<int>(sql5, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
+
+                        string sql6 = "select sum(qty_pdt_cf) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no";
+                        int total_qty_rec = ctx.Database.SqlQuery<int>(sql6, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
+
+
+                        // Send Mail
+                        if(total_qty_pdt == total_qty_rec)
+                        {
+                            SendMail(ventity , vdoc_no);
+                        }
+
+                        ScanReceiveView view = new ModelViews.ScanReceiveView()
+                        {
+                            entity = ventity,
+                            doc_no = vdoc_no,
+                            set_no = "",
+                            prod_code = scan.prod_code,
+                            qty = vscan_qty,
+                            line_no = vline_no
+
+                        };
+
+                        //return data to contoller
+                        return view;
+                    }
                 }
                 else
                 {
-                    string sql1 = "select prod_code , bar_code from product where bar_code = :p_barcode";
-                    ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_bar_code", vscan_data)).FirstOrDefault();
-
-                    if (scan == null)
-                    {
-                        throw new Exception("Barcode ไม่ถูกต้อง");
-                    }
-
-                    string sql2 = "select sum(qty_pdt) from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int qty_pdt = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
-
-                    string sql4 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int qty_rec = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", scan.prod_code)).FirstOrDefault();
-
-
-                    if (scan.scan_qty > (qty_pdt - qty_rec))
-                    {
-                        throw new Exception("จำนวนรับ มากกว่า จำนวนส่งมอบ");
-                    }
-
-                    string sql3 = "select nvl(max(line_no),0)+1 from pd_det_whcf where pd_entity= :p_entity and doc_no=:p_doc_no";
-                    int vline_no = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
-
-                    // Insert into PD_DET_WHCF
-                    using (TransactionScope scope = new TransactionScope())
-                    {
-                        string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
-                        var dataConn = new OracleConnectionStringBuilder(strConn);
-                        OracleConnection conn = new OracleConnection(dataConn.ToString());
-
-                        conn.Open();
-
-
-                        OracleCommand oraCommand = conn.CreateCommand();
-                        OracleParameter[] param = new OracleParameter[]
-                        {
-                                new OracleParameter("p_entity", ventity),
-                                new OracleParameter("p_doc_no", vdoc_no),
-                                new OracleParameter("p_line_no", vline_no),
-                                new OracleParameter("p_prod_code", scan.prod_code),
-                                new OracleParameter("p_bar_code", scan.bar_code),
-                                new OracleParameter("p_qty", vscan_qty),
-                                new OracleParameter("p_cf_by", vuser_id),
-                                new OracleParameter("p_upd_by", vuser_id)
-                        };
-                        oraCommand.BindByName = true;
-                        oraCommand.Parameters.AddRange(param);
-                        oraCommand.CommandText = "insert into pd_det_whcf (pd_entity , doc_no , line_no , bar_code, prod_code , ref_set_no , qty_pdt_cf , cf_by , cf_date , upd_by , upd_date) values (:p_entity , :p_doc_no , :p_line_no , :p_bar_code, :p_prod_code , '' , :p_qty , :p_cf_by , sysdate , :p_upd_by , sysdate)";
-
-
-                        oraCommand.ExecuteNonQuery();
-
-                        conn.Close();
-
-
-                        scope.Complete();
-
-
-                    }
-
                     ScanReceiveView view = new ModelViews.ScanReceiveView()
                     {
                         entity = ventity,
                         doc_no = vdoc_no,
                         set_no = "",
-                        prod_code = scan.prod_code,
-                        qty = vscan_qty,
-                        line_no = vline_no
+                        //prod_code = scan.prod_code,
+                        //qty = vscan_qty,
+                        //line_no = vline_no
 
                     };
 
                     //return data to contoller
                     return view;
                 }
-
 
             }
         }
@@ -300,7 +366,7 @@ namespace api.Services
 
                     oraCommand.BindByName = true;
                     oraCommand.Parameters.AddRange(param);
-                    oraCommand.CommandText = "delete pd_det_whcf  where entity = :p_entity and prod_code = :p_prod_code and doc_no =:p_doc_no and line_no = :p_line_no";
+                    oraCommand.CommandText = "delete pd_det_whcf  where pd_entity = :p_entity and prod_code = :p_prod_code and doc_no =:p_doc_no and line_no = :p_line_no";
                     oraCommand.ExecuteNonQuery();
 
 
@@ -329,6 +395,9 @@ namespace api.Services
                 //define model view
                 ScanReceiveDataView view = new ModelViews.ScanReceiveDataView()
                 {
+                    pageIndex = model.pageIndex - 1,
+                    itemPerPage = model.itemPerPage,
+                    totalItem = 0,
                     entity = ventity,
                     build_type = vbuild_type,
                     total_qty_pdt = 0,
@@ -341,7 +410,7 @@ namespace api.Services
                 {
                     if (vsend_type == "WAIT")
                     {
-                        string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mm') gen_date , sum(b.qty_pdt) qty_pdt " +
+                        string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
                             "from pd_mast a , pd_det b " +
                             "where a.pd_entity = b.pd_entity " +
                             "and a.doc_no = b.doc_no " +
@@ -353,11 +422,22 @@ namespace api.Services
 
                         List<ScanReceiveDataDetailView> send = ctx.Database.SqlQuery<ScanReceiveDataDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_date", vdoc_date), new OracleParameter("p_doc_no", vdoc_no+"%")).ToList();
 
+                        view.totalItem = send.Count;
+                        send = send.Skip(view.pageIndex * view.itemPerPage)
+                            .Take(view.itemPerPage)
+                            .ToList();
+
                         foreach (var x in send)
                         {
 
-                            string sql2 = "select to_char(max(req_date),'dd/mm/yyyy') from mps_det_wc where doc_no = :p_doc_no";
-                            string vreq_date = ctx.Database.SqlQuery<string>(sql2, new OracleParameter("p_doc_no", x.doc_no)).FirstOrDefault();
+                            //string sql2 = "select to_char(max(req_date),'dd/mm/yyyy') from mps_det_wc where doc_no = :p_doc_no";
+                            string sql2 = "select to_char(req_date,'dd/mm/yyyy') from por_mast where por_no = :p_por_no";
+                            string vreq_date = ctx.Database.SqlQuery<string>(sql2, new OracleParameter("p_por_no", x.plan_no)).FirstOrDefault();
+
+                            if(vreq_date == null)
+                            {
+                                vreq_date = "";
+                            }
 
                             string sql3 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where doc_no = :p_doc_no";
                             int vqty_rec = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_doc_no", x.doc_no)).FirstOrDefault();
@@ -388,7 +468,7 @@ namespace api.Services
                     }
                     else
                     {
-                        string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mm') gen_date , sum(b.qty_pdt) qty_pdt " +
+                        string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
                             "from pd_mast a , pd_det b " +
                             "where a.pd_entity = b.pd_entity " +
                             "and a.doc_no = b.doc_no " +
@@ -400,11 +480,18 @@ namespace api.Services
 
                         List<ScanReceiveDataDetailView> send = ctx.Database.SqlQuery<ScanReceiveDataDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_date", vdoc_date), new OracleParameter("p_doc_no", vdoc_no + "%")).ToList();
 
+                        view.totalItem = send.Count;
+                        send = send.Skip(view.pageIndex * view.itemPerPage)
+                            .Take(view.itemPerPage)
+                            .ToList();
+
                         foreach (var x in send)
                         {
 
-                            string sql2 = "select to_char(max(req_date),'dd/mm/yyyy') from mps_det_wc where doc_no = :p_doc_no";
-                            string vreq_date = ctx.Database.SqlQuery<string>(sql2, new OracleParameter("p_doc_no", x.doc_no)).FirstOrDefault();
+                            //string sql2 = "select to_char(max(req_date),'dd/mm/yyyy') from mps_det_wc where doc_no = :p_doc_no";
+                            //string vreq_date = ctx.Database.SqlQuery<string>(sql2, new OracleParameter("p_doc_no", x.doc_no)).FirstOrDefault();
+                            string sql2 = "select to_char(req_date,'dd/mm/yyyy') from por_mast where por_no = :p_por_no";
+                            string vreq_date = ctx.Database.SqlQuery<string>(sql2, new OracleParameter("p_por_no", x.plan_no)).FirstOrDefault();
 
                             string sql3 = "select nvl(sum(qty_pdt_cf),0) from pd_det_whcf where doc_no = :p_doc_no";
                             int vqty_rec = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_doc_no", x.doc_no)).FirstOrDefault();
@@ -441,6 +528,52 @@ namespace api.Services
 
                 //return data to contoller
                 return view;
+            }
+        }
+
+        public void SendMail(string entity, string doc_no)
+        {
+            using (var ctx = new ConXContext())
+            {
+
+                string sql1 = "select to_char(min(cf_date),'dd/mm/yyyy hh24:mi') start_date , to_char(max(cf_date),'dd/mm/yyyy hh24:mi') end_date from pd_det_whcf where pd_entity = :p_entity and doc_no = :p_doc_no";
+                ScanDataDateView vdate = ctx.Database.SqlQuery<ScanDataDateView>(sql1, new OracleParameter("p_entity", entity),new OracleParameter("p_doc_no", doc_no)).FirstOrDefault();
+
+                string sql2 = "select email_address from auth_function where function_id='WHCONFBUIDREC' and rownum = 1";
+                string vemail = ctx.Database.SqlQuery<string>(sql2).FirstOrDefault();
+
+                var fromAddress = new MailAddress("itjob@jaspalhome.com", "Production");
+                var toAddress = new MailAddress(vemail, "Admin");
+                string url = ConfigurationManager.AppSettings["urlDetail"];
+
+
+                string subject = "ยืนยันรับมอบสินค้า - ผลผลิตที่นอน (JIT : H10) เลขที่ : " + doc_no;
+                string body = "<html><body>Scan รับมอบเลขที่ : " + doc_no + "<br>"
+                            + "เริ่ม : " + vdate.start_date + "<br>"
+                            + "เสร็จ : " + vdate.end_date + "<br>"
+                            + "<a href=" + url + "> Click for Detail </a>"
+                            + "</body></html>";
+
+                var smtp = new SmtpClient
+                {
+                 
+                    Host = "mail.jaspalhome.com",
+                    Port = 25,
+                    //EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Credentials = new NetworkCredential("consign", "Consign"),
+                    Timeout = 20000
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    message.IsBodyHtml = true;
+                    smtp.Send(message);
+                }
             }
         }
     }

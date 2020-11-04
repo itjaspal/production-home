@@ -7,6 +7,9 @@ namespace api.ModelViews
 {
     public class ScanReceiveDataView
     {
+        public int pageIndex { get; set; }
+        public int totalItem { get; set; }
+        public int itemPerPage { get; set; }
         public string entity { get; set; }
         public string build_type { get; set; }
         public int total_qty_pdt { get; set; }
@@ -26,10 +29,13 @@ namespace api.ModelViews
         public int qty_rec { get; set; }
         public string doc_status { get; set; }
         public string user_id { get; set; }
+        public string plan_no { get; set; }
     }
 
     public class ScanReceiveDataSearchView
     {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
         public string entity { get; set; }
         public string doc_no { get; set; }
         public string doc_date { get; set; }
@@ -46,6 +52,7 @@ namespace api.ModelViews
         public string scan_data { get; set; }
         public int scan_qty { get; set; }
         public string user_id { get; set; }
+        public string build_type { get; set; }
     }
 
     public class ScanReceiveView
@@ -66,11 +73,24 @@ namespace api.ModelViews
         public int scan_qty { get; set; }
     }
 
-    public class ScanPcsData
+    public class ScanDataDateView
     {
+        public string start_date { get; set; }
+        public string end_date { get; set; }
+       
+    }
+
+    public class SendDataView
+    {
+        public string doc_no { get; set; }
+        public int line_no { get; set; }
         public string prod_code { get; set; }
-        public string bar_code { get; set; }
-        public int qty { get; set; }
+        public string prod_name { get; set; }
+        public string uom_code { get; set; }
+        public string qty_pdt { get; set; }
+        public string req_date { get; set; }
+        public string job_no { get; set; }
+        public string set_no { get; set; }
     }
 
 }

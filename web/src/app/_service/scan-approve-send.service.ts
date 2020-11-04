@@ -13,11 +13,11 @@ export class ScanApproveSendService {
   ) { }
 
   public async searchScanApproveSend(_model: ScanApproveSendSearchView) {
-    return await this.http.post<ScanApproveSendView>(environment.API_URL + 'scanapvsend/postSearchScanSend', _model).toPromise();
+    return await this.http.post<ScanApproveSendView>(environment.API_URL + 'scan-apvsend/postSearchScanSend', _model).toPromise();
   }
 
   public async ScanApproveSendNew(_model: ScanApproveAddView) {
-    return await this.http.post<ScanApproveView>(environment.API_URL + 'scanapvsend/postScanApvSendNew', _model).toPromise();
+    return await this.http.post<ScanApproveView>(environment.API_URL + 'scan-apvsend/postScanApvSendNew', _model).toPromise();
   }
   
 }

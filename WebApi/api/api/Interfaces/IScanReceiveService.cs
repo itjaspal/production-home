@@ -12,6 +12,7 @@ namespace api.Interfaces
         ScanReceiveDataView SearchDataScanReceive(ScanReceiveDataSearchView model);
         ScanReceiveView ScanReceiveAdd(ScanReceiveSearchView model);
         void ScanReceiveCancel(ScanReceiveView scan);
-        void ApproveReceive(ScanReceiveDataDetailView model);
+        void SendMail(string entity , string doc_no);
+        List<SendDataView> getProductDetail(string entity, string doc_no);
     }
 }

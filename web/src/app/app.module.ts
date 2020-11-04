@@ -171,6 +171,9 @@ import { ScanApproveSendCreateComponent } from './scan-approve-send/scan-approve
 import { ScanApproveSendAddComponent } from './scan-approve-send/scan-approve-send-add/scan-approve-send-add.component';
 import { ScanApproveSendCancelComponent } from './scan-approve-send/scan-approve-send-cancel/scan-approve-send-cancel.component';
 import { ScanApproveSendDetailComponent } from './scan-approve-send/scan-approve-send-detail/scan-approve-send-detail.component';
+import { ScanReceiveSearchComponent } from './scan-receive/scan-receive-search/scan-receive-search.component';
+import { ScanReceiveCreateComponent } from './scan-receive/scan-receive-create/scan-receive-create.component';
+import { ScanReceiveProductViewComponent } from './scan-receive/scan-receive-product-view/scan-receive-product-view.component';
 
 
 
@@ -368,6 +371,9 @@ import { ScanApproveSendDetailComponent } from './scan-approve-send/scan-approve
     ScanApproveSendAddComponent,
     ScanApproveSendCancelComponent,
     ScanApproveSendDetailComponent,
+    ScanReceiveSearchComponent,
+    ScanReceiveCreateComponent,
+    ScanReceiveProductViewComponent,
     
 
   
@@ -383,7 +389,8 @@ import { ScanApproveSendDetailComponent } from './scan-approve-send/scan-approve
     PrintInprocessDetailComponent,
     InprocessTagProductSearchComponent,
     ScanSendSetnoSearchComponent,
-    ScanApproveSendCreateComponent
+    ScanApproveSendCreateComponent,
+    ScanReceiveCreateComponent
   ],
   bootstrap: [AppComponent]
 })

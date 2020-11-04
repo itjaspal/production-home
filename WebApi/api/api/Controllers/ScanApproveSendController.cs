@@ -19,7 +19,7 @@ namespace api.Controllers
             apvsendService = new ScanApproveSendService();
         }
 
-        [Route("scanapvsend/postSearchScanSend")]
+        [Route("scan-apvsend/postSearchScanSend")]
         public HttpResponseMessage postSearchDataScanSend(ScanApproveSendSearchView model)
         {
             try
@@ -34,7 +34,7 @@ namespace api.Controllers
             }
         }
 
-        [Route("scanapvsend/postScanApvSendNew")]
+        [Route("scan-apvsend/postScanApvSendNew")]
         public HttpResponseMessage postScanApvSendNew(ScanApproveAddView model)
         {
             try
@@ -49,7 +49,7 @@ namespace api.Controllers
             }
         }
 
-        [Route("scanapvsend/postScanApvSendAdd")]
+        [Route("scan-apvsend/postScanApvSendAdd")]
         public HttpResponseMessage postScanApvSendAdd(ScanApproveAddView model)
         {
             try

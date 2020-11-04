@@ -55,6 +55,7 @@ import { ScanSendComponent } from '../scan-send/scan-send/scan-send.component';
 import { ProductionRecListDetailComponent } from '../production-rec-report/production-rec-list-detail/production-rec-list-detail.component';
 import { ProductionRecListComponent } from '../production-rec-report/production-rec-list/production-rec-list.component';
 import { ScanApproveSendSearchComponent } from '../scan-approve-send/scan-approve-send-search/scan-approve-send-search.component';
+import { ScanReceiveSearchComponent } from '../scan-receive/scan-receive-search/scan-receive-search.component';
 
 
 
@@ -154,11 +155,12 @@ const routes: Routes = [
       //Scan Approve Send
       { path: 'apvsend', component: ScanApproveSendSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
-
        //Production Receive Report
        { path: 'procRec', component: ProductionRecListComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
        { path: 'procRecDetail', component: ProductionRecListDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
 
+      //Scan Approve Send
+      { path: 'scanrec', component: ScanReceiveSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
        
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
