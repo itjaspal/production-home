@@ -36,8 +36,8 @@
                 <div class="col-5 col-lg-5">
   
                   <mat-form-field class="full-width">
-                    <input matInput placeholder="Set No." formControlName="set_no" name="set_no" #doc_no
-                      type="none" [(ngModel)]="searchModel.set_no">
+                    <input matInput placeholder="Set No." formControlName="set_no" name="set_no" #set_no
+                    (keydown.enter)="onQrEntered(set_no.value); set_no.value = ''"  type="none" [(ngModel)]="searchModel.set_no">
                   </mat-form-field>
   
   

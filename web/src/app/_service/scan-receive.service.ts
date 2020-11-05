@@ -23,4 +23,9 @@ export class ScanReceiveService {
   public async ScanReceiveCancel(params) {
     return await this.http.post(environment.API_URL + 'scan-receive/postScanReceiveCancel',params).toPromise();
   }
+
+  public async getProductDetail(_entity: string , _docNo: string) {
+    return await this.http.get(environment.API_URL + 'scan-receive/getProductDetail/' + _entity+'/'+_docNo).toPromise(); 
+
+  } 
 }

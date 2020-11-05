@@ -71,6 +71,22 @@ namespace api.Controllers
             }
         }
 
+        [Route("scan-receive/getProductDetail/{entity}/{doc_no}")]
+        public HttpResponseMessage getProductDetail(string entity, string doc_no)
+        {
+            try
+            {
+                var result = receiveService.getProductDetail(entity, doc_no);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+            
+        }
+
 
         //[Route("scan-receive/postApproveReceive")]
         //public HttpResponseMessage postApproveReceive(ScanReceiveDataDetailView model)

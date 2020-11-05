@@ -72,3 +72,9 @@ export class ScanReceiveFinDataView
     public prod_code: string = "";
     public qty: number = 0;
 }
+
+export class SendProductSearch
+{
+    public entity: string = AppSetting.entity;
+    public doc_no: string = "";
+}

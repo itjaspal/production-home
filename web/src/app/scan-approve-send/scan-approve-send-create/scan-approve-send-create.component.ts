@@ -59,6 +59,29 @@ export class ScanApproveSendCreateComponent implements OnInit {
     });
   }
 
+  async onQrEntered(_set_no: string) {
+
+    if (_set_no == null || _set_no == "") {
+      return;
+    }
+
+    var datePipe = new DatePipe("en-US");
+   
+    this.searchModel.user_id = this.user.username;
+    this.searchModel.build_type = this.user.branch.entity_code;
+    this.searchModel.fin_date = datePipe.transform(this.data.fin_date, 'dd/MM/yyyy').toString();
+    this.searchModel.doc_no = this.model.doc_no;
+    
+    console.log(this.searchModel);
+    
+    this.datas = await this._scanapvSendSvc.ScanApproveSendNew(this.searchModel);
+    console.log(this.datas.doc_no)
+    this.model.doc_no = this.datas.doc_no;
+    this.add(this.datas);
+    
+    
+    this.searchModel.set_no = "";
+  }
 
   async save() {
 

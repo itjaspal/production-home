@@ -13,6 +13,65 @@ namespace api.Services
 {
     public class ScanApproveSendService : IScanApproveSendService
     {
+        public ScanApproveProductView getProductDetail(string entity, string doc_no, string wc_code)
+        {
+            using (var ctx = new ConXContext())
+            {
+                int vtotal_qty_ord = 0;
+                int vtotal_qty_pdt = 0;
+                int vtotal_qty_wait = 0;
+
+                //define model view
+                ScanApproveProductView view = new ModelViews.ScanApproveProductView()
+                {
+                    doc_no = doc_no,
+                    total_qty_ord = 0,
+                    total_qty_pdt = 0,
+                    total_qty_wait = 0,
+                    datas = new List<ModelViews.SendApproveProductDetailView>()
+                };
+
+
+                string sql1 = "select a.line_no , a.prod_code , a.por_no job_no , b.prod_name , b.qty_ord , b.qty_pdt , to_char(c.req_date,'dd/mm/yyyy') req_date from pd_det a , por_det b , por_mast c  where a.pd_entity = b.pd_entity and a.prod_code = b.prod_code and a.por_no = b.por_no and b.pd_entity = c.pd_entity and b.por_no = c.por_no and a.pd_entity= :p_entity and a.doc_no = :p_doc_no";
+                List<SendApproveProductDetailView> send = ctx.Database.SqlQuery<SendApproveProductDetailView>(sql1, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).ToList();
+
+                
+                
+                foreach (var x in send)
+                {
+                    // Find Qty Wait
+                    string sql2 = "select count(*) from mps_det_wc where entity = :p_entity and  por_no= :p_por_no and prod_code = :p_prod_code and wc_code= :p_wc_code and doc_status is null";
+                    int vqty_wait = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", x.job_no), new OracleParameter("p_prod_code", x.prod_code),  new OracleParameter("p_wc_code", wc_code)).FirstOrDefault();
+
+                   
+                    view.datas.Add(new ModelViews.SendApproveProductDetailView()
+                    {
+
+                        line_no = x.line_no,
+                        prod_code = x.prod_code,
+                        prod_name = x.prod_name,
+                        qty_ord = x.qty_ord,
+                        qty_pdt = x.qty_pdt,
+                        qty_wait = vqty_wait,
+                        req_date = x.req_date,
+                        job_no = x.job_no,
+                       
+                    });
+
+                    vtotal_qty_ord = vtotal_qty_ord + x.qty_ord;
+                    vtotal_qty_pdt = vtotal_qty_pdt + x.qty_pdt;
+                    vtotal_qty_wait = vtotal_qty_wait + vqty_wait;
+
+                }
+                view.total_qty_ord = vtotal_qty_ord;
+                view.total_qty_pdt = vtotal_qty_pdt;
+                view.total_qty_wait = vtotal_qty_wait;
+
+                return view;
+
+            }
+        }
+
         public ScanApproveFinView ScanApvSendAdd(ScanApproveAddView model)
         {
             using (var ctx = new ConXContext())
@@ -177,11 +236,12 @@ namespace api.Services
                                 new OracleParameter("p_entity", ventity),
                                 new OracleParameter("p_set_no", vset_no),
                                 new OracleParameter("p_fin_date", vfin_date),
+                                 new OracleParameter("p_ref_no", mps.ref_no),
                         };
 
                         oraCommandbar.BindByName = true;
                         oraCommandbar.Parameters.AddRange(parambar);
-                        oraCommandbar.CommandText = "update pkg_barcode set ref_pd_docno = :p_doc_no , build_type = 'HMJIT' where entity = :p_entity and pkg_barcode_set = :p_set_no and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy')";
+                        oraCommandbar.CommandText = "update pkg_barcode set ref_pd_docno = :p_doc_no , doc_no = :p_ref_no, build_type = 'HMJIT' where entity = :p_entity and pkg_barcode_set = :p_set_no and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy')";
 
                         oraCommandbar.ExecuteNonQuery();
 
@@ -245,7 +305,7 @@ namespace api.Services
                 if (vbuild_type == "HMJIT")
                 {
                     string sql1 = "select entity ,tran_no , tran_date , wc_code  , prod_code , bar_code , to_char(fin_date,'dd/mm/yyyy') fin_date from pkg_barcode where entity = :p_entity and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy') and pkg_barcode_set = :p_set_no and wc_code = :p_wc_code and ref_pd_docno is not null";
-                    SetDataView set_no = ctx.Database.SqlQuery<SetDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_fin_date", vfin_date), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
+                    SetDataView set_no = ctx.Database.SqlQuery<SetDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_fin_date", vfin_date), new OracleParameter("p_set_no", vset_no), new OracleParameter("p_wc_code", vwc_code)).FirstOrDefault();
 
                     if (set_no == null)
                     {
@@ -269,7 +329,7 @@ namespace api.Services
                         conn.Open();
 
 
-                        string sql6 = "select qty_odt from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code and por_no = :p_por_no and plan_no = :p_plan_no";
+                        string sql6 = "select qty_pdt from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no and prod_code = :p_prod_code and por_no = :p_por_no and plan_no = :p_plan_no";
                         int chkqty = ctx.Database.SqlQuery<int>(sql6, new OracleParameter("p_entity", mps.po_entity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_prod_code", mps.prod_code), new OracleParameter("p_por_no", mps.por_no), new OracleParameter("p_plan_no", mps.ref_no)).FirstOrDefault();
 
                         if (chkqty > vqty)
@@ -314,6 +374,27 @@ namespace api.Services
                             oraCommandpd.ExecuteNonQuery();
                         }
 
+
+                        //Check PD_MAST
+                        string sql5 = "select doc_no from pd_det where pd_entity = :p_entity and doc_no = :p_doc_no";
+                        string pd_det = ctx.Database.SqlQuery<string>(sql5, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no)).FirstOrDefault();
+                        
+                        if(pd_det == null)
+                        {
+                            OracleCommand oraCommandpdmast = conn.CreateCommand();
+                            OracleParameter[] parampdmast = new OracleParameter[]
+                            {
+                                new OracleParameter("p_entity",  mps.po_entity),
+                                new OracleParameter("p_doc_no", vdoc_no),
+                                
+                            };
+
+                            oraCommandpdmast.BindByName = true;
+                            oraCommandpdmast.Parameters.AddRange(parampdmast);
+                            oraCommandpdmast.CommandText = "delete pd_mast where pd_entity = :p_entity and doc_no = :p_doc_no";
+
+                            oraCommandpdmast.ExecuteNonQuery();
+                        }
 
                         //Update POR_DET - PO
                         OracleCommand oraCommandpo = conn.CreateCommand();
@@ -668,11 +749,12 @@ namespace api.Services
                                 new OracleParameter("p_entity", ventity),
                                 new OracleParameter("p_set_no", vset_no),
                                 new OracleParameter("p_fin_date", vfin_date),
+                                new OracleParameter("p_ref_no", mps.ref_no),
                         };
 
                         oraCommandbar.BindByName = true;
                         oraCommandbar.Parameters.AddRange(parambar);
-                        oraCommandbar.CommandText = "update pkg_barcode set ref_pd_docno = :p_doc_no , build_type = 'HMJIT' where entity = :p_entity and pkg_barcode_set = :p_set_no and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy')";
+                        oraCommandbar.CommandText = "update pkg_barcode set ref_pd_docno = :p_doc_no , doc_no = :p_ref_no , build_type = 'HMJIT' where entity = :p_entity and pkg_barcode_set = :p_set_no and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy')";
 
                         oraCommandbar.ExecuteNonQuery();
 
@@ -793,39 +875,27 @@ namespace api.Services
                     else
                     {
                         string sql = "select entity , req_date , pdjit_grp , wc_code , doc_no  " +
-                            //"(select count(*) from pkg_barcode c " +
-                            //"where c.ref_pd_docno = doc_no" +
-                            //"and c.entity = entity " +
-                            //"and trunc(c.tran_date) = trunc(req_date) " +
-                            //"and c.wc_code = wc_code) tot_qty " +
-                            //"(select count(distinct a.pkg_barcode_set) " +
-                            //"from pkg_barcode a " +
-                            //"where a.ref_pd_docno = doc_no " +
-                            //"and a.entity = entity " +
-                            //"and trunc(a.tran_date) = trunc(req_date) " +
-                            //"and a.wc_code = wc_code) tot_set " +
                         "from mps_det_wc " +
                         "where entity = :p_entity " +
-                        //"and mps_st = 'Y' " +
-                        //"and (build_type in ('HMJIT','') or build_type is null) " +
+                        "and mps_st = 'Y' " +
+                        "and (build_type in ('HMJIT','') or build_type is null) " +
                         "and doc_no like :p_doc_no " +
                         "and trunc(fin_date) = to_date(:p_fin_date,'dd/mm/yyyy') " +
                         "and wc_code in (select dept_code from auth_function where function_id = 'PDOPTHM' and doc_code = 'Y' and user_id = :p_user_id) " +
-                        //"and (entity , req_date , wc_code , prod_code , doc_no) in " +
-                        //    "(select b.entity , b.tran_date , b.wc_code , b.prod_code , b.ref_pd_docno " +
-                        //    "from pkg_barcode b " +
-                        //    "where b.wc_code = wc_code " +
-                        //    "and b.tran_date = req_date " +
-                        //    "and b.prod_code = prod_code " +
-                        //    "and (b.ref_pd_docno is not null or b.ref_pd_docno <> '')) " +
                         "group by entity , req_date , pdjit_grp , wc_code , doc_no";
 
-                        List<ScanApproveSendDataView> send = ctx.Database.SqlQuery<ScanApproveSendDataView>(sql, new OracleParameter("p_entity", "H10"), new OracleParameter("p_fin_date", "28/10/2020"), new OracleParameter("p_user_id", "IT"), new OracleParameter("p_doc_no", "P%") ).ToList();
+                        List<ScanApproveSendDataView> send = ctx.Database.SqlQuery<ScanApproveSendDataView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no+"%") ,new OracleParameter("p_fin_date", vfin_date), new OracleParameter("p_user_id", vuser)).ToList();
 
                         foreach (var x in send)
                         {
                             string sqls = "select doc_status from pd_mast where doc_no = :p_doc_no";
                             string status = ctx.Database.SqlQuery<string>(sqls, new OracleParameter("p_doc_no", x.doc_no)).FirstOrDefault();
+
+                            string sql1 = "select count(distinct pkg_barcode_set)  from pkg_barcode where entity = :p_entity and ref_pd_docno = :p_doc_no and trunc(tran_date) = :p_req_date  and wc_code = :p_wc_code";
+                            int vset_qty = ctx.Database.SqlQuery<int>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.doc_no), new OracleParameter("p_req_date", x.req_date), new OracleParameter("p_wc_code", x.wc_code)).FirstOrDefault();
+
+                            string sql2 = "select count(*) from pkg_barcode where entity = :p_entity and ref_pd_docno = :p_doc_no and trunc(tran_date) = :p_req_date and wc_code = :p_wc_code";
+                            int vtot_qty = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.doc_no), new OracleParameter("p_req_date", x.req_date), new OracleParameter("p_wc_code", x.wc_code)).FirstOrDefault();
 
                             view.datas.Add(new ModelViews.ScanApproveSendDataView()
                             {
@@ -833,14 +903,14 @@ namespace api.Services
                                 pdjit_grp = x.pdjit_grp,
                                 wc_code = x.wc_code,
                                 doc_no = x.doc_no,
-                                set_qty = x.set_qty,
-                                tot_qty = x.tot_qty,
+                                set_qty = vset_qty,
+                                tot_qty = vtot_qty,
                                 status = "ส่งมอบแล้ว",
                                 doc_status = status
 
                             });
-                            total_qty = total_qty + x.tot_qty;
-                            total_set = total_set + x.set_qty;
+                            total_qty = total_qty + vtot_qty;
+                            total_set = total_set + vset_qty;
                         }
 
                         view.total_qty = total_qty;

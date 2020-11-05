@@ -28,7 +28,8 @@ export class ScanReceiveCreateComponent implements OnInit {
     private _actRoute: ActivatedRoute,
     private _scanRecSvc: ScanReceiveService,
     private cdr: ChangeDetectorRef,
-    private _dll: DropdownlistService,) { }
+    private _dll: DropdownlistService,
+    ) { }
 
     public validationForm: FormGroup;
     public user: any;

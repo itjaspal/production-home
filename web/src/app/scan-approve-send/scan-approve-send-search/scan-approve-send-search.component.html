@@ -120,24 +120,24 @@
                   <th style="width: 10px"></th>
                 </tr>
                 <tr *ngFor="let x of data.datas; let i = index;">
-                  <td>{{x.req_date | date: 'dd/MM/yyyy'}}</td>
-                  <td>{{x.pdjit_grp}}</td>
-                  <td>{{x.wc_code}}</td>
-                  <td>{{x.doc_no}}</td>
-                  <td>{{x.set_qty}}</td>
-                  <td>{{x.tot_qty}}</td>
-                  <td>{{x.status}}</td>
+                  <td class="text-center">{{x.req_date | date: 'dd/MM/yyyy'}}</td>
+                  <td class="text-center">{{x.pdjit_grp}}</td>
+                  <td class="text-center">{{x.wc_code}}</td>
+                  <td class="text-center">{{x.doc_no}}</td>
+                  <td class="text-center">{{x.set_qty}}</td>
+                  <td class="text-center">{{x.tot_qty}}</td>
+                  <td class="text-center">{{x.status}}</td>
                   <td><button mat-icon-button [matMenuTriggerFor]="appMenu1">
                       <mat-icon class="material-icons">more_horiz</mat-icon>
                     </button>
                     <mat-menu #appMenu1="matMenu">
-                      <button mat-menu-item (click)="cancel(i,x)" action *ngIf="(x.doc_status=='PAL')">
+                      <button mat-menu-item (click)="openScanSendCancel(x.doc_no,searchModel.fin_date,x.wc_code)" action *ngIf="(x.doc_status=='PAL')">
                         <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต</span>
                       </button>
-                      <button mat-menu-item (click)="cancel(i,x)" action *ngIf="(x.doc_status=='PAL')">
+                      <button mat-menu-item (click)="openScanSendAdd(x.doc_no,searchModel.fin_date,x.wc_code)" action *ngIf="(x.doc_status=='PAL')">
                         <mat-icon class="material-icons">cancel</mat-icon> <span>เพิ่มรายการส่งมอบ</span>
                       </button>
-                      <button mat-menu-item (click)="cancel(i,x)">
+                      <button mat-menu-item (click)="openProductDetail(x.doc_no , x.wc_code)">
                         <mat-icon class="material-icons">cancel</mat-icon> <span>รายละเอียดสินค้า</span>
                       </button> 
                     </mat-menu>

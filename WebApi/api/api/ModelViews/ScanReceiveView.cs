@@ -83,14 +83,27 @@ namespace api.ModelViews
     public class SendDataView
     {
         public string doc_no { get; set; }
+        public int total_item { get; set; }
+        public int total_qty { get; set; }
+        public List<SendDataDetailView> datas { get; set; }
+    }
+
+    public class SendDataDetailView
+    {
         public int line_no { get; set; }
         public string prod_code { get; set; }
         public string prod_name { get; set; }
         public string uom_code { get; set; }
-        public string qty_pdt { get; set; }
+        public int qty_pdt { get; set; }
         public string req_date { get; set; }
         public string job_no { get; set; }
         public string set_no { get; set; }
+    }
+
+    public class SendSetNoView
+    {
+        public string set_no { get; set; }
+        public int qty { get; set; }
     }
 
 }

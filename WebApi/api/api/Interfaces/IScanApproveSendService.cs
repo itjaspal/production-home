@@ -13,5 +13,6 @@ namespace api.Interfaces
         ScanApproveFinView ScanApvSendNew(ScanApproveAddView model);
         ScanApproveFinView ScanApvSendAdd(ScanApproveAddView model);
         ScanApproveFinView ScanApvSendCancel(ScanApproveAddView model);
+        ScanApproveProductView getProductDetail(string entity, string doc_no , string wc_code);
     }
 }

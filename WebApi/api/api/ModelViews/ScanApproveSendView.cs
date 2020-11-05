@@ -89,5 +89,25 @@ namespace api.ModelViews
         public string wc_code { get; set; }
     }
 
+    public class ScanApproveProductView
+    {
+        public string doc_no { get; set; }
+        public int total_qty_ord { get; set; }
+        public int total_qty_pdt { get; set; }
+        public int total_qty_wait { get; set; }
+        public List<SendApproveProductDetailView> datas { get; set; }
+    }
 
+    public class SendApproveProductDetailView
+    {
+        public int line_no { get; set; }
+        public string prod_code { get; set; }
+        public string prod_name { get; set; }
+        public string req_date { get; set; }
+        public string job_no { get; set; }
+        public int qty_ord { get; set; }
+        public int qty_pdt { get; set; }
+        public int qty_wait { get; set; }
+       
+    }
 }

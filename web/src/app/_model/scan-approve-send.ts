@@ -69,3 +69,10 @@ export class ScanApproveFinDataView
     public prod_name : string = "";  
     public fin_date : string = "";  
 }
+
+export class SendApproveProductSearch
+{
+    public entity: string = AppSetting.entity;
+    public doc_no: string = "";
+    public wc_code: string = "";
+}

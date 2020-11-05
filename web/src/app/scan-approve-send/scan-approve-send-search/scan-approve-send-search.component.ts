@@ -12,6 +12,9 @@ import { MessageService } from '../../_service/message.service';
 import { ScanApproveSendService } from '../../_service/scan-approve-send.service';
 import { ScanApproveSendCreateComponent } from '../scan-approve-send-create/scan-approve-send-create.component';
 import * as moment from 'moment';
+import { ScanApproveSendCancelComponent } from '../scan-approve-send-cancel/scan-approve-send-cancel.component';
+import { ScanApproveSendAddComponent } from '../scan-approve-send-add/scan-approve-send-add.component';
+import { ScanApproveSendDetailComponent } from '../scan-approve-send-detail/scan-approve-send-detail.component';
 
 @Component({
   selector: 'app-scan-approve-send-search',
@@ -117,6 +120,72 @@ export class ScanApproveSendSearchComponent implements OnInit {
     })
   }
 
+  openScanSendCancel(p_doc_no : string,p_fin_date: string , p_wc_code:string, _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(ScanApproveSendCancelComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        fin_date: p_fin_date,
+        doc_no :p_doc_no,
+        wc_code :p_wc_code
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
+  }
+
+  openScanSendAdd(p_doc_no : string,p_fin_date: string , p_wc_code:string, _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(ScanApproveSendAddComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        fin_date: p_fin_date,
+        doc_no :p_doc_no,
+        wc_code :p_wc_code
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
+  }
+
+  openProductDetail(p_doc_no: string , p_wc_code: string  , _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(ScanApproveSendDetailComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        doc_no: p_doc_no,
+        entity:this.searchModel.entity,
+        wc_code :p_wc_code
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
+  }
+
   radioTypeChange(value) {
     this.searchModel.send_type = value;
     
@@ -126,7 +195,7 @@ export class ScanApproveSendSearchComponent implements OnInit {
 
   cancel(_index,scan)
   {
-
+    console.log(scan);
   }
 
   close() {

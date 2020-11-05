@@ -15,39 +15,59 @@ namespace api.Services
 {
     public class ScanReceiveService : IScanReceiveService
     {
-        public List<SendDataView> getProductDetail(string entity, string doc_no)
+        public SendDataView getProductDetail(string entity, string doc_no)
         {
             using (var ctx = new ConXContext())
             {
-                string sql1 = "select a.line_no , a.prod_code , a.qty_pdt , a.por_no job_no , b.prod_tname prod_name , b.uom_code , to_char(c.req_date,'dd/mm/yyyy') req_date from pd_det a , product b , por_mast c where a.prod_code = b.prod_code and a.pd_entity = c.pd_entity and a.plan_no = c.por_no and a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
-                List<SendDataView> send = ctx.Database.SqlQuery<SendDataView>(sql1, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).ToList();
+                int vtotal_qty = 0;
 
-                List<SendDataView> sendViews = new List<SendDataView>();
-               
+                //define model view
+                SendDataView view = new ModelViews.SendDataView()
+                {
+                    doc_no = doc_no,
+                    total_item = 0,
+                    total_qty = 0,
+                    datas = new List<ModelViews.SendDataDetailView>()
+                };
+
+                
+                string sql1 = "select a.line_no , a.prod_code , a.qty_pdt , a.por_no job_no , b.prod_tname prod_name , b.uom_code , to_char(c.req_date,'dd/mm/yyyy') req_date from pd_det a , product b , por_mast c where a.prod_code = b.prod_code and a.pd_entity = c.pd_entity and a.plan_no = c.por_no and a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
+                List<SendDataDetailView> send = ctx.Database.SqlQuery<SendDataDetailView>(sql1, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).ToList();
+
+                view.total_item = send.Count;
+
+                string vset_no = "";
 
                 foreach (var x in send)
                 {
                     // Find Set No.
+                    string sql2 = "select to_char(pkg_barcode_set) set_no , count(*) qty from pkg_barcode where entity = :p_entity and por_no = :p_por_no and ref_pd_docno = :p_doc_no and prod_code = :p_prod_code group by pkg_barcode_set order by pkg_barcode_set";
+                    List<SendSetNoView> set = ctx.Database.SqlQuery<SendSetNoView>(sql2, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", x.job_no), new OracleParameter("p_doc_no", doc_no), new OracleParameter("p_prod_code", x.prod_code)).ToList();
 
-
-                    SendDataView view = new SendDataView()
+                    foreach(var i in set)
                     {
-                       
+                        vset_no = vset_no + i.set_no + "(" + i.qty + ") ,";
+                    }
+
+                    view.datas.Add(new ModelViews.SendDataDetailView()
+                    {
+
                         line_no = x.line_no,
                         prod_code = x.prod_code,
                         prod_name = x.prod_name,
                         uom_code = x.uom_code,
                         qty_pdt = x.qty_pdt,
                         req_date = x.req_date,
-                        job_no = x.job_no
-                        
+                        job_no = x.job_no,
+                        set_no = vset_no
+                    });
 
-                    };
-
-                    sendViews.Add(view);
+                    vtotal_qty = vtotal_qty + x.qty_pdt;
+                   
                 }
+                view.total_qty = vtotal_qty;
 
-                return sendViews;
+                return view;
 
             }
         }

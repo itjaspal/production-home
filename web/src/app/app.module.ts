@@ -390,7 +390,11 @@ import { ScanReceiveProductViewComponent } from './scan-receive/scan-receive-pro
     InprocessTagProductSearchComponent,
     ScanSendSetnoSearchComponent,
     ScanApproveSendCreateComponent,
-    ScanReceiveCreateComponent
+    ScanReceiveCreateComponent,
+    ScanReceiveProductViewComponent,
+    ScanApproveSendCancelComponent,
+    ScanApproveSendAddComponent,
+    ScanApproveSendDetailComponent
   ],
   bootstrap: [AppComponent]
 })

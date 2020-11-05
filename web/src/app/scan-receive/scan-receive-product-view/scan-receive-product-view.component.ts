@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SendProductSearch } from '../../_model/scan-receive';
+import { AuthenticationService } from '../../_service/authentication.service';
+import { DropdownlistService } from '../../_service/dropdownlist.service';
+import { MessageService } from '../../_service/message.service';
+import { ScanReceiveService } from '../../_service/scan-receive.service';
 
 @Component({
   selector: 'app-scan-receive-product-view',
@@ -7,9 +15,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScanReceiveProductViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<any>,
+    @Inject(MAT_DIALOG_DATA) public data: SendProductSearch,
+    private _fb: FormBuilder,
+    private _authSvc: AuthenticationService,
+    private _dialog: MatDialog,
+    private _msgSvc: MessageService,
+    private _router: Router,
+    private _actRoute: ActivatedRoute,
+    private _scanRecSvc: ScanReceiveService,
+    private cdr: ChangeDetectorRef,
+    private _dll: DropdownlistService,) { }
 
-  ngOnInit() {
+
+  public datas: any = {};
+
+  async ngOnInit() {
+    console.log(this.data.doc_no);
+    console.log(this.data.entity);
+
+    this.datas =  await this._scanRecSvc.getProductDetail(this.data.entity,this.data.doc_no);
+
+    console.log(this.datas);
+  }
+
+  close() { 
+    this.dialogRef.close();
   }
 
 }

@@ -10,6 +10,7 @@ import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
 import { ScanReceiveService } from '../../_service/scan-receive.service';
 import { ScanReceiveCreateComponent } from '../scan-receive-create/scan-receive-create.component';
+import { ScanReceiveProductViewComponent } from '../scan-receive-product-view/scan-receive-product-view.component';
 
 @Component({
   selector: 'app-scan-receive-search',
@@ -105,11 +106,33 @@ export class ScanReceiveSearchComponent implements OnInit {
 
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result.length > 0) {
-        //this.add_prod(result);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
+  }
+
+  openProductDetail(p_entity : string ,p_doc_no: string  , _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(ScanReceiveProductViewComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        doc_no: p_doc_no,
+        entity:p_entity
+       
       }
-    })
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
   }
 
   radioTypeChange(value) {
