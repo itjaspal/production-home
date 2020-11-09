@@ -268,6 +268,7 @@
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PrintInProcessTagController.cs" />
     <Compile Include="Controllers\PrintRawTagController.cs" />
+    <Compile Include="Controllers\ProductDefectController.cs" />
     <Compile Include="Controllers\ProductionRecController.cs" />
     <Compile Include="Controllers\ScanApproveSendController.cs" />
     <Compile Include="Controllers\ScanReceiveController.cs" />
@@ -287,6 +288,7 @@
     <Compile Include="Interfaces\IMenuService.cs" />
     <Compile Include="Interfaces\IPrintInProcessTagService.cs" />
     <Compile Include="Interfaces\IPrintRawTagService.cs" />
+    <Compile Include="Interfaces\IProductDefectService.cs" />
     <Compile Include="Interfaces\IProductionRecService.cs" />
     <Compile Include="Interfaces\IScanApproveSendService.cs" />
     <Compile Include="Interfaces\IScanReceiveService.cs" />
@@ -302,6 +304,7 @@
     <Compile Include="ModelViews\MasterMenuView.cs" />
     <Compile Include="ModelViews\PrintInProcessTagView.cs" />
     <Compile Include="ModelViews\PrintRawTagView.cs" />
+    <Compile Include="ModelViews\ProductDefectView.cs" />
     <Compile Include="ModelViews\ProductionRecView.cs" />
     <Compile Include="ModelViews\ScanApproveSendView.cs" />
     <Compile Include="ModelViews\ScanReceiveView.cs" />
@@ -316,6 +319,7 @@
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\PrintInProcessTagService.cs" />
     <Compile Include="Services\PrintRawTagService.cs" />
+    <Compile Include="Services\ProductDefectService.cs" />
     <Compile Include="Services\ProductionRecService.cs" />
     <Compile Include="Services\ScanApproveSendService.cs" />
     <Compile Include="Services\ScanReceiveService.cs" />

@@ -174,6 +174,9 @@ import { ScanApproveSendDetailComponent } from './scan-approve-send/scan-approve
 import { ScanReceiveSearchComponent } from './scan-receive/scan-receive-search/scan-receive-search.component';
 import { ScanReceiveCreateComponent } from './scan-receive/scan-receive-create/scan-receive-create.component';
 import { ScanReceiveProductViewComponent } from './scan-receive/scan-receive-product-view/scan-receive-product-view.component';
+import { ProductDefectSearchComponent } from './product-defect/product-defect-search/product-defect-search.component';
+import { ProductDefectQcEntryComponent } from './product-defect/product-defect-qc-entry/product-defect-qc-entry.component';
+import { ProductDefectQcCuttingComponent } from './product-defect/product-defect-qc-cutting/product-defect-qc-cutting.component';
 
 
 
@@ -374,6 +377,9 @@ import { ScanReceiveProductViewComponent } from './scan-receive/scan-receive-pro
     ScanReceiveSearchComponent,
     ScanReceiveCreateComponent,
     ScanReceiveProductViewComponent,
+    ProductDefectSearchComponent,
+    ProductDefectQcEntryComponent,
+    ProductDefectQcCuttingComponent,
     
 
   
