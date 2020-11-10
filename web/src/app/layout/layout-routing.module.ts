@@ -56,6 +56,7 @@ import { ProductionRecListDetailComponent } from '../production-rec-report/produ
 import { ProductionRecListComponent } from '../production-rec-report/production-rec-list/production-rec-list.component';
 import { ScanApproveSendSearchComponent } from '../scan-approve-send/scan-approve-send-search/scan-approve-send-search.component';
 import { ScanReceiveSearchComponent } from '../scan-receive/scan-receive-search/scan-receive-search.component';
+import { ProductDefectSearchComponent } from '../product-defect/product-defect-search/product-defect-search.component';
 
 
 
@@ -150,6 +151,9 @@ const routes: Routes = [
 
       //Scan Send
       { path: 'scansend', component: ScanSendComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+
+      //Defect
+      { path: 'defect', component: ProductDefectSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
       
       //Scan Approve Send

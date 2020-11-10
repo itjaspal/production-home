@@ -1,3 +1,175 @@
-<p>
-  product-defect-search works!
-</p>
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>Scan บันทึกยืนยันส่งมอบเข้าคลังสินค้า</h6>
+    </mat-card-title>
+
+    <mat-card-content class="no-margin">
+
+      <mat-card>
+        <mat-card-content>
+
+          <form [formGroup]="validationForm">
+
+            <div class="row card-table-body">
+              <div class="col-lg-3 col-sm-4 col-12">
+                <mat-form-field class="full-width">
+                  <input #doc_date matInput [matDatepicker]="picker" placeholder="JIT Date"
+                    [(ngModel)]="searchModel.req_date" formControlName="req_date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+
+              <div class="col-lg-3 col-sm-4 col-12">
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Order No." formControlName="por_no" name="por_no" #por_no
+                    type="none" [(ngModel)]="searchModel.por_no">
+                </mat-form-field>
+
+
+              </div>
+              
+
+
+
+          
+            
+
+
+              <div class="col-2 col-lg-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="search()"
+                    [disabled]="!searchModel.req_date" >
+                    <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                  </button>
+                </mat-card-actions>
+              </div>
+
+
+
+
+
+            </div>
+
+
+
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+    <br />
+
+    <mat-card-content class="no-margin">
+      <div class="row">
+        <div class="col-lg-2 col-sm-2">
+          <dt>รายการ</dt>
+        </div>
+      </div>
+
+      <mat-card>
+
+        <mat-card-content>
+          <div class="row">
+            <div class="col-lg-2 col-sm-2">
+              <!-- <dt> ทั้งหมด : {{count}} รายการ</dt> -->
+            </div>
+          </div>
+          <div class="row card-table-body">
+
+            <!-- Table -->
+            <table style="width: 100%">
+              <tbody>
+                <tr>
+                  <th class="text-center">Order No.</th>
+                  <th style="width: 80px" class="text-center">Ref No.</th>
+                  <th style="width: 200px" class="text-center">Product Code</th>
+                  <!-- <th style="width: 150px" class="text-center">Product Name</th> -->
+                  <th style="width: 50px" class="text-center">ยี่ห้อ</th>
+                  <th style="width: 50px" class="text-center">รุ่น</th>
+                  <th style="width: 50px" class="text-center">Size</th>
+                  <th style="width: 50px" class="text-center">จำนวน</th>
+                  <th style="width: 50px" class="text-center">Cutting Qty</th>
+                  <th style="width: 50px" class="text-center">WIP Qty</th>
+                  <th style="width: 50px" class="text-center">Fin Qty</th>
+                  <th style="width: 10px"></th>
+                </tr>
+                <tr *ngFor="let x of data.datas; let i = index;">
+                  
+                  <td>{{x.por_no}}</td>
+                  <td>{{x.ref_no}}</td>
+                  <td>{{x.prod_code}}<br>( {{x.prod_name}} )</td>
+                  <!-- <td>{{x.prod_name}}</td> -->
+                  <td>{{x.brand_name}}</td>
+                  <td>{{x.design_name}}</td>
+                  <td>{{x.size_name}}</td>
+                  <td class="text-center">{{x.qty_pdt}}</td>
+                  <td class="text-center">{{x.qty_cutting}}</td>
+                  <td class="text-center">{{x.qty_wip}}</td>
+                  <td class="text-center">{{x.qty_fin}}</td>
+                  <td><button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                      <mat-icon class="material-icons">more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #appMenu1="matMenu">
+
+                      <button mat-menu-item (click)="openCuttingQC(x.por_no,x.ref_no,x.prod_code,x.size_name,x.qty_pdt-x.qty_cutting-x.qty_wip-x.qty_fin)" action
+                        *ngIf="(x.qty_pdt != x.qty_rec)">
+                        <mat-icon class="material-icons">add</mat-icon> <span>Cutting QC</span>
+                      </button>
+                      <button mat-menu-item (click)="openEntryQC(x.por_no,x.ref_no,x.prod_code)">
+                        <mat-icon class="material-icons">add</mat-icon> <span>QC Data Entry</span>
+                      </button>
+                      <button mat-menu-item (click)="openOrderDetail(x.por_no)">
+                        <mat-icon class="material-icons">description</mat-icon> <span>Order Detail</span>
+                      </button>
+                      <button mat-menu-item (click)="openSpec(x.prod_code)">
+                        <mat-icon class="material-icons">description</mat-icon> <span>SD / Design Spec.</span>
+                      </button>
+                    </mat-menu>
+                  </td>
+
+                </tr>
+
+
+              </tbody>
+            </table>
+
+
+
+          </div>
+
+          <!-- <mat-card-content *ngIf="data.datas != undefined">
+              <ngb-pagination [collectionSize]="data.totalItem" [pageSize]="data.itemPerPage" [maxSize]="5"
+                  [(page)]="data.pageIndex" (pageChange)="search()" [boundaryLinks]="true"></ngb-pagination>
+            </mat-card-content> -->
+
+
+        </mat-card-content>
+
+      </mat-card>
+    </mat-card-content>
+
+
+
+    <br />
+    <br />
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+
+      </div>
+    </mat-card-actions>
+
+
+  </mat-card>
+
+
+</div>

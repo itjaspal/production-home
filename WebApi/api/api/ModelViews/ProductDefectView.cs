@@ -46,4 +46,121 @@ namespace api.ModelViews
         public string build_type { get; set; }
         public string user_id { get; set; }
     }
+
+    public class ItemNoModalView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public List<ItemNoView> datas { get; set; }
+    }
+
+
+    public class ItemNoView
+    {
+        public string entity { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string prod_code { get; set; }
+        public string build_type { get; set; }
+        public string qc_date { get; set; }
+        public string qc_time { get; set; }
+        public string qc_process { get; set; }
+        public int item_no { get; set; }
+        public int qc_qty { get; set; }
+        public int no_pass_qty { get; set; }
+        public string width { get; set; }
+        public string lenght { get; set; }
+        public string remark1 { get; set; }
+        public string remark2 { get; set; }
+        public string remark3 { get; set; }
+        public string user_id { get; set; }
+        public string size_name { get; set; }
+    }
+
+    public class DataQcCuttingView
+    {
+        public string entity { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string prod_code { get; set; }
+        public string build_type { get; set; }
+        public string qc_date { get; set; }
+        public string qc_process { get; set; }
+        public int item_no { get; set; }
+        public int qc_qty { get; set; }
+        public int no_pass_qty { get; set; }
+        public string width { get; set; }
+        public string lenght { get; set; }
+        public string remark1 { get; set; }
+        public string remark2 { get; set; }
+        public string remark3 { get; set; }
+        public string user_id { get; set; }
+        public string size_name { get; set; }
+    }
+
+    public class DataQcEnrtyView
+    {
+        public int item_no { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string prod_code { get; set; }
+        public string qc_date { get; set; }
+        public string qc_time { get; set; }
+        public string build_type { get; set; }
+        public string qc_process { get; set; }
+        public int qc_qty { get; set; }
+        public int no_pass_qty { get; set; }
+        public string remark1 { get; set; }
+        public string remark2 { get; set; }
+        public string remark3 { get; set; }
+        public string remark4 { get; set; }
+        public string remark5 { get; set; }
+        public string remark6 { get; set; }
+        public string user_id { get; set; }
+        public List<QcGroupCheckView> datas { get; set; }
+    }
+
+    public class QcGroupCheckView
+    {
+        public int seq_no { get; set; }
+        public string item_desc { get; set; }
+        public string item_value { get; set; }
+        public string item_result { get; set; }
+    }
+
+    public class ItemNoWipModalView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public List<ItemNoWipView> datas { get; set; }
+    }
+
+
+    public class ItemNoWipView
+    {
+        public string entity { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string prod_code { get; set; }
+        public string build_type { get; set; }
+        public string qc_date { get; set; }
+        public string qc_time { get; set; }
+        public string qc_process { get; set; }
+        public int item_no { get; set; }
+        public int qc_qty { get; set; }
+        public int no_pass_qty { get; set; }
+        public string width { get; set; }
+        public string lenght { get; set; }
+        public string remark1 { get; set; }
+        public string remark2 { get; set; }
+        public string remark3 { get; set; }
+        public string remark4 { get; set; }
+        public string remark5 { get; set; }
+        public string remark6 { get; set; }
+        public string user_id { get; set; }
+        public string size_name { get; set; }
+        public List<QcGroupCheckView> groupdatas { get; set; }
+    }
 }

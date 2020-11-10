@@ -177,6 +177,7 @@ import { ScanReceiveProductViewComponent } from './scan-receive/scan-receive-pro
 import { ProductDefectSearchComponent } from './product-defect/product-defect-search/product-defect-search.component';
 import { ProductDefectQcEntryComponent } from './product-defect/product-defect-qc-entry/product-defect-qc-entry.component';
 import { ProductDefectQcCuttingComponent } from './product-defect/product-defect-qc-cutting/product-defect-qc-cutting.component';
+import { ItemSearchComponent } from './product-defect/item-search/item-search.component';
 
 
 
@@ -380,6 +381,7 @@ import { ProductDefectQcCuttingComponent } from './product-defect/product-defect
     ProductDefectSearchComponent,
     ProductDefectQcEntryComponent,
     ProductDefectQcCuttingComponent,
+    ItemSearchComponent,
     
 
   
@@ -400,7 +402,10 @@ import { ProductDefectQcCuttingComponent } from './product-defect/product-defect
     ScanReceiveProductViewComponent,
     ScanApproveSendCancelComponent,
     ScanApproveSendAddComponent,
-    ScanApproveSendDetailComponent
+    ScanApproveSendDetailComponent,
+    ProductDefectQcCuttingComponent,
+    ProductDefectQcEntryComponent,
+    ItemSearchComponent
   ],
   bootstrap: [AppComponent]
 })

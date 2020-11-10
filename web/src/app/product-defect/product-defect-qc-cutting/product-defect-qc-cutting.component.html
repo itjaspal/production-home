@@ -1,3 +1,176 @@
-<p>
-  product-defect-qc-cutting works!
-</p>
+<div class="container-fluid no-breadcrumbs">
+  <!-- container-->
+  <mat-card>
+    <!-- mat-card 1 -->
+    <mat-card-title>
+      <h6>Cutting QC</h6>
+    </mat-card-title>
+
+    <mat-card-content class="no-margin">
+
+      <mat-card>
+        <mat-card-content>
+
+          <form [formGroup]="validationForm">
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>Order No.</small>
+                <dd>{{model.prod_code}}</dd>
+              </div>
+
+              <div class="col-3 col-lg-2 ">
+                <small>Size</small>
+                <dd>{{model.size_name}}</dd>
+              </div>
+
+            </div>
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>Doc No.</small>
+                <dd>{{model.por_no}}</dd>
+              </div>
+              <div class="col-3 col-lg-2 ">
+                <small>เวลา</small>
+                <dd>{{model.qc_time}}</dd>
+              </div>
+
+            </div>
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>วันที่</small>
+                <dd>{{model.qc_date}}</dd>
+              </div>
+              <div class="col-2 col-lg-2 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="จำนวนตรวจ/จำนวนผ่าน" formControlName="qc_qty" name="qc_qty" 
+                    type="none" [(ngModel)]="model.qc_qty">
+                </mat-form-field>
+              </div>
+
+            </div>
+            <div class="row card-table-body">
+              <div class="col-2 col-lg-1 ">
+                <small>ครั้งที่</small>
+                <dd>{{model.item_no}}</dd>
+                <!-- <mat-form-field class="full-width">
+                  <input matInput placeholder="ครั้งที่" formControlName="item_no" name="item_no" #item_no
+                    type="none" [(ngModel)]="model.item_no">
+                </mat-form-field> -->
+              </div>
+              <div class="col-2 col-lg-2 ">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="openSearchItemModal(model.por_no)">
+                    <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                  </button>
+                </mat-card-actions>
+              </div>
+
+              <div class="col-2 col-lg-2 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="จำนวนไม่ผ่าน" formControlName="no_pass_qty" name="no_pass_qty" #no_pass_qty
+                    type="none" [(ngModel)]="model.no_pass_qty">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+
+              </div>
+              <div class="col-2 col-lg-1 ">
+                ค่าที่วัดได้
+              </div>
+              <div class="col-2 col-lg-2 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="กว้าง" formControlName="width" name="width" #width
+                    type="none" [(ngModel)]="model.width">
+                </mat-form-field>
+              </div>
+
+
+              <!-- <div class="col-2 col-lg-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="">
+                    <mat-icon class="material-icons">save</mat-icon> บันทึก
+                  </button>
+                </mat-card-actions>
+              </div> -->
+
+
+            </div>
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+
+              </div>
+              <div class="col-2 col-lg-1 ">
+                
+              </div>
+              <div class="col-2 col-lg-2 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="ยาว" formControlName="lenght" name="lenght" #lenght
+                    type="none" [(ngModel)]="model.lenght">
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-2 col-lg-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!validationForm.valid">
+                    <mat-icon class="material-icons">save</mat-icon> บันทึก
+                  </button>
+                </mat-card-actions>
+              </div>
+
+
+
+
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 1" formControlName="remark1" name="remark1" #remark1
+                    type="none" [(ngModel)]="model.remark1" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 2" formControlName="remark2" name="remark2" #remark2
+                    type="none" [(ngModel)]="model.remark2" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 3" formControlName="remark3" name="remark3" #remark3
+                    type="none" [(ngModel)]="model.remark3" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+
+
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+
+
+
+
+
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+
+  </mat-card> <!-- mat-card 1 -->
+</div> <!-- container-->
