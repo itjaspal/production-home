@@ -1,0 +1,201 @@
+<div class="container-fluid no-breadcrumbs"> <!-- container-->
+  <mat-card> <!-- mat-card 1 -->
+      <mat-card-title>
+         <h6> Order Detail  ( Por No : {{this.paramData.por_no}})</h6>
+      </mat-card-title>
+      <br /> 
+
+      <mat-card-content class="no-margin"> <!-- Header-->
+          <div class="row">
+            <div class="col-lg-2 col-sm-2">
+              <dt>รายละเอียดเอกสาร</dt>
+            </div>
+          </div>
+
+          <mat-card >
+             <mat-card-content>
+                <div class="row card-table-body" >
+                  <!-- Row 1-->
+                  <div class="col-lg-3 col-sm-5 col-5">
+                      <small>Entity</small>
+                      <dd>{{dataOrderInfo.entity_name}} ({{dataOrderInfo.entity}})</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                      <small>Doc No</small>  
+                      <dd>{{dataOrderInfo.por_no}}</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                      <small>Date</small>  
+                      <dd>{{this.datePipe.transform(dataOrderInfo.por_date, 'dd/MM/yyyy')}}</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                    <small>Required Date</small>  
+                    <dd>{{this.datePipe.transform(dataOrderInfo.req_date, 'dd/MM/yyyy')}}</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                    <small>Country</small>  
+                    <dd>{{dataOrderInfo.country}}</dd>
+                  </div>
+                  <div class="col-12">
+                      <hr />
+                  </div>  
+                  <!-- Row 2-->
+                  <div class="col-lg-3 col-sm-12 col-12"> 
+                    <small>Customer</small>
+                    <dd>{{dataOrderInfo.cust_name}} ({{dataOrderInfo.cust_code}})</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                    <small>Order Type</small>  
+                    <dd>{{dataOrderInfo.ord_type_name}} ({{dataOrderInfo.ord_type}})</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                    <small>Priority</small>  
+                    <dd>{{dataOrderInfo.por_priority}}</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                    <small>MRP Group</small>  
+                    <dd>{{dataOrderInfo.grp_code}}</dd>
+                  </div>
+                  <div class="col-12">
+                    <hr />
+                  </div> 
+                  <div class="col-lg-3 col-sm-12 col-12"> 
+                    <small>Store</small>
+                    <dd>{{dataOrderInfo.wh_name}} ({{dataOrderInfo.wh_code}})</dd>
+                  </div>
+                  <div class="col-lg-2 col-sm-5 col-5">
+                    <small>Product Group</small>
+                    <dd>{{dataOrderInfo.por_type_name}} ({{dataOrderInfo.por_type}})</dd>
+                  </div>
+                  <div class="col-lg-3 col-sm-5 col-5">
+                    <small>Dept</small>
+                    <dd>{{dataOrderInfo.dept_name}} ({{dataOrderInfo.dept}})</dd>
+                  </div>
+                </div>
+
+             </mat-card-content>
+          </mat-card>       
+      </mat-card-content> <!-- Header-->
+
+      <div class="col-12">
+        <br/>
+      </div> 
+
+      <mat-card-content class="no-margin"> <!-- Detail-->
+        <div class="row">
+          <div class="col-lg-2 col-sm-2">
+            <dt>รายละเอียดสินค้า</dt>
+          </div>
+        </div>
+        <mat-card-content>
+          <table style="width: 100%" >
+            <thead>
+              <tr>
+                  <th style="width: 5px" class="text-center">Item</th>
+                  <th style="width: 250px" class="text-center">Product</th>
+                  <th style="width: 5px"  class="text-center">Bom/  Packaging</th>
+                  <th style="width: 5px" class="text-center">Group</th>
+                  <th style="width: 30px" class="text-center">Design/ Model</th>
+                  <th style="width: 5px" class="text-center">Color/ Size</th>
+                  <th style="width: 10px" class="text-center">Unit Pack</th>
+                  <th style="width: 10px" class="text-center">Qty</th>
+                  <th style="width: 30px" class="text-center">สคบ เลขที่</th>
+                  <th style="width: 30px" class="text-center">พิมพ์</th>
+                  <th style="width: 30px" class="text-center">SD No/ Dsgn.</th>
+                  <th style="width: 10px" class="text-center">Proc.</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let x of dataOrderInfo.orderDetail; let i = index;"> 
+              <tr>
+                <td class="text-center">{{x.line_no}}</td>
+                <td>{{x.prod_name}}</td>
+                <td>{{x.packaging}}</td>
+                <td>{{x.pdgrp_code}}</td>
+                <td>{{x.design}}</td>
+                <td>{{x.pdcolor_code}}/{{x.pdsize_code}}</td>
+                <td>{{x.uom}}</td>
+                <td>{{x.qty_ord}}</td>
+                <td>{{x.gplabel_no}}</td>
+                <td>{{x.skb_flag}}</td>
+                <td>{{x.sd_no}}/{{x.dsgn_no}}</td>
+                <td></td>
+              </tr> 
+              <tr *ngFor="let y of x.subProduct; let j = index;">  <!-- Sup Prod-->
+                <td>&nbsp;</td>
+                <td colspan="4" class="text-left">{{y.description}}</td>
+                <td>{{y.size}}</td>
+                <td>{{y.size_uom}}</td>
+                <td>{{y.qty_ord}}  {{y.uom_code}}</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card-content> <!-- Detail-->  
+      <br />
+
+      <mat-card-content class="no-margin"> <!-- Remark-->
+        <div class="row">
+          <div class="col-lg-2 col-sm-2">
+            <dt>Remark</dt>
+          </div>
+        </div>
+        
+        <table style="width: 75%" >
+            <thead>
+              <tr>
+                  <th style="width: 5px" class="text-center">Line No</th>
+                  <th style="width: 250px" class="text-center">รายละเอียด</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let z of dataOrderInfo.remark; let k = index;"> 
+              <tr>
+                  <td class="text-center">{{z.line_no}}</td>
+                  <td>{{z.trcmt_desc}}</td>
+              </tr> 
+            </tbody>
+          </table>
+      </mat-card-content> <!-- Remark--> 
+      <br />
+
+      <mat-card-content class="no-margin"> <!-- Special-->
+        <div class="row">
+          <div class="col-lg-2 col-sm-2">
+            <dt>Special Instruction</dt>
+          </div>
+        </div>
+
+        <table style="width: 75%" >
+          <thead>
+            <tr>
+                <th style="width: 5px" class="text-center">Por No</th>
+                <th style="width: 100px" class="text-center">Product Code</th>
+                <th style="width: 200px" class="text-center">Prod Desc</th>
+                <th style="width: 200px" class="text-center">Description</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let m of dataOrderInfo.orderSpecial; let l = index;"> 
+            <tr>
+                <td class="text-center">{{m.por_no}}</td>
+                <td>{{m.prod_code}}</td>
+                <td>{{m.prod_name}}</td>
+                <td>{{m.spc_desc}}</td>
+            </tr> 
+          </tbody>
+        </table>
+      
+      </mat-card-content> <!-- Special--> 
+
+
+      <mat-card-actions class="no-margin">
+        <div class="row">
+          <div class="col-2 col-sm-2">
+            <button (click)="close();" mat-raised-button color="primary">
+              <mat-icon class="material-icons">close</mat-icon> ปิด
+            </button>
+          </div>
+      </div>
+      </mat-card-actions>  
+  
+   </mat-card> <!-- mat-card 1 -->
+ </div> <!-- container-->           

@@ -13,11 +13,14 @@ namespace api.Interfaces
         int GetItemNo(string entity , string por_no);
         void DataQcCutting(DataQcCuttingView model);
         ItemNoModalView GetItemNoList(string entity, string por_no);
+        
 
-        DataQcEnrtyView GetQCEntryData(string build_type);
-        //ItemNoWipModalView GetItemNoWipList(string entity, string por_no);
-        //ItemNoWipModalView GetItemNoFinList(string entity, string por_no);
-        //void DataQcEntry(DataQcEnrtyView model);
+        int GetItemNoQcEntry(string entity, string por_no , string qc_process);
+        DataQcEnrtyView GetQcGroup(string build_type);
+        void DataQcEntrtyData(DataQcEnrtyView model);
+        ItemNoWipModalView GetItemNoWipList(string entity, string por_no , string qc_process);
+        
+        
 
 
     }

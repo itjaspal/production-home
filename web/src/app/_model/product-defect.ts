@@ -27,6 +27,7 @@ export class ProductDefectDetailView {
     public qty_cutting: number = 0;
     public qty_wip: number = 0;
     public qty_fin: number = 0;
+    public bar_code:string = "";
 }
 
 export class ProductDefectSearchView {
@@ -39,44 +40,73 @@ export class ProductDefectSearchView {
     public user_id: string = "";
 }
 
-export class DataQcView{
-    public entity : string = AppSetting.entity;
-    public por_no : string = "";
-    public ref_no : string = "";
-    public prod_code : string = "";
-    public size_name : string = "";
-    public qc_qty : number =0;
+export class DataQcView {
+    public entity: string = AppSetting.entity;
+    public por_no: string = "";
+    public ref_no: string = "";
+    public prod_code: string = "";
+    public size_name: string = "";
+    public qc_qty: number = 0;
+    public qc_proceee: string = "";
+    public build_type: string = "";
 }
 
-export class DataQcCuttingView
-{
-    public entity : string = AppSetting.entity;
-    public por_no : string = "";
-    public ref_no : string = "";
-    public prod_code : string = "";
-    public build_type : string = "";
-    public qc_date : string ="";
+export class DataQcCuttingView {
+    public entity: string = AppSetting.entity;
+    public por_no: string = "";
+    public ref_no: string = "";
+    public prod_code: string = "";
+    public build_type: string = "";
+    public qc_date: string = "";
+    public qc_process: string = "";
+    public item_no: number = 0;
+    public qc_qty: number = 0;
+    public no_pass_qty: number = 0;
+    public width: string = "";
+    public lenght: string = "";
+    public remark1: string = "";
+    public remark2: string = "";
+    public remark3: string = "";
+    public user_id: string = "";
+    public size_name: string = "";
+    public qc_time: string = "";
+}
+
+export class ItemNoSearchView {
+    public entity: string = AppSetting.entity;
+    public por_no: string = "";
     public qc_process : string = "";
-    public item_no : number = 0;
-    public qc_qty : number = 0;
-    public no_pass_qty : number = 0;
-    public width : string = "";
-    public lenght : string = "";
-    public remark1 : string = "";
-    public remark2 : string = "";
-    public remark3 : string = "";
-    public user_id : string = "";
-    public size_name : string = "";
-    public qc_time : string = "";
 }
 
-export class ItemNoSearchView
-{
-    public entity : string = AppSetting.entity;
-    public por_no : string = "";
+export class ItemNoListView {
+    public item_no: number = 0;
 }
 
-export class ItemNoListView
-{
-    public item_no : number = 0;
+export class DataQcEnrtyView {
+    public entity: string = AppSetting.entity;
+    public item_no: number = 0;
+    public por_no: string = "";
+    public ref_no: string = "";
+    public prod_code: string = "";
+    public qc_date: string = "";
+    public qc_time: string = "";
+    public build_type: string = "";
+    public qc_process: string = "";
+    public qc_qty: number = 0;
+    public no_pass_qty: number = 0;
+    public remark1: string = "";
+    public remark2: string = "";
+    public remark3: string = "";
+    public remark4: string = "";
+    public remark5: string = "";
+    public remark6: string = "";
+    public user_id: string = "";
+    public datas: QcGroupCheckView[] = [];
+}
+
+export class QcGroupCheckView {
+    public seq_no: number = 0;
+    public item_desc: string = "";
+    public item_value: string = "";
+    public item_result: string = "";
 }

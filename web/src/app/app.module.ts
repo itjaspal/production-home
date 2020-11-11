@@ -178,6 +178,9 @@ import { ProductDefectSearchComponent } from './product-defect/product-defect-se
 import { ProductDefectQcEntryComponent } from './product-defect/product-defect-qc-entry/product-defect-qc-entry.component';
 import { ProductDefectQcCuttingComponent } from './product-defect/product-defect-qc-cutting/product-defect-qc-cutting.component';
 import { ItemSearchComponent } from './product-defect/item-search/item-search.component';
+import { ItemEntrySearchComponent } from './product-defect/item-entry-search/item-entry-search.component';
+import { OrderDetailComponent } from './product-defect/order-detail/order-detail.component';
+import { ViewSpecComponent } from './product-defect/view-spec/view-spec.component';
 
 
 
@@ -382,6 +385,9 @@ import { ItemSearchComponent } from './product-defect/item-search/item-search.co
     ProductDefectQcEntryComponent,
     ProductDefectQcCuttingComponent,
     ItemSearchComponent,
+    ItemEntrySearchComponent,
+    OrderDetailComponent,
+    ViewSpecComponent,
     
 
   
@@ -405,7 +411,10 @@ import { ItemSearchComponent } from './product-defect/item-search/item-search.co
     ScanApproveSendDetailComponent,
     ProductDefectQcCuttingComponent,
     ProductDefectQcEntryComponent,
-    ItemSearchComponent
+    ItemSearchComponent,
+    ItemEntrySearchComponent,
+    OrderDetailComponent,
+    ViewSpecComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -87,5 +87,75 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
+
+        [Route("product-defect/getItemNoQcEntry/{entity}/{por_no}/{qc_process}")]
+        public HttpResponseMessage getItemNoQcEntry(string entity, string por_no , string qc_process)
+        {
+            try
+            {
+                var result = defectService.GetItemNoQcEntry(entity, por_no , qc_process);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+
+        }
+
+        [Route("product-defect/getQcGroup/{build_type}")]
+        public HttpResponseMessage getQcGroup(string build_type)
+        {
+            try
+            {
+                var result = defectService.GetQcGroup(build_type);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+
+        }
+
+        [Route("product-defect/getItemNoWipList/{entity}/{por_no}/{qc_process}")]
+        public HttpResponseMessage getItemNoWipList(string entity, string por_no , string qc_process)
+        {
+            try
+            {
+                var result = defectService.GetItemNoWipList(entity, por_no , qc_process);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+
+        }
+
+        [Route("product-defect/postDataQcEntry")]
+        public HttpResponseMessage postDataQcEntrtyData(DataQcEnrtyView model)
+        {
+            try
+            {
+
+                defectService.DataQcEntrtyData(model);
+
+                CommonResponseView res = new CommonResponseView()
+                {
+                    status = CommonStatus.SUCCESS,
+                    message = "บันทึกข้อมูลสำเร็จ"
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
     }
 }

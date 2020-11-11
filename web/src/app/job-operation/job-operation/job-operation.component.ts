@@ -24,6 +24,7 @@ export class JobOperationComponent implements OnInit {
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
   public validationForm: FormGroup;
+  
 
   @ViewChild('req_date') req_date: ElementRef;
   
@@ -93,9 +94,16 @@ export class JobOperationComponent implements OnInit {
     sessionStorage.setItem('jobOperation-build_type', this.user.branch.entity_code);
 
     this.model.build_type = this.user.branch.entity_code;
-    this.model.wc_code    = "";
+    // this.model.wc_code    = "";
     this.model.req_date   = "";
 
+    console.log(this.user.userWcPrvlgList);
+    if(this.user.userWcPrvlgList.length > 1)
+    {
+      this.model.wc_code = this.user.userWcPrvlgList[0].wc_code;
+      
+    }
+    console.log(this.model.wc_code);
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent.dataTotals);

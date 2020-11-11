@@ -71,7 +71,7 @@ export class InprocessComponent implements OnInit {
       this.model.pageIndex = event.pageIndex;
       this.model.itemPerPage = event.pageSize;
     }
-    
+    var datePipe = new DatePipe("en-US");
     this.model.user_id = this.user.username;
     this.dataCurrent.dataTotals  = [];
     // this.dataPending.dataTotals  = [];
@@ -82,9 +82,15 @@ export class InprocessComponent implements OnInit {
     sessionStorage.setItem('jobOperation-build_type', this.user.branch.entity_code);
 
     this.model.build_type = this.user.branch.entity_code;
-    this.model.wc_code    = "";
-    this.model.req_date   = "";
+    // this.model.wc_code    = "";
+    this.model.req_date = "";
+    
 
+    if(this.user.userWcPrvlgList.length > 1)
+    {
+      this.model.wc_code = this.user.userWcPrvlgList[0].wc_code;
+      
+    }
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent.dataTotals);

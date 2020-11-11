@@ -49,7 +49,7 @@ export class ProductDefectQcCuttingComponent implements OnInit {
     this.item_no = await this._defectSvc.getItemNo(this.data.entity, this.data.por_no);
     this.model.qc_qty = this.data.qc_qty;
     this.model.qc_date = datePipe.transform(new Date(), 'dd/MM/yyyy').toString();
-    this.model.qc_time = datePipe.transform(new Date(), 'hh:mm').toString();
+    this.model.qc_time = datePipe.transform(new Date(), 'HH:mm').toString();
     this.model.item_no = this.item_no;
     this.model.por_no = this.data.por_no;
     this.model.prod_code = this.data.prod_code;
@@ -79,6 +79,7 @@ export class ProductDefectQcCuttingComponent implements OnInit {
     console.log(this.model);
     
     this.datas = await this._defectSvc.DataQcCutting(this.model);
+    await this._msgSvc.successPopup("บันทึกข้อมูลเรียบร้อย");
         
     this.dialogRef.close([]);
     

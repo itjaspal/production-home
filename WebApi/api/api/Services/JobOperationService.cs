@@ -459,7 +459,7 @@ namespace api.Services
                 if (model.build_type == "HMJIT")
                 {
                     
-                    string sqlr = "select distinct req_date from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and  trunc(req_date) > to_date(:p_req_date,'dd/mm/yyyy')";
+                    string sqlr = "select distinct req_date from mps_det_wc where entity = :p_entity and wc_code = :p_wc_code and  trunc(req_date) > to_date(:p_req_date,'dd/mm/yyyy') order by req_date";
                     List<PorReqView> req = ctx.Database.SqlQuery<PorReqView>(sqlr, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date", vreq_date)).ToList();
 
                     foreach(var k in req)
@@ -627,7 +627,7 @@ namespace api.Services
                 if (model.build_type == "HMJIT")
                 {
                    
-                    string sqlr = "select distinct a.req_date from mps_det_wc a , por_mast b where a.entity = :p_entity and a.wc_code = :p_wc_code and a.por_no = b.por_no and b.por_status not in ('CLS','OCL') and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1";
+                    string sqlr = "select distinct a.req_date from mps_det_wc a , por_mast b where a.entity = :p_entity and a.wc_code = :p_wc_code and a.por_no = b.por_no and b.por_status not in ('CLS','OCL') and trunc(a.req_date) between to_date(:p_req_date1,'dd/mm/yyyy')-30 and to_date(:p_req_date2,'dd/mm/yyyy')-1 order by req_date";
                     List<PorReqView> req = ctx.Database.SqlQuery<PorReqView>(sqlr, new OracleParameter("p_entity", ventity), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_req_date1", vreq_date), new OracleParameter("p_req_date2", vreq_date)).ToList();
 
                     foreach (var k in req)

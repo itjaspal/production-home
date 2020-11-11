@@ -34,6 +34,7 @@ namespace api.ModelViews
         public int qty_cutting { get; set; }
         public int qty_wip { get; set; }
         public int qty_fin { get; set; }
+        public string bar_code { get; set; }
     }
 
     public class ProductDefectSearchView
@@ -78,6 +79,17 @@ namespace api.ModelViews
         public string size_name { get; set; }
     }
 
+    public class DataQcView
+    {
+        public string entity { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string prod_code { get; set; }
+        public string build_type { get; set; }
+        public string qc_proceee { get; set; }
+
+    }
+
     public class DataQcCuttingView
     {
         public string entity { get; set; }
@@ -101,6 +113,7 @@ namespace api.ModelViews
 
     public class DataQcEnrtyView
     {
+        public string entity { get; set; }
         public int item_no { get; set; }
         public string por_no { get; set; }
         public string ref_no { get; set; }

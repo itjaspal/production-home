@@ -1,3 +1,211 @@
-<p>
-  product-defect-qc-entry works!
-</p>
+<div class="container-fluid no-breadcrumbs">
+  <!-- container-->
+  <mat-card>
+    <!-- mat-card 1 -->
+    <mat-card-title>
+      <h6>QC Entry Data</h6>
+    </mat-card-title>
+
+    <mat-card-content class="no-margin">
+
+      <mat-card>
+        <mat-card-content>
+
+          <!-- <form [formGroup]="validationForm"> -->
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>Order No.</small>
+                <dd>{{model.prod_code}}</dd>
+              </div>
+
+              <div class="col-sm-5 col-5" style="margin-top: 10px;">
+
+
+                <div class="hiddenradio">
+                  <label>
+                    <input type="radio" name="qc_process" value="WIP" (change)="radioTypeChange('WIP')"> Work In Process
+                  </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label>
+                    <input type="radio" name="qc_process" value="FIN" (change)="radioTypeChange('FIN')"> Finished Goods
+                  </label>
+                </div>
+
+
+
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>Doc No.</small>
+                <dd>{{model.por_no}}</dd>
+              </div>
+              <div class="col-3 col-lg-2 ">
+                <small>เวลา</small>
+                <dd>{{model.qc_time}}</dd>
+              </div>
+
+            </div>
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>วันที่</small>
+                <dd>{{model.qc_date}}</dd>
+              </div>
+              <div class="col-2 col-lg-2 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="จำนวนตรวจ/จำนวนผ่าน"  name="qc_qty" type="none"
+                    [(ngModel)]="model.qc_qty">
+                </mat-form-field>
+              </div>
+
+              <div class="col-2 col-lg-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="save()"
+                    [disabled]="!model.qc_process">
+                    <mat-icon class="material-icons">save</mat-icon> บันทึก
+                  </button>
+                </mat-card-actions>
+              </div>
+
+            </div>
+            <div class="row card-table-body">
+              <div class="col-2 col-lg-1 ">
+                <small>ครั้งที่</small>
+                <dd>{{model.item_no}}</dd>
+
+              </div>
+              <div class="col-2 col-lg-2 ">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="openSearchItemModal(model.por_no)" [disabled]="!model.qc_process">
+                    <mat-icon class="material-icons">search</mat-icon> ค้นหา
+                  </button>
+                </mat-card-actions>
+              </div>
+
+
+            </div>
+
+            <div class="row card-table-body">
+              <div class="col-3 col-lg-2 ">
+                หัวข้อการตรวจสอบ
+              </div>
+              <div class="col-2 col-lg-1 ">
+                ค่าจริง
+              </div>
+              <div class="col-3 col-lg-2 ">
+                ผลการตรวจสอบ
+              </div>
+            </div>
+            
+            <div class="row card-table-body" *ngFor="let x of group_qc.datas; let i = index;">
+              <div class="col-3 col-lg-2 ">
+                {{x.seq_no}}. {{x.item_desc}}
+              </div>
+              <div class="col-2 col-lg-1 ">
+                <mat-form-field class="full-width">
+                  <input matInput  name="x.item_value" type="none"
+                    [(ngModel)]="x.item_value">
+                </mat-form-field>
+              </div>
+              <div class="col-3 col-lg-2 ">
+                <div class="hiddenradio">
+                  <label>
+                    <input type="radio"  value="1" [(ngModel)]="x.item_result" name = "{{x.seq_no}}" > ผ่าน
+                  </label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label>
+                    <input type="radio" value="0" [(ngModel)]="x.item_result" name = "{{x.seq_no}}"> ไม่ผ่าน
+                  </label>
+                </div>
+              </div>
+            
+            </div>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>หมายเหตุ
+              </mat-expansion-panel-header>
+
+
+
+
+              <div class="row card-table-body">
+                <div class="col-10 col-lg-10 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="หมายเหตุ 1"  name="remark1" #remark1
+                      type="none" [(ngModel)]="model.remark1" maxlength="100">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row card-table-body">
+                <div class="col-10 col-lg-10 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="หมายเหตุ 2"  name="remark2" #remark2
+                      type="none" [(ngModel)]="model.remark2" maxlength="100">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row card-table-body">
+                <div class="col-10 col-lg-10 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="หมายเหตุ 3"  name="remark3" #remark3
+                      type="none" [(ngModel)]="model.remark3" maxlength="100">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row card-table-body">
+                <div class="col-2 col-lg-2 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="จำนวนไม่ผ่าน"  name="no_pass_qty"
+                      #no_pass_qty type="none" [(ngModel)]="model.no_pass_qty">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row card-table-body">
+                <div class="col-10 col-lg-10 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="หมายเหตุ 1"  name="remark4" #remark4
+                      type="none" [(ngModel)]="model.remark4" maxlength="100">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row card-table-body">
+                <div class="col-10 col-lg-10 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="หมายเหตุ 2"  name="remark5" #remark5
+                      type="none" [(ngModel)]="model.remark5" maxlength="100">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row card-table-body">
+                <div class="col-10 col-lg-10 ">
+                  <mat-form-field class="full-width">
+                    <input matInput placeholder="หมายเหตุ 3"  name="remark6" #remark6
+                      type="none" [(ngModel)]="model.remark6" maxlength="100">
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-expansion-panel>
+
+          <!-- </form> -->
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+
+
+
+
+
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+
+  </mat-card> <!-- mat-card 1 -->
+</div> <!-- container-->

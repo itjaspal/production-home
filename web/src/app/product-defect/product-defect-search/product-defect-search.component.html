@@ -85,7 +85,7 @@
             <table style="width: 100%">
               <tbody>
                 <tr>
-                  <th class="text-center">Order No.</th>
+                  <th style="width: 80px" class="text-center">Order No.</th>
                   <th style="width: 80px" class="text-center">Ref No.</th>
                   <th style="width: 200px" class="text-center">Product Code</th>
                   <!-- <th style="width: 150px" class="text-center">Product Name</th> -->
@@ -126,7 +126,7 @@
                       <button mat-menu-item (click)="openOrderDetail(x.por_no)">
                         <mat-icon class="material-icons">description</mat-icon> <span>Order Detail</span>
                       </button>
-                      <button mat-menu-item (click)="openSpec(x.prod_code)">
+                      <button mat-menu-item (click)="openSpec(x.bar_code)">
                         <mat-icon class="material-icons">description</mat-icon> <span>SD / Design Spec.</span>
                       </button>
                     </mat-menu>

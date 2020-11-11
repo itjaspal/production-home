@@ -10,8 +10,10 @@ import { AuthenticationService } from '../../_service/authentication.service';
 import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
 import { ProductDefectService } from '../../_service/product-defect.service';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { ProductDefectQcCuttingComponent } from '../product-defect-qc-cutting/product-defect-qc-cutting.component';
 import { ProductDefectQcEntryComponent } from '../product-defect-qc-entry/product-defect-qc-entry.component';
+import { ViewSpecComponent } from '../view-spec/view-spec.component';
 
 @Component({
   selector: 'app-product-defect-search',
@@ -112,7 +114,8 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
         entity:this.searchModel.entity,
         por_no: p_por_no,
         ref_no : p_ref_no,
-        prod_code : p_prod_code
+        prod_code : p_prod_code,
+        build_type : this.user.branch.entity_code
       }
 
     });
@@ -122,13 +125,14 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
 
   openOrderDetail(p_por_no : string  , _index: number = -1)
   {
-    const dialogRef = this._dialog.open(ScanReceiveProductViewComponent, {
+    console.log(this.searchModel.entity);
+    const dialogRef = this._dialog.open(OrderDetailComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',
       width: '100%',
       data: {
-        entity:this.searchModel.entity,
+        entity_code:this.searchModel.entity,
         por_no: p_por_no,
       }
 
@@ -137,16 +141,16 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
     
   }
 
-  openSpec(p_prod_code : string  , _index: number = -1)
+  openSpec(p_bar_code : string  , _index: number = -1)
   {
-    const dialogRef = this._dialog.open(ScanReceiveProductViewComponent, {
+    console.log(p_bar_code);
+    const dialogRef = this._dialog.open(ViewSpecComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',
       width: '100%',
-      data: {
-        entity:this.searchModel.entity,
-        por_no: p_prod_code,
+      data: {    
+        bar_code: p_bar_code,
       }
 
     });
