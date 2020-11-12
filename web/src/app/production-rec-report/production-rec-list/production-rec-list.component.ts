@@ -50,7 +50,7 @@ export class ProductionRecListComponent implements OnInit {
     });
   }*/
 
-  close() {
+  close() { 
     this._router.navigateByUrl('/app/mobile-navigator');  
   }
   
@@ -70,6 +70,8 @@ export class ProductionRecListComponent implements OnInit {
       this.datas.recDetails  = [];
       this.model.build_type   = this.user.branch.entity_code;
       this.model.doc_date     = this.doc_date.nativeElement.value; // 16/10/2020
+      this.model.doc_no       = "";
+      this.model.doc_status   = "";
       console.log(this.model.doc_date);
       //this.model.doc_date     = "";
 

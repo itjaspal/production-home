@@ -93,7 +93,7 @@ export class InprocessComponent implements OnInit {
     }
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
-    console.log(this.dataCurrent.dataTotals);
+    console.log(this.dataCurrent);
     // this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
     // console.log(this.dataPending);
     // this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);
@@ -130,7 +130,7 @@ export class InprocessComponent implements OnInit {
 
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
-    console.log(this.dataCurrent.dataTotals);
+    console.log(this.dataCurrent);
     // this.dataPending =  await this._jobOperationMacSvc.searchJobOperationPending(this.model);
     // console.log(this.dataPending);
     // this.dataForward =  await this._jobOperationMacSvc.searchJobOperationForward(this.model);

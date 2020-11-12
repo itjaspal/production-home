@@ -40,6 +40,12 @@ export class ProductionRecListService {
    
      } 
 
+     public async searchPutAwayWaiting(_model: productionRecListSearchView) { 
+
+       return await this.http.post<productionRecListTotalView<productionRecListDetailView>>(environment.API_URL + 'productionRec/postSearchPutAwayWaiting', _model).toPromise();  
+   
+     }
+
 
 
 }

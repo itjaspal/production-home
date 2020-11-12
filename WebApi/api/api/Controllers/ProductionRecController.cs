@@ -49,6 +49,21 @@ namespace api.Controllers
             }
         }
 
+        [Route("productionRec/postSearchPutAwayWaiting")]
+        public HttpResponseMessage postSearchPutAwayWaiting(ProductionRecSearchView model)
+        {
+            try
+            {
+                var result = jobService.SearchPutAwayWaiting(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
 
     }
 }

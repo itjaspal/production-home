@@ -195,14 +195,15 @@ namespace api.Services
                     productDetail = new List<ModelViews.OrderProductView>()
                 };
 
-                string sqld = "select a.prod_code , a.prod_tname prod_name , b.bar_code , a.model_name model , a.tick_no spec, a.size_name , b.style_code style , b.weight_net weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , b.bar_code , a.model_name , a.tick_no , a.size_name , b.style_code , b.weight_net";
+                string sqld = "select a.prod_code , a.prod_tname prod_name , b.bar_code , a.model_name model , b.tick_no spec, a.size_name , b.style_code style , b.weight_net weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , b.bar_code , a.model_name , b.tick_no , a.size_name , b.style_code , b.weight_net";
                 List<OrderProductView> prod = ctx.Database.SqlQuery<OrderProductView>(sqld, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
 
                 foreach(var x in prod)
                 {
                     List<PorDetailView> porViews = new List<PorDetailView>();
 
-                    string sqlp = "select a.por_no , b.qty_req , b.weight_net weight from mps_det a, por_det b  where a.por_no=b.por_no and a.prod_code=b.prod_code  and a.entity= :p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and b.prod_code= :p_prod_code";
+                    //string sqlp = "select a.por_no , b.qty_req , nvl(b.weight_net,0) weight from mps_det a, por_det b  where a.por_no=b.por_no and a.prod_code=b.prod_code  and a.entity= :p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and b.prod_code= :p_prod_code";
+                    string sqlp = "select a.por_no , sum(a.qty_req) qty_req , nvl(b.weight_net,0) weight from mps_det a, por_det b  where a.por_no=b.por_no and a.prod_code=b.prod_code  and a.entity=  :p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT') =  :p_build_type and b.prod_code = :p_prod_code group by a.por_no , b.weight_net";
                     List<PorDetailView> por = ctx.Database.SqlQuery<PorDetailView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_prod_code", x.prod_code)).ToList();
 
                     foreach (var y in por)
@@ -218,7 +219,7 @@ namespace api.Services
                         {
                             por_no = y.por_no,
                             qty_req = y.qty_req,
-                            weight = y.weight,
+                            weight = Math.Round(y.qty_req * (y.weight/1000),3),
                             special_order = vspec.Trim('/')
                         };
 

@@ -271,6 +271,7 @@
     <Compile Include="Controllers\ProductDefectController.cs" />
     <Compile Include="Controllers\ProductionRecController.cs" />
     <Compile Include="Controllers\ScanApproveSendController.cs" />
+    <Compile Include="Controllers\ScanPutAwayController.cs" />
     <Compile Include="Controllers\ScanReceiveController.cs" />
     <Compile Include="Controllers\ScanSendController.cs" />
     <Compile Include="Controllers\SpecDrawingController.cs" />
@@ -291,6 +292,7 @@
     <Compile Include="Interfaces\IProductDefectService.cs" />
     <Compile Include="Interfaces\IProductionRecService.cs" />
     <Compile Include="Interfaces\IScanApproveSendService.cs" />
+    <Compile Include="Interfaces\IScanPutAwayService.cs" />
     <Compile Include="Interfaces\IScanReceiveService.cs" />
     <Compile Include="Interfaces\IScanSendService.cs" />
     <Compile Include="Interfaces\ISpecDrawingService.cs" />
@@ -307,6 +309,7 @@
     <Compile Include="ModelViews\ProductDefectView.cs" />
     <Compile Include="ModelViews\ProductionRecView.cs" />
     <Compile Include="ModelViews\ScanApproveSendView.cs" />
+    <Compile Include="ModelViews\ScanPutAwayView.cs" />
     <Compile Include="ModelViews\ScanReceiveView.cs" />
     <Compile Include="ModelViews\ScanSendView.cs" />
     <Compile Include="ModelViews\SpecDrawingView.cs" />
@@ -322,6 +325,7 @@
     <Compile Include="Services\ProductDefectService.cs" />
     <Compile Include="Services\ProductionRecService.cs" />
     <Compile Include="Services\ScanApproveSendService.cs" />
+    <Compile Include="Services\ScanPutAwayService.cs" />
     <Compile Include="Services\ScanReceiveService.cs" />
     <Compile Include="Services\ScanSendService.cs" />
     <Compile Include="Services\SpecDrawingService.cs" />

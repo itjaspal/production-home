@@ -11,5 +11,6 @@ namespace api.Interfaces
     {
         ProductionRecTotalView SearchProductionRec(ProductionRecSearchView model);
         ProductionRecDetailTotalView SearchProductionRecDetail(ProductionRecDetailSearchView model);
+        ProductionRecTotalView SearchPutAwayWaiting(ProductionRecSearchView model);
     }
 }

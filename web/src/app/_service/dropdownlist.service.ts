@@ -62,6 +62,22 @@ export class DropdownlistService {
     return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlWCSend/' + _user).toPromise();
   }
 
+  public async getDdlWCPtwByUser(_entity: string, _user: string) {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlWCPtwByUser/' + _entity + '/' + _user).toPromise();
+  }
+
+  public async getDdlPutAwayWHMast() {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlPutAwayWHMast').toPromise();
+  }
+
+  public async getDdlPtwSetNoList(_entity: string, _docCode: string, _docNo: string) {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlPtwSetNoList/' + _entity + '/' + _docCode + '/' + _docNo).toPromise();
+  }
+
+  public async getDdlPtwProdList(_entity: string, _docCode: string, _docNo: string) {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlPtwProdList/' + _entity + '/' + _docCode + '/' + _docNo).toPromise();
+  }
+
 
   // public async getDdlProductAttributesTypes() {
   //   return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlProductAttributeType').toPromise();

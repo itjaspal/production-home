@@ -17,113 +17,6 @@ namespace api.Controllers
             ddlSvc = new DropdownlistService();
         }
 
-
-
-        //[Route("dropdownlist/getDdlProductGroup")]
-        //public HttpResponseMessage getDdlProductGroup()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlProductType();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
-        //[Route("dropdownlist/getDdlProductType")]
-        //public HttpResponseMessage getDdlProductType()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlProductType();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
-        //[Route("dropdownlist/getDdlProductBrand")]
-        //public HttpResponseMessage getDdlProductBrand()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlProductBrand();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
-        //[Route("dropdownlist/getDdlProductDesign")]
-        //public HttpResponseMessage getDdlProductDesign()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlProductDesign();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
-        //[Route("dropdownlist/getDdlProductModel")]
-        //public HttpResponseMessage getDdlProductModel()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlProductModel();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
-        //[Route("dropdownlist/getDdlProductSize")]
-        //public HttpResponseMessage getDdlProductSize()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlProductSize();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
-        //[Route("dropdownlist/getDdlProductColor")]
-        //public HttpResponseMessage getDdlProductColor()
-        //{
-        //    try
-        //    {
-        //        var result = ddlSvc.GetDdlMobilePrnt();
-
-        //        return Request.CreateResponse(HttpStatusCode.OK, result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-        //    }
-        //}
-
         [Route("dropdownlist/getDdlMobilePrntJIT")]
         public HttpResponseMessage getDdlMobilePrntJIT()
         {
@@ -184,6 +77,64 @@ namespace api.Controllers
             }
         }
 
+        [Route("dropdownlist/getDdlWCPtwByUser/{entity}/{user}")]
+        public HttpResponseMessage getDdlWCPtwByUser(string entity, string user)
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlWCPutaWay(entity, user);
 
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("dropdownlist/getDdlPutAwayWHMast")]
+        public HttpResponseMessage getDdlPutAwayWHMast()
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlPutAwayWHMast();
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("dropdownlist/getDdlPtwSetNoList/{entity}/{doc_code}/{doc_no}")]
+        public HttpResponseMessage getDdlPtwSetNoList(string entity, string doc_code, string doc_no)
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlPtwSetNoList(entity, doc_code, doc_no);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("dropdownlist/getDdlPtwProdList/{entity}/{doc_code}/{doc_no}")]
+        public HttpResponseMessage getDdlPtwProdList(string entity, string doc_code, string doc_no)
+        {
+            try
+            {
+                var result = ddlSvc.GetDdlPtwProdList(entity, doc_code, doc_no);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
     }
 }

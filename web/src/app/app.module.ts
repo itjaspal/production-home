@@ -181,6 +181,10 @@ import { ItemSearchComponent } from './product-defect/item-search/item-search.co
 import { ItemEntrySearchComponent } from './product-defect/item-entry-search/item-entry-search.component';
 import { OrderDetailComponent } from './product-defect/order-detail/order-detail.component';
 import { ViewSpecComponent } from './product-defect/view-spec/view-spec.component';
+import { ScanPutawayComponent } from './scan_putaway/scan-putaway/scan-putaway.component';
+import { ScanPutawayBarcodeComponent } from './scan_putaway/scan-putaway-barcode/scan-putaway-barcode.component';
+import { ScanPutawayDetailComponent } from './scan_putaway/scan-putaway-detail/scan-putaway-detail.component';
+import { ScanPutawayQrComponent } from './scan_putaway/scan-putaway-qr/scan-putaway-qr.component';
 
 
 
@@ -388,6 +392,10 @@ import { ViewSpecComponent } from './product-defect/view-spec/view-spec.componen
     ItemEntrySearchComponent,
     OrderDetailComponent,
     ViewSpecComponent,
+    ScanPutawayComponent,
+    ScanPutawayBarcodeComponent,
+    ScanPutawayDetailComponent,
+    ScanPutawayQrComponent,
     
 
   

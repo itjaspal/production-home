@@ -7,7 +7,9 @@ export class productionRecListSearchView {
     public itemPerPage: number = AppSetting.itemPerPage;
     public entity_code: string = AppSetting.entity;
     public build_type: string = "";
-    public doc_date: string = "";;
+    public doc_date: string = "";
+    public doc_no: string = "";
+    public doc_status: string = "";
 }
 
 export class productionRecListTotalView<T>{ 
@@ -21,6 +23,8 @@ export class productionRecListTotalView<T>{
 export class productionRecListDetailView{ 
     public jit_date: any = null;
     public doc_no: string = "";
+    public doc_code: string = "";
+    public wh_code: string = "";
     public wc_code: string = "";
     public wc_name: string = "";
     public gen_date: any = null;

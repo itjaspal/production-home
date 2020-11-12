@@ -57,6 +57,10 @@ import { ProductionRecListComponent } from '../production-rec-report/production-
 import { ScanApproveSendSearchComponent } from '../scan-approve-send/scan-approve-send-search/scan-approve-send-search.component';
 import { ScanReceiveSearchComponent } from '../scan-receive/scan-receive-search/scan-receive-search.component';
 import { ProductDefectSearchComponent } from '../product-defect/product-defect-search/product-defect-search.component';
+import { ScanPutawayBarcodeComponent } from '../scan_putaway/scan-putaway-barcode/scan-putaway-barcode.component';
+import { ScanPutawayDetailComponent } from '../scan_putaway/scan-putaway-detail/scan-putaway-detail.component';
+import { ScanPutawayQrComponent } from '../scan_putaway/scan-putaway-qr/scan-putaway-qr.component';
+import { ScanPutawayComponent } from '../scan_putaway/scan-putaway/scan-putaway.component';
 
 
 
@@ -163,6 +167,16 @@ const routes: Routes = [
        { path: 'procRec', component: ProductionRecListComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
        { path: 'procRecDetail', component: ProductionRecListDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
 
+      //Scan PutAway
+      { path: 'scanPtw', component: ScanPutawayComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      { path: 'scanPtw/qr-add/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayQrComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" } },     
+      { path: 'scanPtw/qr-cancel/:doc_no/:doc_code/:wh_code/:doc_date', component: InprocessScanCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  },
+      { path: 'scanPtw/barcode-add/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayBarcodeComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
+      { path: 'scanPtw/barcode-cancel/:doc_no/:doc_code/:wh_code/:doc_date', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
+      { path: 'scanPtw/detail/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
+
+
+      
       //Scan Approve Send
       { path: 'scanrec', component: ScanReceiveSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 

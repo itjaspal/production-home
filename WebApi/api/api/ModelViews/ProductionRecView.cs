@@ -12,6 +12,8 @@ namespace api.ModelViews
         public string entity_code { get; set; }
         public string doc_date { get; set; }
         public string build_type { get; set; }
+        public string doc_no { get; set; }
+        public string doc_status { get; set; }
     }
 
     public class ProductionRecTotalView
@@ -27,6 +29,8 @@ namespace api.ModelViews
     {
         public DateTime jit_date { get; set; }
         public string doc_no { get; set; }
+        public string doc_code { get; set; }
+        public string wh_code { get; set; }
         public string wc_code { get; set; }
         public string wc_name { get; set; }
         public DateTime gen_date { get; set; }
