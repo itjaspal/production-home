@@ -22,10 +22,22 @@ export class MobileMenuComponent {
   }
 
   selectMenu(func){
-    console.log(func);
+    // console.log(func);
     
-    this.router.navigateByUrl(func.menuURL);
+    // this.router.navigateByUrl(func.menuURL);
+    let menu_id = func.menuFunctionId;
+
+    if(menu_id == "MOBB030002" && this.user.branch.entity_code == "HMSTK")
+    {
+      let menuURL = "/app/job-stk";
+      this.router.navigateByUrl(menuURL);
+    }
+    else
+    {
+      this.router.navigateByUrl(func.menuURL);
+    }
     
   }
+  
 
 }

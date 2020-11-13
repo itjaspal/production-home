@@ -11,7 +11,7 @@
     <ul>
 
       <li *ngFor="let menu of item.menuFunctionList">
-        <a mat-button class="md-button prepend-icon" [routerLink]="[menu.menuURL]"><span>{{menu.menuFunctionName}}</span></a>
+        <a mat-button class="md-button prepend-icon" [routerLink]="[menu.menuURL]" (click)="getRouterLink(menu)"><span>{{menu.menuFunctionName}}</span></a>
       </li>
     </ul>
   </li>

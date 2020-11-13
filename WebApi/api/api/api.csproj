@@ -265,6 +265,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobInProcessController.cs" />
     <Compile Include="Controllers\JobOperationController.cs" />
+    <Compile Include="Controllers\JobOperationStockController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PrintInProcessTagController.cs" />
     <Compile Include="Controllers\PrintRawTagController.cs" />
@@ -286,6 +287,7 @@
     <Compile Include="Interfaces\IDropdownlistService.cs" />
     <Compile Include="Interfaces\IJobInProcessService.cs" />
     <Compile Include="Interfaces\IJobOperationService.cs" />
+    <Compile Include="Interfaces\IJobOperationStockService.cs" />
     <Compile Include="Interfaces\IMenuService.cs" />
     <Compile Include="Interfaces\IPrintInProcessTagService.cs" />
     <Compile Include="Interfaces\IPrintRawTagService.cs" />
@@ -302,6 +304,7 @@
     <Compile Include="ModelViews\DefaultPrinterView.cs" />
     <Compile Include="ModelViews\Dropdownlist.cs" />
     <Compile Include="ModelViews\JobInProcessView.cs" />
+    <Compile Include="ModelViews\JobOperationStockView.cs" />
     <Compile Include="ModelViews\JobOperationView.cs" />
     <Compile Include="ModelViews\MasterMenuView.cs" />
     <Compile Include="ModelViews\PrintInProcessTagView.cs" />
@@ -319,6 +322,7 @@
     <Compile Include="Services\DropdownlistService.cs" />
     <Compile Include="Services\JobInProcessService.cs" />
     <Compile Include="Services\JobOperationService.cs" />
+    <Compile Include="Services\JobOperationStockSevice.cs" />
     <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\PrintInProcessTagService.cs" />
     <Compile Include="Services\PrintRawTagService.cs" />

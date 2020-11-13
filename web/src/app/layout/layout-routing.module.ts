@@ -61,6 +61,7 @@ import { ScanPutawayBarcodeComponent } from '../scan_putaway/scan-putaway-barcod
 import { ScanPutawayDetailComponent } from '../scan_putaway/scan-putaway-detail/scan-putaway-detail.component';
 import { ScanPutawayQrComponent } from '../scan_putaway/scan-putaway-qr/scan-putaway-qr.component';
 import { ScanPutawayComponent } from '../scan_putaway/scan-putaway/scan-putaway.component';
+import { JobOperationStockComponent } from '../job-operation/job-operation-stock/job-operation-stock.component';
 
 
 
@@ -122,6 +123,7 @@ const routes: Routes = [
 
             
       //Default Printer
+      
       { path: 'defprinter', component: DefaultPrinterComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },     
 
       
@@ -131,6 +133,8 @@ const routes: Routes = [
        { path: 'ordersum/viewInfo', component: JobOrderDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/ordersum" }  },
        { path: 'ordersum/viewSpec', component: ViewSpecDrawingComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/ordersum" }  },
  
+       { path: 'job-stk', component: JobOperationStockComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
+
        //Spec Drawing
        { path: 'spec', component: SpecDrawingComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
       

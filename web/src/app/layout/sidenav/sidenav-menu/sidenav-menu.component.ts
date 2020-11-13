@@ -31,13 +31,12 @@ export class AppSidenavMenuComponent {
 
   getRouterLink(menu) {
 
-    let firstLinkChar = menu.menuURL.charAt(0);
-    let isSlash = firstLinkChar == '/';
+    let menu_id = menu.menuFunctionId;
 
-    if(!isSlash)
+    if(menu_id == "MOBB030002" && this.user.branch.entity_code == "HMSTK")
     {
-      //console.log(this.user.username);
-      window.open(menu.menuURL, '_self');
+      let menuURL = "/app/job-stk";
+      this.router.navigateByUrl(menuURL);
     }
     else
     {

@@ -185,6 +185,7 @@ import { ScanPutawayComponent } from './scan_putaway/scan-putaway/scan-putaway.c
 import { ScanPutawayBarcodeComponent } from './scan_putaway/scan-putaway-barcode/scan-putaway-barcode.component';
 import { ScanPutawayDetailComponent } from './scan_putaway/scan-putaway-detail/scan-putaway-detail.component';
 import { ScanPutawayQrComponent } from './scan_putaway/scan-putaway-qr/scan-putaway-qr.component';
+import { JobOperationStockComponent } from './job-operation/job-operation-stock/job-operation-stock.component';
 
 
 
@@ -396,6 +397,7 @@ import { ScanPutawayQrComponent } from './scan_putaway/scan-putaway-qr/scan-puta
     ScanPutawayBarcodeComponent,
     ScanPutawayDetailComponent,
     ScanPutawayQrComponent,
+    JobOperationStockComponent,
     
 
   
