@@ -157,6 +157,7 @@ export class OrderInFoDetailView {
     public skb_flag: string = "";
     public dsgn_no: string = "";
     public sd_no: string = "";
+    public bar_code:string = "";
     public subProduct: OrderSubProdDetailView[] = [];
 }
 
@@ -204,7 +205,7 @@ export class OrderSummaryParamView {
 export class OrderDetailParamView {
     public entity_code: string = "";
     public por_no: string = "";
-    public isEdit: boolean = false;
+    public : boolean = false;
     public hideSerialNo: boolean = false;
     public isSaleBed: boolean = false;
 }

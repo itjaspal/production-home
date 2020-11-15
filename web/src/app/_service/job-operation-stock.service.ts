@@ -17,4 +17,12 @@ export class JobOperationStockService {
   public async searchDataPlan(_model: JobOperationStockSearchView) { 
      return await this.http.post<JobOperationStockSearchView>(environment.API_URL + 'job-operation-stock/postSearchDataPlan', _model).toPromise();   
    } 
+
+   public async searchDataFin(_model: JobOperationStockSearchView) { 
+    return await this.http.post<JobOperationStockSearchView>(environment.API_URL + 'job-operation-stock/postSearchDataFin', _model).toPromise();   
+  } 
+
+  public async searchDataDefect(_model: JobOperationStockSearchView) { 
+    return await this.http.post<JobOperationStockSearchView>(environment.API_URL + 'job-operation-stock/postSearchDataDefect', _model).toPromise();   
+  } 
 }

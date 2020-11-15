@@ -186,6 +186,8 @@ import { ScanPutawayBarcodeComponent } from './scan_putaway/scan-putaway-barcode
 import { ScanPutawayDetailComponent } from './scan_putaway/scan-putaway-detail/scan-putaway-detail.component';
 import { ScanPutawayQrComponent } from './scan_putaway/scan-putaway-qr/scan-putaway-qr.component';
 import { JobOperationStockComponent } from './job-operation/job-operation-stock/job-operation-stock.component';
+import { PorDetailComponent } from './job-operation/por-detail/por-detail.component';
+import { ProductDetailComponent } from './job-operation/product-detail/product-detail.component';
 
 
 
@@ -398,6 +400,8 @@ import { JobOperationStockComponent } from './job-operation/job-operation-stock/
     ScanPutawayDetailComponent,
     ScanPutawayQrComponent,
     JobOperationStockComponent,
+    PorDetailComponent,
+    ProductDetailComponent,
     
 
   
@@ -424,7 +428,9 @@ import { JobOperationStockComponent } from './job-operation/job-operation-stock/
     ItemSearchComponent,
     ItemEntrySearchComponent,
     OrderDetailComponent,
-    ViewSpecComponent
+    ViewSpecComponent,
+    PorDetailComponent,
+    ProductDetailComponent
   ],
   bootstrap: [AppComponent]
 })

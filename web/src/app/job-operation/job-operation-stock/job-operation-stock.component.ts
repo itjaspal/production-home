@@ -10,6 +10,8 @@ import { JobOperationStockService } from '../../_service/job-operation-stock.ser
 import { JobOperationService } from '../../_service/job-operation.service';
 import { MessageService } from '../../_service/message.service';
 import { JobOrderDetailComponent } from '../job-order-detail/job-order-detail.component';
+import { PorDetailComponent } from '../por-detail/por-detail.component';
+import { ProductDetailComponent } from '../product-detail/product-detail.component';
 
 @Component({
   selector: 'app-job-operation-stock',
@@ -36,6 +38,8 @@ export class JobOperationStockComponent implements OnInit {
   public searchModel: JobOperationStockSearchView = new JobOperationStockSearchView();
 
   public data: any = {};
+  public data_fin: any = {};
+  public data_defect: any = {};
   public datas: any = {};
   public data_docdate : any;
   public count_datagroup : any = {};
@@ -71,10 +75,9 @@ export class JobOperationStockComponent implements OnInit {
 
     console.log(this.searchModel);
     this.data =  await this._jobSvc.searchDataPlan(this.searchModel);
-    console.log(this.data);
-    this.count_datagroup = this.data.displayGroups
-    console.log(this.count_datagroup.slice(0));
-   
+    this.data_fin =  await this._jobSvc.searchDataFin(this.searchModel);
+    this.data_defect =  await this._jobSvc.searchDataDefect(this.searchModel);
+    
     // this.fin_date.nativeElement.value = this.data_findate;
     this.searchModel.req_date = this.data_docdate;
    
@@ -83,15 +86,15 @@ export class JobOperationStockComponent implements OnInit {
 openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
   {
     console.log(p_por_no);
-    const dialogRef = this._dialog.open(JobOrderDetailComponent, {
+    const dialogRef = this._dialog.open(PorDetailComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',
       width: '100%',
       data: {
         por_no: p_por_no,
-        entity_code:p_entity
-       
+        entity_code:p_entity,
+        isSaleBed : true
       }
 
     });
@@ -100,15 +103,15 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
 
   openMorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
   {
-    const dialogRef = this._dialog.open(JobOrderDetailComponent, {
+    const dialogRef = this._dialog.open(PorDetailComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',
       width: '100%',
       data: {
         por_no: p_por_no,
-        entity_code:p_entity
-       
+        entity_code:p_entity,
+        isSaleBed : false
       }
 
     });
@@ -117,7 +120,7 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
 
   openProductDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
   {
-    const dialogRef = this._dialog.open(JobOrderDetailComponent, {
+    const dialogRef = this._dialog.open(ProductDetailComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',

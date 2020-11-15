@@ -122,6 +122,7 @@ namespace api.ModelViews
         public string skb_flag { get; set; }
         public string dsgn_no { get; set; }
         public string sd_no { get; set; }
+        public string bar_code { get; set; }
         public List<SubProductView> subProduct { get; set; }
     }
 

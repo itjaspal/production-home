@@ -126,6 +126,11 @@ namespace api.Services
                     string packaging = ctx.Database.SqlQuery<string>(sql6, new OracleParameter("p_prod_code", i.prod_code)).SingleOrDefault();
 
 
+                    // Find barcode
+                    string sql7 = "select bar_code from product where prod_code = :p_prod_code";
+                    string vbar_code = ctx.Database.SqlQuery<string>(sql7, new OracleParameter("p_prod_code", i.prod_code)).SingleOrDefault();
+
+
                     view.orderDetail.Add(new ModelViews.OrderDetailView()
                     {
 
@@ -144,6 +149,7 @@ namespace api.Services
                             dsgn_no = i.dsgn_no,
                             sd_no = i.sd_no,
                             packaging = packaging,
+                            bar_code = vbar_code,
                             subProduct = subViews,
 
                     });
