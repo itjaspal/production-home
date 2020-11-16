@@ -18,6 +18,7 @@ namespace api.Interfaces
         List<Dropdownlist> GetDdlPutAwayWHMast();
         List<Dropdownlist> GetDdlPtwSetNoList(string entity, string doc_code, string doc_no);
         List<Dropdownlist> GetDdlPtwProdList(string entity, string doc_code, string doc_no);
-
+        List<Dropdownlist> GetDdlWCInprocessStock(string user);
+        
     }
 }

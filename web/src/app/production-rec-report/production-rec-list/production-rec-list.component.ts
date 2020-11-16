@@ -8,6 +8,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import * as moment from 'moment';
 import { productionRecListDetailView, productionRecListSearchView, productionRecListTotalView } from '../../_model/production-rec-list';
 import { ProductionRecListService } from '../../_service/production-rec-list.service';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-production-rec-list',
@@ -22,6 +23,9 @@ export class ProductionRecListComponent implements OnInit {
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
   public validationForm: FormGroup;
+  public time_delay : any;
+  public docDate : any;
+  private updateSubscription: Subscription;
 
   @ViewChild('doc_date') doc_date: ElementRef;
 
@@ -37,9 +41,12 @@ export class ProductionRecListComponent implements OnInit {
   ngOnInit() {
     //this.buildForm();
     this.user = this._authSvc.getLoginUser(); 
-
-
+    
+    this.docDate = new Date();
+    this.model.doc_date = this.docDate;
     this.searchProductionRecList();
+
+
   }
 
  /* buildForm() {
@@ -66,10 +73,11 @@ export class ProductionRecListComponent implements OnInit {
         this.model.pageIndex = event.pageIndex;
         this.model.itemPerPage = event.pageSize;
       }
-      
+      var datePipe = new DatePipe("en-US");
       this.datas.recDetails  = [];
       this.model.build_type   = this.user.branch.entity_code;
-      this.model.doc_date     = this.doc_date.nativeElement.value; // 16/10/2020
+      // this.model.doc_date     = this.doc_date.nativeElement.value; // 16/10/2020
+      this.model.doc_date = datePipe.transform(this.model.doc_date, 'dd/MM/yyyy').toString();
       this.model.doc_no       = "";
       this.model.doc_status   = "";
       console.log(this.model.doc_date);
@@ -78,8 +86,37 @@ export class ProductionRecListComponent implements OnInit {
       this.datas =  await this._productionRecListSvc.searchProductionRecList(this.model);
       console.log(this.datas);
       this.doc_date.nativeElement.value = this.model.doc_date;
-     
-  }
+      
+      this.time_delay = await this._productionRecListSvc.getTimeDelay('H10','WHRPD');
+      this.time_delay = this.time_delay * 1000;
+      console.log(this.time_delay);
+      this.updateSubscription = interval(this.time_delay).subscribe(
+        (val) => { this.searchProductionRecRefreshList()});
+  } 
+
+
+  async searchProductionRecRefreshList(event: PageEvent = null) {   
+
+    if (event != null) {
+      this.model.pageIndex = event.pageIndex;
+      this.model.itemPerPage = event.pageSize;
+    }
+    var datePipe = new DatePipe("en-US");
+    this.datas.recDetails  = [];
+    this.model.build_type   = this.user.branch.entity_code;
+    this.model.doc_date     = this.doc_date.nativeElement.value; // 16/10/2020
+    // this.model.doc_date = datePipe.transform(this.model.doc_date, 'dd/MM/yyyy').toString();
+    this.model.doc_no       = "";
+    this.model.doc_status   = "";
+    console.log(this.model.doc_date);
+    //this.model.doc_date     = "";
+
+    this.datas =  await this._productionRecListSvc.searchProductionRecList(this.model);
+    console.log(this.datas);
+    this.doc_date.nativeElement.value = this.model.doc_date;
+  
+   
+} 
 
   openProductionRecListDetailDialog(p_docNo: string, p_docDate: string, _isEdit: boolean = false, _index: number = -1) {
     const dialogRef = this._dialog.open(ProductionRecListDetailComponent, {

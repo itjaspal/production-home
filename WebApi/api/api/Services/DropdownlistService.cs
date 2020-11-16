@@ -185,5 +185,24 @@ namespace api.Services
             }
         }
 
+        public List<Dropdownlist> GetDdlWCInprocessStock(string user)
+        {
+            using (var ctx = new ConXContext())
+            {
+
+                string sql = "select a.dept_code key , b.wc_tdesc value from auth_function a , wc_mast b where a.dept_code = b.wc_code and a.function_id='PDOPTHM' and a.doc_code <> 'STK' and a.user_id=:p_user_id";
+                List<Dropdownlist> ddl = ctx.Database.SqlQuery<Dropdownlist>(sql, new OracleParameter("p_user_id", user))
+                                            .Select(x => new Dropdownlist()
+                                            {
+                                                key = x.key,
+                                                value = x.value,
+                                            })
+                                            .ToList();
+
+                return ddl;
+            }
+        }
+
+        
     }
 }

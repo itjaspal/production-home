@@ -12,5 +12,6 @@ namespace api.Interfaces
         ProductionRecTotalView SearchProductionRec(ProductionRecSearchView model);
         ProductionRecDetailTotalView SearchProductionRecDetail(ProductionRecDetailSearchView model);
         ProductionRecTotalView SearchPutAwayWaiting(ProductionRecSearchView model);
+        int getTimeDelay(string entity, string build_type);
     }
 }

@@ -16,34 +16,36 @@
             <thead>
               <tr>
                   <th style="width: 5px" class="text-center">Item</th>
-                  <th style="width: 200px" class="text-center">Product</th>
-                  <th style="width: 5px"  class="text-center">Bom/  Packaging</th>
+                  <th style="width: 100px" class="text-center">Product Code</th>
+                  <th style="width: 250px" class="text-center">Product Name</th>
+                  <!-- <th style="width: 5px"  class="text-center">Bom/  Packaging</th>
                   <th style="width: 5px" class="text-center">Group</th>
                   <th style="width: 30px" class="text-center">Design/ Model</th>
-                  <th style="width: 5px" class="text-center">Color/ Size</th>
+                  <th style="width: 5px" class="text-center">Color/ Size</th> -->
                   <th style="width: 10px" class="text-center">Unit</th>
                   <th style="width: 10px" class="text-center">Qty</th>
-                  <th style="width: 30px" class="text-center">สคบ เลขที่</th>
-                  <th style="width: 30px" class="text-center">พิมพ์</th>
+                  <!-- <th style="width: 30px" class="text-center">สคบ เลขที่</th>
+                  <th style="width: 30px" class="text-center">พิมพ์</th> -->
                   <th style="width: 30px" class="text-center">SD No/ Dsgn.</th>
-                  <th style="width: 10px" class="text-center">Proc.</th>
+                  <!-- <th style="width: 10px" class="text-center">Proc.</th> -->
                   <th style="width: 10px" class="text-center"></th>
               </tr>
             </thead>
             <tbody *ngFor="let x of dataOrderInfo.orderDetail; let i = index;"> 
               <tr>
                 <td class="text-center">{{x.line_no}}</td>
+                <td>{{x.prod_code}}</td>
                 <td>{{x.prod_name}}</td>
-                <td>{{x.packaging}}</td>
+                <!-- <td>{{x.packaging}}</td>
                 <td>{{x.pdgrp_code}}</td>
                 <td>{{x.design}}</td>
-                <td>{{x.pdcolor_code}}/{{x.pdsize_code}}</td>
+                <td>{{x.pdcolor_code}}/{{x.pdsize_code}}</td> -->
                 <td>{{x.uom}}</td>
                 <td>{{x.qty_ord}}</td>
-                <td>{{x.gplabel_no}}</td>
-                <td>{{x.skb_flag}}</td>
+                <!-- <td>{{x.gplabel_no}}</td>
+                <td>{{x.skb_flag}}</td> -->
                 <td>{{x.sd_no}}/{{x.dsgn_no}}</td>
-                <td></td>
+                <!-- <td></td> -->
                 <td>
                   <button mat-icon-button [matMenuTriggerFor]="appMenu1">
                     <mat-icon class="material-icons">more_horiz</mat-icon>

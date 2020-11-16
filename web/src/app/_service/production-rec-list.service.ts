@@ -46,6 +46,9 @@ export class ProductionRecListService {
    
      }
 
-
+     public async getTimeDelay(_entity: string , _buildType: string ) {
+      return await this.http.get(environment.API_URL + 'productionRec/getTimeDelay/' + _entity+'/'+_buildType).toPromise(); 
+  
+    } 
 
 }

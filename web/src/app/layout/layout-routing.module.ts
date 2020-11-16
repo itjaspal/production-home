@@ -62,6 +62,7 @@ import { ScanPutawayDetailComponent } from '../scan_putaway/scan-putaway-detail/
 import { ScanPutawayQrComponent } from '../scan_putaway/scan-putaway-qr/scan-putaway-qr.component';
 import { ScanPutawayComponent } from '../scan_putaway/scan-putaway/scan-putaway.component';
 import { JobOperationStockComponent } from '../job-operation/job-operation-stock/job-operation-stock.component';
+import { ScanInprocessStockComponent } from '../scan-inprocess-stock/scan-inprocess-stock/scan-inprocess-stock.component';
 
 
 
@@ -156,6 +157,8 @@ const routes: Routes = [
       { path: 'taginproc/inprocess-detail/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
       { path: 'taginproc/print-inprocess-tag/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
 
+      { path: 'scaninproc-stk', component: ScanInprocessStockComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      
 
       //Scan Send
       { path: 'scansend', component: ScanSendComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 

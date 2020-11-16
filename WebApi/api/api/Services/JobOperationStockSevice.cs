@@ -267,6 +267,10 @@ namespace api.Services
 
                 WcDataView wc = ctx.Database.SqlQuery<WcDataView>(sql1, new OracleParameter("p_user_id", vuser_id)).SingleOrDefault();
 
+                if(wc == null)
+                {
+                    throw new Exception("ไม่ได้กำหนดหน่วยผลิตสุดท้าย");
+                }
 
                 //define model view
                 JobOperationStockView view = new ModelViews.JobOperationStockView()

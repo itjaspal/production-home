@@ -20,6 +20,7 @@ namespace api.ModelViews
     {
         public int pageIndex { get; set; }
         public int itemPerPage { get; set; }
+        public DateTime doc_date { get; set; }
         public int totalItem { get; set; }
         public int total_rec_qty { get; set; }
         public List<ProductionRecView> recDetails { get; set; }
@@ -29,6 +30,7 @@ namespace api.ModelViews
     {
         public DateTime jit_date { get; set; }
         public string doc_no { get; set; }
+        public DateTime doc_date { get; set; }
         public string doc_code { get; set; }
         public string wh_code { get; set; }
         public string wc_code { get; set; }
@@ -52,7 +54,7 @@ namespace api.ModelViews
     public class ProductionRecDetailTotalView
     {
         public int pageIndex { get; set; }
-        public int itemPerPage { get; set; }
+        public int itemPerPage { get; set; }    
         public int totalItem { get; set; }
         public int total_rec_qty { get; set; }
         public int total_prod_item { get; set; }
