@@ -35,4 +35,30 @@ namespace api.ModelViews
         public int qty { get; set; }
 
     }
+
+    public class ProductSubSearchView
+    {
+        public string entity { get; set; }
+        public string req_date { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string wc_code { get; set; }
+    }
+
+    public class ProductSubModalView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public List<ProductSubView> datas { get; set; }
+    }
+
+    public class ProductSubView
+    {
+        public string prod_code { get; set; }
+        public string sub_prod_code { get; set; }
+        public string sub_prod_name { get; set; }
+        public int qty_plan { get; set; }
+        public int qty_fin { get; set;}
+    }
 }

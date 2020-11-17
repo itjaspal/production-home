@@ -14,6 +14,8 @@ namespace api.Interfaces
         JobInProcessStockView ScanAdd(JobInProcessStockSearchView model);
         JobInProcessStockView EntryAdd(JobInProcessStockSearchView model);
         void Cancel(JobInProcessStockView scan);
-        //ProductModalView getSubProduct(ProductSearchView model);
+        ProductSubModalView getSubProduct(ProductSubSearchView model);
+        ProductSubModalView getSubProductCancel(ProductSubSearchView model);
+        JobInProcessStockView EntryCancel(JobInProcessStockSearchView model);
     }
 }

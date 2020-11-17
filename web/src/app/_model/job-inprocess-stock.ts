@@ -54,3 +54,23 @@ export class ScanInprocessSearchView
     public ref_no : string = "";
     public wc_code : string = "";
 }
+
+
+
+export class SubProductView
+{
+    public prod_code : string = "";
+    public sub_prod_code : string = "";
+    public sub_prod_name : string = "";
+    public qty_plan : number=0;
+    public qty_fin : number=0;
+}
+
+export class ProductSubSearchView
+{
+    public entity : string = AppSetting.entity;
+    public req_date : string = "";
+    public por_no : string = "";
+    public ref_no : string = "";
+    public wc_code : string = "";
+}

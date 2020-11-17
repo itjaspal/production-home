@@ -45,7 +45,7 @@ namespace api.Services
 
                 //query data
 
-                string sqlg = "select distinct c.disgrp_line_code  , d.disgrp_line_desc from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d where a.prod_code_sub = bom_code and b.distype_code = c.distype_code and a.entity = c.entity  and c.entity=d.entity and c.disgrp_line_code = d.disgrp_line_code  and a.entity= :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.wc_code= :p_wc_code order by c.disgrp_line_code";
+                string sqlg = "select distinct c.disgrp_line_code  , d.disgrp_line_desc , d.disgrp_sortid from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d where a.prod_code_sub = bom_code and b.distype_code = c.distype_code and a.entity = c.entity  and c.entity=d.entity and c.disgrp_line_code = d.disgrp_line_code  and a.entity= :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.wc_code= :p_wc_code order by d.disgrp_sortid";
                 List<GroupStockView> group = ctx.Database.SqlQuery<GroupStockView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", wc.wc_code)).ToList();
 
                 string sqlp = "select a.por_no , a.ref_no , max(b.model_name) design_name , nvl(sum(qty_defect),0) qty from mps_det_wc_stk a , mps_det b where a.entity = b.entity and a.por_no = b.por_no and a.entity = :p_entity and wc_code = :p_wc_code and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and b.build_type = :p_build_type  group by a.por_no , a.ref_no ";
@@ -59,7 +59,7 @@ namespace api.Services
 
                     foreach (var y in group)
                     {
-                        string sql = "select distype_code , distype_desc from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line";
+                        string sql = "select distype_code , distype_desc , distype_sortid from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line order by distype_sortid";
                         List<DisTypeView> disType = ctx.Database.SqlQuery<DisTypeView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_disgrp_line", y.disgrp_line_code)).ToList();
 
                         var dis_qty = "";
@@ -164,7 +164,7 @@ namespace api.Services
 
                 //query data
 
-                string sqlg = "select distinct c.disgrp_line_code  , d.disgrp_line_desc from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d where a.prod_code_sub = bom_code and b.distype_code = c.distype_code and a.entity = c.entity  and c.entity=d.entity and c.disgrp_line_code = d.disgrp_line_code  and a.entity= :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.wc_code= :p_wc_code order by c.disgrp_line_code";
+                string sqlg = "select distinct c.disgrp_line_code  , d.disgrp_line_desc , d.disgrp_sortid from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d where a.prod_code_sub = bom_code and b.distype_code = c.distype_code and a.entity = c.entity  and c.entity=d.entity and c.disgrp_line_code = d.disgrp_line_code  and a.entity= :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.wc_code= :p_wc_code order by d.disgrp_sortid";
                 List<GroupStockView> group = ctx.Database.SqlQuery<GroupStockView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", wc.wc_code)).ToList();
 
                 string sqlp = "select a.por_no , a.ref_no , max(b.model_name) design_name , sum(qty_fin) qty from mps_det_wc_stk a , mps_det b where a.entity = b.entity and a.por_no = b.por_no and a.entity = :p_entity and wc_code = :p_wc_code and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and b.build_type = :p_build_type  group by a.por_no , a.ref_no ";
@@ -178,7 +178,7 @@ namespace api.Services
 
                     foreach (var y in group)
                     {
-                        string sql = "select distype_code , distype_desc from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line";
+                        string sql = "select distype_code , distype_desc , distype_sortid from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line order by distype_sortid";
                         List<DisTypeView> disType = ctx.Database.SqlQuery<DisTypeView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_disgrp_line", y.disgrp_line_code)).ToList();
 
                         var dis_qty = "";
@@ -287,7 +287,7 @@ namespace api.Services
 
                 //query data
 
-                string sqlg = "select distinct c.disgrp_line_code  , d.disgrp_line_desc from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d where a.prod_code_sub = bom_code and b.distype_code = c.distype_code and a.entity = c.entity  and c.entity=d.entity and c.disgrp_line_code = d.disgrp_line_code  and a.entity= :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.wc_code= :p_wc_code order by c.disgrp_line_code";
+                string sqlg = "select distinct c.disgrp_line_code  , d.disgrp_line_desc , d.disgrp_sortid from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d where a.prod_code_sub = bom_code and b.distype_code = c.distype_code and a.entity = c.entity  and c.entity=d.entity and c.disgrp_line_code = d.disgrp_line_code  and a.entity= :p_entity and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and a.wc_code= :p_wc_code order by d.disgrp_sortid";
                 List<GroupStockView> group = ctx.Database.SqlQuery<GroupStockView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", wc.wc_code)).ToList();
 
                 string sqlp = "select a.por_no , a.ref_no , max(b.model_name) design_name , sum(qty_plan) qty from mps_det_wc_stk a , mps_det b where a.entity = b.entity and a.por_no = b.por_no and a.entity = :p_entity and wc_code = :p_wc_code and a.req_date = to_date(:p_req_date,'dd/mm/yyyy') and b.build_type = :p_build_type  group by a.por_no , a.ref_no ";
@@ -301,7 +301,7 @@ namespace api.Services
                     
                     foreach (var y in group)
                     {
-                        string sql = "select distype_code , distype_desc from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line";
+                        string sql = "select distype_code , distype_desc , distype_sortid from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line order by distype_sortid";
                         List<DisTypeView> disType = ctx.Database.SqlQuery<DisTypeView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_disgrp_line", y.disgrp_line_code)).ToList();
 
                         var dis_qty = "";

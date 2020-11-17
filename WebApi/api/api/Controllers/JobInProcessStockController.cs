@@ -76,7 +76,7 @@ namespace api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
 
@@ -95,6 +95,51 @@ namespace api.Controllers
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("job-inprocess-stock/postGetSubProduct")]
+        public HttpResponseMessage postGetProduct(ProductSubSearchView model)
+        {
+            try
+            {
+                var result = jobService.getSubProduct(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("job-inprocess-stock/postGetSubProductCancel")]
+        public HttpResponseMessage postGetProductCancel(ProductSubSearchView model)
+        {
+            try
+            {
+                var result = jobService.getSubProductCancel(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("job-inprocess-stock/postEntryCancel")]
+        public HttpResponseMessage postEntryCancel(JobInProcessStockSearchView model)
+        {
+            try
+            {
+                var result = jobService.EntryCancel(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { JobInProcessStockSearchView, JobInProcessStockView } from '../_model/job-inprocess-stock';
+import { JobInProcessStockSearchView, JobInProcessStockView, ProductSubSearchView, ScanInprocessSearchView, SubProductView } from '../_model/job-inprocess-stock';
 import { JobOperationStockSearchView } from '../_model/job-operation-stock';
 import { AuthenticationService } from './authentication.service';
 
@@ -34,4 +34,17 @@ export class ScanInprocessStockService {
   public async Cancel(params) {
     return await this.http.post<JobInProcessStockView>(environment.API_URL + 'job-inprocess-stock/postCancel', params).toPromise();
   }
+
+  public async getSubProduct(_model: ProductSubSearchView) {
+    return await this.http.post<SubProductView[]>(environment.API_URL + 'job-inprocess-stock/postGetSubProduct', _model).toPromise();
+  }
+
+  public async getSubProductCancel(_model: ProductSubSearchView) {
+    return await this.http.post<SubProductView[]>(environment.API_URL + 'job-inprocess-stock/postGetSubProductCancel', _model).toPromise();
+  }
+
+  public async searchCancel(_model: JobInProcessStockSearchView) {
+    return await this.http.post<JobInProcessStockView>(environment.API_URL + 'job-inprocess-stock/postEntryCancel', _model).toPromise();
+  }
+
 }

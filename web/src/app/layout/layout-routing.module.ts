@@ -63,6 +63,7 @@ import { ScanPutawayQrComponent } from '../scan_putaway/scan-putaway-qr/scan-put
 import { ScanPutawayComponent } from '../scan_putaway/scan-putaway/scan-putaway.component';
 import { JobOperationStockComponent } from '../job-operation/job-operation-stock/job-operation-stock.component';
 import { ScanInprocessStockComponent } from '../scan-inprocess-stock/scan-inprocess-stock/scan-inprocess-stock.component';
+import { PrintInprocessStockComponent } from '../print-inprocess-tag-stock/print-inprocess-stock/print-inprocess-stock.component';
 
 
 
@@ -152,13 +153,15 @@ const routes: Routes = [
       { path: 'scaninproc/inprocserach/:req_date/:wc_code/entry-add/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  }, 
       { path: 'scaninproc/inprocserach/:req_date/:wc_code/entry-cancel/:req_date/:pdjit_grp/:wc_code', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scaninproc" }  },          
 
+      { path: 'scaninproc-stk', component: ScanInprocessStockComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+
       //Print Inprocess Tag
       { path: 'taginproc', component: PrintInprocessComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
       { path: 'taginproc/inprocess-detail/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
       { path: 'taginproc/print-inprocess-tag/:req_date/:pdjit_grp/:wc_code', component: PrintInprocessDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/taginproc" } },     
 
-      { path: 'scaninproc-stk', component: ScanInprocessStockComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
       
+      { path: 'taginproc-stk', component: PrintInprocessStockComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
       //Scan Send
       { path: 'scansend', component: ScanSendComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 

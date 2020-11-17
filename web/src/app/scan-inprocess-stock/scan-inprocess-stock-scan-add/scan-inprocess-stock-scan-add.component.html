@@ -89,13 +89,10 @@
                   <th style="width: 10px" class="text-center"></th>
                 </tr>
                 <tr *ngFor="let x of model_scan.datas; let i = index;">
-                  <td>{{i+1}}</td>
-                  <!-- <td>{{x.prod_code}}</td>
-                    <td>{{x.prod_name}}</td> 
-                    <td>{{x.qty}}</td>  -->
+                  <td class="text-center">{{i+1}}</td>
                   <td>{{x.sub_prod_code}}</td>
                   <td>{{x.sub_prod_name}}</td>
-                  <td>{{x.qty}}</td>
+                  <td class="text-center">{{x.qty}}</td>
                   <td><button mat-icon-button [matMenuTriggerFor]="appMenu1">
                     <mat-icon class="material-icons">more_horiz</mat-icon>
                   </button>

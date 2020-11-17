@@ -38,11 +38,14 @@ export class AppSidenavMenuComponent {
       let menuURL = "/app/job-stk";
       this.router.navigateByUrl(menuURL);
     }
-    
-    
     else if(menu_id == "MOBB030004" && this.user.branch.entity_code == "HMSTK")
     {
       let menuURL = "/app/scaninproc-stk";
+      this.router.navigateByUrl(menuURL);
+    }
+    else if(menu_id == "MOBB030001" && this.user.branch.entity_code == "HMSTK")
+    {
+      let menuURL = "/app/taginproc-stk";
       this.router.navigateByUrl(menuURL);
     }
     else

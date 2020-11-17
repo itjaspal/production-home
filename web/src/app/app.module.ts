@@ -191,6 +191,13 @@ import { ProductDetailComponent } from './job-operation/product-detail/product-d
 import { ScanInprocessStockComponent } from './scan-inprocess-stock/scan-inprocess-stock/scan-inprocess-stock.component';
 import { ScanInprocessStockScanAddComponent } from './scan-inprocess-stock/scan-inprocess-stock-scan-add/scan-inprocess-stock-scan-add.component';
 import { ScanInprocessStockEntryAddComponent } from './scan-inprocess-stock/scan-inprocess-stock-entry-add/scan-inprocess-stock-entry-add.component';
+import { ScanInprocessStockCancelComponent } from './scan-inprocess-stock/scan-inprocess-stock-cancel/scan-inprocess-stock-cancel.component';
+import { SubProductSearchComponent } from './scan-inprocess-stock/sub-product-search/sub-product-search.component';
+import { SubProductCancelSearchComponent } from './scan-inprocess-stock/sub-product-cancel-search/sub-product-cancel-search.component';
+import { PrintInprocessStockComponent } from './print-inprocess-tag-stock/print-inprocess-stock/print-inprocess-stock.component';
+import { PrintInprocessTagStockComponent } from './print-inprocess-tag-stock/print-inprocess-tag-stock/print-inprocess-tag-stock.component';
+import { InprocessTagStockProductSearchComponent } from './print-inprocess-tag-stock/inprocess-tag-stock-product-search/inprocess-tag-stock-product-search.component';
+import { InprocessTagStockGroupSearchComponent } from './print-inprocess-tag-stock/inprocess-tag-stock-group-search/inprocess-tag-stock-group-search.component';
 
 
 
@@ -408,6 +415,13 @@ import { ScanInprocessStockEntryAddComponent } from './scan-inprocess-stock/scan
     ScanInprocessStockComponent,
     ScanInprocessStockScanAddComponent,
     ScanInprocessStockEntryAddComponent,
+    ScanInprocessStockCancelComponent,
+    SubProductSearchComponent,
+    SubProductCancelSearchComponent,
+    PrintInprocessStockComponent,
+    PrintInprocessTagStockComponent,
+    InprocessTagStockProductSearchComponent,
+    InprocessTagStockGroupSearchComponent,
     
 
   
@@ -438,7 +452,13 @@ import { ScanInprocessStockEntryAddComponent } from './scan-inprocess-stock/scan
     PorDetailComponent,
     ProductDetailComponent,
     ScanInprocessStockScanAddComponent,
-    ScanInprocessStockEntryAddComponent
+    ScanInprocessStockEntryAddComponent,
+    SubProductSearchComponent,
+    ScanInprocessStockCancelComponent,
+    SubProductCancelSearchComponent,
+    PrintInprocessTagStockComponent,
+    InprocessTagStockProductSearchComponent,
+    InprocessTagStockGroupSearchComponent
   ],
   bootstrap: [AppComponent]
 })

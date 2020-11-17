@@ -779,10 +779,10 @@ namespace api.Services
                 var vprod_name = "";
                 var vquery_qty = "";
                 var vSet_no = 0;
-                var vQty = 0;
+                //var vQty = 0;
                 var vRecQty = 0;
                 var vPtwQty = 0;
-                var vJIT_Date = "";
+                //var vJIT_Date = "";
                 var vItemNo = "";
 
                 // Check Scan QR Or Manual Key Set No and  Validate Data
