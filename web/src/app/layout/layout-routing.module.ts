@@ -64,6 +64,7 @@ import { ScanPutawayComponent } from '../scan_putaway/scan-putaway/scan-putaway.
 import { JobOperationStockComponent } from '../job-operation/job-operation-stock/job-operation-stock.component';
 import { ScanInprocessStockComponent } from '../scan-inprocess-stock/scan-inprocess-stock/scan-inprocess-stock.component';
 import { PrintInprocessStockComponent } from '../print-inprocess-tag-stock/print-inprocess-stock/print-inprocess-stock.component';
+import { ScanDefectComponent } from '../scan-defect/scan-defect/scan-defect.component';
 
 
 
@@ -168,6 +169,9 @@ const routes: Routes = [
 
       //Defect
       { path: 'defect', component: ProductDefectSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+
+      //Scan Defect
+      { path: 'scan-def', component: ScanDefectComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
       
       //Scan Approve Send

@@ -198,6 +198,12 @@ import { PrintInprocessStockComponent } from './print-inprocess-tag-stock/print-
 import { PrintInprocessTagStockComponent } from './print-inprocess-tag-stock/print-inprocess-tag-stock/print-inprocess-tag-stock.component';
 import { InprocessTagStockProductSearchComponent } from './print-inprocess-tag-stock/inprocess-tag-stock-product-search/inprocess-tag-stock-product-search.component';
 import { InprocessTagStockGroupSearchComponent } from './print-inprocess-tag-stock/inprocess-tag-stock-group-search/inprocess-tag-stock-group-search.component';
+import { ScanDefectComponent } from './scan-defect/scan-defect/scan-defect.component';
+import { ScanDefectEntryAddComponent } from './scan-defect/scan-defect-entry-add/scan-defect-entry-add.component';
+import { ScanDefectEntryCancelComponent } from './scan-defect/scan-defect-entry-cancel/scan-defect-entry-cancel.component';
+import { SubProductDefectSearchComponent } from './scan-defect/sub-product-defect-search/sub-product-defect-search.component';
+import { ScanDefectRemarkComponent } from './scan-defect/scan-defect-remark/scan-defect-remark.component';
+import { ScanDefectScanAddComponent } from './scan-defect/scan-defect-scan-add/scan-defect-scan-add.component';
 
 
 
@@ -422,6 +428,12 @@ import { InprocessTagStockGroupSearchComponent } from './print-inprocess-tag-sto
     PrintInprocessTagStockComponent,
     InprocessTagStockProductSearchComponent,
     InprocessTagStockGroupSearchComponent,
+    ScanDefectComponent,
+    ScanDefectEntryAddComponent,
+    ScanDefectEntryCancelComponent,
+    SubProductDefectSearchComponent,
+    ScanDefectRemarkComponent,
+    ScanDefectScanAddComponent,
     
 
   
@@ -458,7 +470,11 @@ import { InprocessTagStockGroupSearchComponent } from './print-inprocess-tag-sto
     SubProductCancelSearchComponent,
     PrintInprocessTagStockComponent,
     InprocessTagStockProductSearchComponent,
-    InprocessTagStockGroupSearchComponent
+    InprocessTagStockGroupSearchComponent,
+    ScanDefectScanAddComponent,
+    SubProductDefectSearchComponent,
+    ScanDefectEntryAddComponent,
+    ScanDefectRemarkComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -11,6 +11,7 @@ namespace api.Interfaces
     {
         JobOperationStockView SearchJobInPorcessPlan(JobOperationStockSearchView model);
         JobOperationStockView SearchJobInPorcessFin(JobOperationStockSearchView model);
+        JobOperationStockView SearchJobInPorcessDefect(JobOperationStockSearchView model);
         JobInProcessStockView ScanAdd(JobInProcessStockSearchView model);
         JobInProcessStockView EntryAdd(JobInProcessStockSearchView model);
         void Cancel(JobInProcessStockView scan);

@@ -80,10 +80,10 @@ export class PrintInprocessStockComponent implements OnInit {
     this.searchModel.user_id = this.user.username;
     this.searchModel.build_type = this.user.branch.entity_code;
 
-    console.log(this.searchModel);
+    // console.log(this.searchModel);
     this.data =  await this._jobSvc.searchInProcessPlan(this.searchModel);
     
-    console.log(this.data_fin);
+    // console.log(this.data_fin);
     
     // this.fin_date.nativeElement.value = this.data_findate;
     this.searchModel.req_date = this.data_docdate;
@@ -92,11 +92,7 @@ export class PrintInprocessStockComponent implements OnInit {
 
 openPrintTag(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: string,p_wc_code: string , _index: number = -1)
   {
-    console.log(p_entity);
-    console.log(p_por_no);
-    console.log(p_ref_no);
-    console.log(p_req_date);
-    console.log(p_wc_code);
+
     const dialogRef = this._dialog.open(PrintInprocessTagStockComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',

@@ -50,6 +50,21 @@ namespace api.Controllers
             }
         }
 
+        [Route("job-inprocess-stock/postSearchJobInPorcessDefect")]
+        public HttpResponseMessage postSearchDataDefect(JobOperationStockSearchView model)
+        {
+            try
+            {
+                var result = jobService.SearchJobInPorcessDefect(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
         [Route("job-inprocess-stock/postScanAdd")]
         public HttpResponseMessage postScanAdd(JobInProcessStockSearchView model)
         {

@@ -29,7 +29,7 @@
             <div class="row card-table-body">
               <div class="col-3 col-lg-3">
                 <mat-form-field class="full-width">
-                  <input matInput placeholder="รหัสสินค้า" formControlName="sub_prod_code" name="sub_prod_code" #bar_code [(ngModel)] ="searchModel.sub_prod_code">
+                  <input matInput placeholder="รหัสสินค้า" formControlName="sub_prod_code" name="sub_prod_code" #sub_prod_code [(ngModel)] ="searchModel.sub_prod_code">
                 </mat-form-field>
                 
               </div>
@@ -72,11 +72,11 @@
               
               <div class="col-3 col-lg-3">
                 <small>Product Code</small>
-                <dd>{{model.prod_code}}</dd>
+                <dd>{{model.sub_prod_code}}</dd>
               </div>
               <div class="col-5 col-lg-5">
                 <small>Product Name</small>
-                <dd>{{model.prod_name}}</dd>
+                <dd>{{model.sub_prod_name}}</dd>
               </div>
 
               
@@ -97,7 +97,7 @@
             <div class="row card-table-body">
               <div class="col-4 col-lg-4">
                 <small>Order No.</small>
-                <dd>JIT : {{model.req_date}}</dd>
+                <dd>{{model.por_no}}</dd>
               </div>
              
 

@@ -36,20 +36,14 @@ export class PrintInprocessTagStockComponent implements OnInit {
   public model: PrintInProcessTagStockView = new PrintInProcessTagStockView();
   public searchModel: PrintInProcessTagStockSearchView = new PrintInProcessTagStockSearchView();
 
-  //public data_product: any;
-  //public model_scan: JobInProcessScanFinView = new JobInProcessScanFinView();
-
   public datas: any = {};
   public count = 0;
 
-  //public result: any = {};
-
-  
   async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
     
-
+    console.log(this.data);
     // this.model = await this._printInprocessSvc.getproductinfo(this.data.bar_code);
     // this.model.req_date = this.data.req_date;
     // this.model.user_id = this.user.username;
@@ -60,7 +54,7 @@ export class PrintInprocessTagStockComponent implements OnInit {
 
   private buildForm() {
     this.validationForm = this._fb.group({
-      sub_prod_Code: [null, [Validators.required]],
+      sub_prod_code: [null, [Validators.required]],
       group_line: [null, [Validators.required]],
       qty: [null, []],
       description: [null, []]
@@ -94,7 +88,7 @@ export class PrintInprocessTagStockComponent implements OnInit {
 
     dialogRef2.afterClosed().subscribe(result => {
       if (result.length > 0) {
-        this.add_prod(result);
+        this.add_group(result);
       }
       
     })
@@ -127,15 +121,27 @@ export class PrintInprocessTagStockComponent implements OnInit {
     })
   }
 
+  add_group(datas: any) {
+
+    console.log(datas);
+    this.searchModel.group_line = datas[0].group_line;
+    
+  }  
+
   add_prod(datas: any) {
 
     console.log(datas);
-    this.searchModel.sub_prod_code = datas[0].bar_code;
-    // this.model.prod_code = datas[0].prod_code;
-    // this.model.prod_name = datas[0].prod_name;
-    // this.model.design_name = datas[0].design_name;
-    // this.model.size_name = datas[0].size_name;
-    
+    this.searchModel.sub_prod_code = datas[0].sub_prod_code;
+    this.model.prod_code = datas[0].prod_code;
+    this.model.sub_prod_code = datas[0].sub_prod_code;
+    this.model.sub_prod_name = datas[0].sub_prod_name;
+    this.model.design_name = datas[0].design_name;
+    this.model.size_name = datas[0].size_name;
+    this.model.por_no = datas[0].por_no;
+    this.model.ref_no = datas[0].ref_no;
+    this.model.build_no = datas[0].build_no;
+    this.model.req_date = datas[0].req_date;
+    this.model.user_id = this.user.username;
   }  
 
 

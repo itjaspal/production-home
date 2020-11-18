@@ -1,0 +1,155 @@
+<div class="container-fluid no-breadcrumbs">
+
+  <mat-card>
+    <mat-card-title>
+      <h6>บันทึกผลผลิต In Process - Scan </h6>
+    </mat-card-title>
+
+    <mat-card-content class="no-margin">
+
+      <mat-card>
+        <mat-card-content>
+
+          <form [formGroup]="validationForm">
+            <div class="row card-table-body">
+              <div class="col-11 col-lg-11">
+                <small>วันที่ทำรายการ</small>
+                <dd>{{current_date}}</dd>
+              </div>
+
+            </div>
+            <div class="row card-table-body">
+              <!-- Row 1-->
+              <div class="col-8 col-lg-8">
+
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="In Process Tag" formControlName="qr" name="qr" #qr
+                    (keydown.enter)="onQrEntered(qr.value); qr.value = ''" type="none">
+                  <button mat-button *ngIf="qr.value != ''" matSuffix mat-icon-button aria-label="Clear" type="button"
+                    (click)="qr.value = ''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <div class="col-2 col-lg-2">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Qty" formControlName="qty" name="qty" [(ngModel)] ="searchModel.qty">
+                </mat-form-field>
+                
+              </div>
+
+
+            </div>
+
+            <div class="row card-table-body">
+              
+              <div class="col-3 col-lg-3">
+                <small>Product Code</small>
+                <dd>{{datas.prod_code}}</dd>
+              </div>
+              <div class="col-4 col-lg-4">
+                <small>Product Name</small>
+                <dd>{{datas.prod_name}}</dd>
+              </div>
+
+              <div class="col-1 col-lg-1">
+                <small>Qty</small>
+                <dd>{{datas.qty}}</dd>
+              </div>
+              <div class="col-2 col-lg-2">
+
+
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+    <br />
+
+    <mat-card-content class="no-margin">
+      <div class="row">
+        <div class="col-lg-2 col-sm-2">
+          <dt>รายการ</dt>
+        </div>
+      </div>
+
+      <mat-card>
+
+        <mat-card-content>
+          <div class="row">
+            <div class="col-lg-2 col-sm-2">
+              <!-- <dt> ทั้งหมด : {{count}} รายการ</dt> -->
+            </div>
+          </div>
+          <div class="row card-table-body">
+
+            <!-- Table -->
+            <table style="width: 100%">
+              <tbody>
+                <tr>
+                  <th style="width: 20px" class="text-center">ลำดับ</th>
+                  <th style="width: 100px" class="text-center">รหัสสินค้า</th>
+                  <th style="width: 150px" class="text-center">ชื่อสินค้า</th>
+                  <th style="width: 50px" class="text-center">Scan Qty</th>
+                  <th style="width: 10px" class="text-center"></th>
+                </tr>
+                <tr *ngFor="let x of model_scan.datas; let i = index;">
+                  <td class="text-center">{{i+1}}</td>
+                  <td>{{x.sub_prod_code}}</td>
+                  <td>{{x.sub_prod_name}}</td>
+                  <td class="text-center">{{x.qty}}</td>
+                  <td><button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                    <mat-icon class="material-icons">more_horiz</mat-icon>
+                  </button>
+                  <mat-menu #appMenu1="matMenu">
+                    <button mat-menu-item (click)="cancel(i,x)">
+                      <mat-icon class="material-icons">cancel</mat-icon> <span>ยกเลิกผลผลิต</span>
+                    </button>
+                    <button mat-menu-item (click)="openRemarkModal(x.item_no)">
+                      <mat-icon class="material-icons">cancel</mat-icon> <span>บันทึกหมายเหตุ</span>
+                    </button>
+                    
+                  </mat-menu>
+                </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+
+
+
+          </div>
+
+          <!-- <mat-card-content *ngIf="model_scan.datas != undefined">
+              <ngb-pagination [collectionSize]="model_scan.totalItem" [pageSize]="model_scan.itemPerPage" [maxSize]="5"
+                  [(page)]="model_scan.pageIndex" (pageChange)="search()" [boundaryLinks]="true"></ngb-pagination>
+            </mat-card-content> -->
+
+
+        </mat-card-content>
+
+      </mat-card>
+    </mat-card-content>
+
+
+
+    <br />
+    <br />
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+
+      </div>
+    </mat-card-actions>
+
+
+  </mat-card>
+
+
+</div>

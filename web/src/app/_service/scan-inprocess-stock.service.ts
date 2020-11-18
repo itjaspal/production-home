@@ -23,6 +23,10 @@ export class ScanInprocessStockService {
     return await this.http.post<JobOperationStockSearchView>(environment.API_URL + 'job-inprocess-stock/postSearchJobInPorcessFin', _model).toPromise();   
   } 
 
+  public async searchInProcessDefect(_model: JobOperationStockSearchView) { 
+    return await this.http.post<JobOperationStockSearchView>(environment.API_URL + 'job-inprocess-stock/postSearchJobInPorcessDefect', _model).toPromise();   
+  } 
+
   public async searchScanAdd(_model: JobInProcessStockSearchView) {
     return await this.http.post<JobInProcessStockView>(environment.API_URL + 'job-inprocess-stock/postScanAdd', _model).toPromise();
   }

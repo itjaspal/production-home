@@ -49,5 +49,20 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
             }
         }
+
+        [Route("print-inproces-tag-stock/postPrintTagStock")]
+        public HttpResponseMessage postPrintTag(PrintInProcessTagStockView model)
+        {
+            try
+            {
+                tagService.PringTagStock(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, "ส่งข้อมูลไปยังเครื่องพิมพ์เรียบร้อยแล้ว");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
     }
 }

@@ -11,6 +11,6 @@ namespace api.Interfaces
     {
         TagStockProductModalView getProduct(TagStockProductSearchView model);
         TagStockGroupModalView getGroup(TagStockProductSearchView model);
-        //void PringTag(PrintInProcessTagView model);
+        void PringTagStock(PrintInProcessTagStockView model);
     }
 }

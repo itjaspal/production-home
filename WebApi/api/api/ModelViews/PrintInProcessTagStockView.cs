@@ -7,6 +7,18 @@ namespace api.ModelViews
 {
     public class PrintInProcessTagStockView
     {
+        public string prod_code { get; set; }
+        public string sub_prod_code { get; set; }
+        public string sub_prod_name { get; set; }
+        public string size_name { get; set; }
+        public string design_name { get; set; }
+        public int qty { get; set; }
+        public string description { get; set; }
+        public string user_id { get; set; }
+        public string req_date { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public int build_no { get; set; }
     }
 
     public class TagStockProductSearchView
@@ -35,7 +47,9 @@ namespace api.ModelViews
         public string por_no { get; set; }
         public string size_name { get; set; }
         public string design_name { get; set; }
-
+        public string ref_no { get; set; }
+        public string req_date { get; set; }
+        public int build_no { get; set; }
     }
 
     public class TagStockGroupModalView
@@ -51,5 +65,11 @@ namespace api.ModelViews
         public string group_line { get; set; }
         public string group_line_name { get; set; }
 
+    }
+
+    public class ProductDataView
+    {
+        public string size_name { get; set; }
+        public string design_name { get; set; }
     }
 }
