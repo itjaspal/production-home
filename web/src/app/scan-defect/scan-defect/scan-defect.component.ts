@@ -12,6 +12,7 @@ import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
 import { ScanInprocessStockService } from '../../_service/scan-inprocess-stock.service';
 import { ScanDefectEntryAddComponent } from '../scan-defect-entry-add/scan-defect-entry-add.component';
+import { ScanDefectEntryCancelComponent } from '../scan-defect-entry-cancel/scan-defect-entry-cancel.component';
 import { ScanDefectScanAddComponent } from '../scan-defect-scan-add/scan-defect-scan-add.component';
 
 @Component({
@@ -139,7 +140,7 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
 
   openCancel(p_entity : string ,p_por_no: string ,p_ref_no: string,p_req_date: string ,p_wc_code: string , _index: number = -1)
   {
-    const dialogRef = this._dialog.open(ScanInprocessStockCancelComponent, {
+    const dialogRef = this._dialog.open(ScanDefectEntryCancelComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',

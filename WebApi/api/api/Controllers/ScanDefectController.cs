@@ -105,5 +105,42 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
+
+        [Route("scan-defect/postGetSubProductCancel")]
+        public HttpResponseMessage postGetProductCancel(DefectProductSubSearchView model)
+        {
+            try
+            {
+                var result = defectService.getSubProductCancel(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("scan-defect/postEntryRemark")]
+        public HttpResponseMessage postEntryRemark(DataQcCuttingView model)
+        {
+            try
+            {
+
+                defectService.EntryRemark(model);
+
+                CommonResponseView res = new CommonResponseView()
+                {
+                    status = CommonStatus.SUCCESS,
+                    message = "บันทึกหมายเหตุสำเร็จ"
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
     }
 }

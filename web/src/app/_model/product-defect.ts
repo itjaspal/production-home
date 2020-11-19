@@ -49,6 +49,7 @@ export class DataQcView {
     public qc_qty: number = 0;
     public qc_proceee: string = "";
     public build_type: string = "";
+  item_no: number;
 }
 
 export class DataQcCuttingView {

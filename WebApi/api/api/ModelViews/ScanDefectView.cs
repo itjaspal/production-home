@@ -35,6 +35,7 @@ namespace api.ModelViews
         public string ref_no { get; set; }
         public string user_id { get; set; }
         public int qty { get; set; }
+        public int item_no { get; set; }
 
     }
 
@@ -62,6 +63,7 @@ namespace api.ModelViews
         public string sub_prod_name { get; set; }
         public int qty_plan { get; set; }
         public int qty_fin { get; set; }
+        public int qty_defect {get; set; }
         public int item_no { get; set; }
     }
 }

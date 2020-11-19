@@ -204,6 +204,7 @@ import { ScanDefectEntryCancelComponent } from './scan-defect/scan-defect-entry-
 import { SubProductDefectSearchComponent } from './scan-defect/sub-product-defect-search/sub-product-defect-search.component';
 import { ScanDefectRemarkComponent } from './scan-defect/scan-defect-remark/scan-defect-remark.component';
 import { ScanDefectScanAddComponent } from './scan-defect/scan-defect-scan-add/scan-defect-scan-add.component';
+import { SubProductDefectCancelSearchComponent } from './scan-defect/sub-product-defect-cancel-search/sub-product-defect-cancel-search.component';
 
 
 
@@ -434,6 +435,7 @@ import { ScanDefectScanAddComponent } from './scan-defect/scan-defect-scan-add/s
     SubProductDefectSearchComponent,
     ScanDefectRemarkComponent,
     ScanDefectScanAddComponent,
+    SubProductDefectCancelSearchComponent,
     
 
   
@@ -474,6 +476,9 @@ import { ScanDefectScanAddComponent } from './scan-defect/scan-defect-scan-add/s
     ScanDefectScanAddComponent,
     SubProductDefectSearchComponent,
     ScanDefectEntryAddComponent,
+    ScanDefectRemarkComponent,
+    ScanDefectEntryCancelComponent,
+    SubProductDefectCancelSearchComponent,
     ScanDefectRemarkComponent
   ],
   bootstrap: [AppComponent]

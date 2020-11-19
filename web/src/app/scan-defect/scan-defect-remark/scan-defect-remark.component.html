@@ -1,3 +1,97 @@
-<p>
-  scan-defect-remark works!
-</p>
+<div class="container-fluid no-breadcrumbs">
+  <!-- container-->
+  <mat-card>
+    <!-- mat-card 1 -->
+    <mat-card-title>
+      <h6>บันทึกหมายเหตุ</h6>
+    </mat-card-title>
+
+    <mat-card-content class="no-margin">
+
+      <mat-card>
+        <mat-card-content>
+
+          <form [formGroup]="validationForm">
+
+
+            <div class="row card-table-body">
+              <div class="col-4 col-lg-3 ">
+                <small>Doc No.</small>
+                <dd>{{model.por_no}}</dd>
+              </div>
+
+
+            </div>
+
+
+
+            <!-- <div class="col-2 col-lg-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!validationForm.valid">
+                    <mat-icon class="material-icons">save</mat-icon> บันทึก
+                  </button>
+                </mat-card-actions>
+              </div> -->
+
+
+
+
+
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 1" formControlName="remark1" name="remark1" #remark1 type="none"
+                    [(ngModel)]="model.remark1" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 2" formControlName="remark2" name="remark2" #remark2 type="none"
+                    [(ngModel)]="model.remark2" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 3" formControlName="remark3" name="remark3" #remark3 type="none"
+                    [(ngModel)]="model.remark3" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+
+
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+
+
+
+
+
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-3 col-lg-3">
+          <mat-card-actions class="no-margin">
+            <button mat-raised-button color="primary" type="button" (click)="save()" [disabled]="!model.remark1">
+              <mat-icon class="material-icons">save</mat-icon> บันทึก
+            </button>
+            
+          </mat-card-actions>
+        </div>
+        <div class="col-2 col-sm-2">
+          
+          <mat-card-actions class="no-margin">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </mat-card-actions>
+        </div>
+      </div>
+    </mat-card-actions>
+
+  </mat-card> <!-- mat-card 1 -->
+</div> <!-- container-->

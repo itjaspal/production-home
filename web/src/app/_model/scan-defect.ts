@@ -27,6 +27,7 @@ export class ScanDefectSearchView {
     public ref_no: string = "";
     public user_id: string = "";
     public qty: number = 0;
+    public item_no :number = 0;
 }
 
 export class ScanDefectScanFinView {
@@ -54,6 +55,7 @@ export class DefectProductSubSearchView {
     public por_no: string = "";
     public ref_no: string = "";
     public wc_code: string = "";
+    public item_no : number = 0;
 }
 
 export class DefectProductSubView {

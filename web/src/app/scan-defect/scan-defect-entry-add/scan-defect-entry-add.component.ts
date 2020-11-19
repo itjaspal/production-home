@@ -8,6 +8,7 @@ import { ScanDefectView, ScanDefectSearchView, ScanDefectScanFinView, ScanDefect
 import { AuthenticationService } from '../../_service/authentication.service';
 import { MessageService } from '../../_service/message.service';
 import { ScanDefectService } from '../../_service/scan-defect.service';
+import { ScanDefectRemarkComponent } from '../scan-defect-remark/scan-defect-remark.component';
 import { SubProductDefectSearchComponent } from '../sub-product-defect-search/sub-product-defect-search.component';
 
 @Component({
@@ -168,6 +169,31 @@ export class ScanDefectEntryAddComponent implements OnInit {
 
       }
     })
+  }
+
+  openRemarkModal(p_item_no : number) {
+
+    const dialogRef = this._dialog.open(ScanDefectRemarkComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '80%',
+      width: '80%',
+      data: {
+        entity: this.data.entity,
+        req_date: this.searchModel.req_date,
+        wc_code: this.data.wc_code,
+        por_no: this.searchModel.por_no,
+        ref_no: this.searchModel.ref_no,
+        item_no : p_item_no
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     this.add_prod(result);
+    //   }
+    // })
   }
 
   close() {

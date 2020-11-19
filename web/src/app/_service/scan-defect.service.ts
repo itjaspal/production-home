@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { JobInProcessStockSearchView, JobInProcessStockView, ProductSubSearchView, SubProductView } from '../_model/job-inprocess-stock';
+import { DataQcCuttingView } from '../_model/product-defect';
 import { DefectProductSubSearchView, DefectProductSubView, ScanDefectSearchView, ScanDefectView } from '../_model/scan-defect';
 
 @Injectable({
@@ -27,5 +28,17 @@ export class ScanDefectService {
 
   public async getSubProduct(_model: DefectProductSubSearchView) {
     return await this.http.post<DefectProductSubView[]>(environment.API_URL + 'scan-defect/postGetSubProduct', _model).toPromise();
+  }
+
+  public async getSubProductCancel(_model: DefectProductSubSearchView) {
+    return await this.http.post<DefectProductSubView[]>(environment.API_URL + 'scan-defect/postGetSubProductCancel', _model).toPromise();
+  }
+
+  public async searchCancel(_model: ScanDefectSearchView) {
+    return await this.http.post<ScanDefectView>(environment.API_URL + 'scan-defect/postEntryCancel', _model).toPromise();
+  }
+
+  public async EntryRemark(_model : DataQcCuttingView) {
+    return await this.http.post<ScanDefectView>(environment.API_URL + 'scan-defect/postEnterRemark', _model).toPromise();
   }
 }

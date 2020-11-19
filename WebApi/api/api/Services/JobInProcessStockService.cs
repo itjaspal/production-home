@@ -182,7 +182,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("QR ไม่ถูกต้อง");
+                    throw new Exception("ข้อมูลไม่ถูกต้อง");
                 }
 
                 if (vqty > mps_in_process.qty_fin)
