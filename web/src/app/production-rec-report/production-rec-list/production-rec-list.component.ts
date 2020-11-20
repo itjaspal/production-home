@@ -26,6 +26,7 @@ export class ProductionRecListComponent implements OnInit {
   public time_delay : any;
   public docDate : any;
   private updateSubscription: Subscription;
+  public chkRefresh : any;
 
   @ViewChild('doc_date') doc_date: ElementRef;
 
@@ -46,8 +47,33 @@ export class ProductionRecListComponent implements OnInit {
     this.model.doc_date = this.docDate;
     this.searchProductionRecList();
 
-
+    
   }
+
+  async onRefrechChanged(value)
+  {
+    console.log(value);
+    if(value==true)
+    {
+      this.time_delay = await this._productionRecListSvc.getTimeDelay('H10','WHRPD');
+      this.time_delay = this.time_delay * 1000;
+      console.log(this.time_delay);
+      this.updateSubscription = interval(this.time_delay).subscribe(
+        (val) => { this.searchProductionRecRefreshList()});
+    }
+    else
+    {
+      if (this.updateSubscription) {
+            this.updateSubscription.unsubscribe();
+          }
+    }
+  }
+
+  // ngOnDestroy() {
+  //   if (this.updateSubscription) {
+  //     this.updateSubscription.unsubscribe();
+  //   }
+  // }
 
  /* buildForm() {
     this.validationForm = this._formBuilder.group({
@@ -62,6 +88,9 @@ export class ProductionRecListComponent implements OnInit {
   }
   
   ngOnDestroy() {
+    if (this.updateSubscription) {
+          this.updateSubscription.unsubscribe();
+        }
     //console.log("Close Program ");
     //sessionStorage.removeItem('spect-drawing-reqDate');
     //sessionStorage.removeItem('spect-drawing-pcsBarcode');
@@ -87,11 +116,11 @@ export class ProductionRecListComponent implements OnInit {
       console.log(this.datas);
       this.doc_date.nativeElement.value = this.model.doc_date;
       
-      this.time_delay = await this._productionRecListSvc.getTimeDelay('H10','WHRPD');
-      this.time_delay = this.time_delay * 1000;
-      console.log(this.time_delay);
-      this.updateSubscription = interval(this.time_delay).subscribe(
-        (val) => { this.searchProductionRecRefreshList()});
+      // this.time_delay = await this._productionRecListSvc.getTimeDelay('H10','WHRPD');
+      // this.time_delay = this.time_delay * 1000;
+      // console.log(this.time_delay);
+      // this.updateSubscription = interval(this.time_delay).subscribe(
+      //   (val) => { this.searchProductionRecRefreshList()});
   } 
 
 

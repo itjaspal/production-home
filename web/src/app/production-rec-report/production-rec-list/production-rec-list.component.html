@@ -18,12 +18,15 @@
                      <mat-datepicker #picker></mat-datepicker>
                    </mat-form-field>
                  </div>
-                 <div class="col-1 col-sm-1">
+                 <div class="col-2 col-sm-2">
                    <mat-card-actions class="no-margin">
                      <button mat-raised-button color="primary"  type="button" (click)="searchProductionRecList()">
                        <mat-icon class="material-icons">search</mat-icon> ค้นหา
                      </button>
                    </mat-card-actions>
+                 </div>
+                 <div class="col-1 col-sm-1">
+                  <mat-checkbox #chkRefresh class="example-margin" id = "chkRefresh"  (change)="onRefrechChanged(chkRefresh.checked)" value="Y">Auto Refresh</mat-checkbox>
                  </div>
                </div>
              </form> 

@@ -94,7 +94,7 @@ export class ScanDefectEntryCancelComponent implements OnInit {
       this.searchModel.build_type = this.user.branch.entity_code;
       
       console.log(this.searchModel);
-      // this.datas = await this._defectSvc.searchCancel(this.searchModel);
+      this.datas = await this._defectSvc.searchCancel(this.searchModel);
       console.log(this.datas);
       this.add(this.datas);
       this.searchModel.sub_prod_code = "";
