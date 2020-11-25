@@ -168,6 +168,7 @@ namespace api.ModelViews
         public string build_type { get; set; }
         public DateTime req_date { get; set; }
         public string pdjit_grp { get; set; }
+        public string wc_code { get; set; }
     }
 
     public class OrderSumView

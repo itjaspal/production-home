@@ -134,7 +134,7 @@ export class PrintInprocessComponent implements OnInit {
    
   }
 
-  openOrderSummaryDialog(p_build_type: string, p_pdjit_grp: string, p_req_date: string, p_pdjit_grp_desc: string, _isEdit: boolean = false, _index: number = -1) {
+  openOrderSummaryDialog(p_build_type: string, p_pdjit_grp: string, p_req_date: string, p_pdjit_grp_desc: string, p_wc_code: string, _isEdit: boolean = false, _index: number = -1) {
     const dialogRef = this._dialog.open(PrintInprocessDetailComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh', 
@@ -145,6 +145,7 @@ export class PrintInprocessComponent implements OnInit {
         pdjit_grp: p_pdjit_grp,
         req_date: p_req_date,
         pdjit_grp_desc: p_pdjit_grp_desc,
+        wc_code : p_wc_code,
         isEdit: _isEdit,
        // editItem: _editItem,
         hideSerialNo: true,

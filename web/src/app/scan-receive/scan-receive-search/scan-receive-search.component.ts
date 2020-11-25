@@ -45,10 +45,14 @@ export class ScanReceiveSearchComponent implements OnInit {
   public datas_print: any = {};
   public data_qty : any;
   public data_docdate : any;
+  public docDate : any;
   
   async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
+    this.docDate = new Date();
+    this.searchModel.doc_date = this.docDate;
+    this.searchModel.send_type = "WAIT";
     // this.wclist = await this._dll.getDdlWCSend(this.user.username);
     // if(this.wclist.length==1)
     // {
@@ -106,11 +110,12 @@ export class ScanReceiveSearchComponent implements OnInit {
 
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result.length > 0) {
-    //     //this.add_prod(result);
-    //   }
-    // })
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+      // if (result.length > 0) {
+      //   //this.add_prod(result);
+      // }
+    })
   }
 
   openProductDetail(p_entity : string ,p_doc_no: string  , _index: number = -1)

@@ -104,7 +104,7 @@ namespace api.Services
 
                 if(printer == null)
                 {
-                    throw new Exception("บังไม่ได้กำหนด Default Printer");
+                    throw new Exception("ยังไม่ได้กำหนด Default Printer");
                 }
 
                 string sqlf = "select form_no from doc_mast where systemid='PD' and doc_code='IPT'";
@@ -120,6 +120,7 @@ namespace api.Services
 
 
                 string txt = vprod_name + "@" + vsize + "@" + vdesign + "@" + vdescription + "@" + vorder_no + "@" + model.req_date + "@" + vqty + "@" + vform_no + "@" + vbar_code + "|" + vprod_name + "|" + "" + vqty + "|" + vreq_date;
+
 
 
                 //File.WriteAllText(Path.Combine(dataPath), all_txt);

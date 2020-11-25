@@ -119,7 +119,12 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
       }
 
     });
-
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result.length > 0) {
+        this.search();
+      // }
+      
+    })
     
   }
 

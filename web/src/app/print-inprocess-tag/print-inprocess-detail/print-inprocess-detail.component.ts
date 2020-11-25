@@ -68,6 +68,7 @@ export class PrintInprocessDetailComponent implements OnInit {
     this.model.build_type = this.paramData.build_type;
     this.model.pdjit_grp  = this.paramData.pdjit_grp;
     this.model.req_date   = this.paramData.req_date;
+    this.model.wc_code   = this.paramData.wc_code;
 
     console.log(this.model.req_date);
 

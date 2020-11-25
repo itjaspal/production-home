@@ -64,6 +64,7 @@ export class OrderSummarySearchView {
     public build_type: string = "";
     public req_date: any = null;
     public pdjit_grp: string = "";
+    public wc_code : string = "";
 }
 
 export class OrderSummaryProdDetailView<T>{ 
@@ -196,6 +197,7 @@ export class OrderSummaryParamView {
     public pdjit_grp: string = "";
     public pdjit_grp_desc: string = "";
     public req_date: any = null;
+    public wc_code : string = "";
     public isEdit: boolean = false;
     public hideSerialNo: boolean = false;
     public isSaleBed: boolean = false;

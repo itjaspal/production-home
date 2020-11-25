@@ -55,6 +55,11 @@ export class ProductDefectQcEntryComponent implements OnInit {
 
     this.group_qc = await this._defectSvc.getQcGroup(this.user.branch.entity_code);
     
+    this.model.qc_process = "WIP";
+    console.log(this.model.qc_process);
+    this.item_no = await this._defectSvc.getItemQcEntryNo(this.model.entity, this.model.por_no , this.model.qc_process);
+    this.model.item_no = this.item_no;
+    
     console.log(this.group_qc);
   }
 
@@ -134,6 +139,7 @@ export class ProductDefectQcEntryComponent implements OnInit {
 
   close() {
     this.dialogRef.close([]);
+   
   }
 
 

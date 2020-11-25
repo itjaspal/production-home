@@ -69,19 +69,7 @@ export class ProductionRecListComponent implements OnInit {
     }
   }
 
-  // ngOnDestroy() {
-  //   if (this.updateSubscription) {
-  //     this.updateSubscription.unsubscribe();
-  //   }
-  // }
-
- /* buildForm() {
-    this.validationForm = this._formBuilder.group({
-      doc_date: ['', Validators.compose([Validators.required, YourValidator.dateVaidator])],
-      wc_code: [''],
-      build_type: ['']
-    });
-  }*/
+ 
 
   close() { 
     this._router.navigateByUrl('/app/mobile-navigator');  
@@ -91,9 +79,7 @@ export class ProductionRecListComponent implements OnInit {
     if (this.updateSubscription) {
           this.updateSubscription.unsubscribe();
         }
-    //console.log("Close Program ");
-    //sessionStorage.removeItem('spect-drawing-reqDate');
-    //sessionStorage.removeItem('spect-drawing-pcsBarcode');
+  
   }
 
   async searchProductionRecList(event: PageEvent = null) {   
@@ -111,16 +97,11 @@ export class ProductionRecListComponent implements OnInit {
       this.model.doc_status   = "";
       console.log(this.model.doc_date);
       //this.model.doc_date     = "";
-
+      
       this.datas =  await this._productionRecListSvc.searchProductionRecList(this.model);
       console.log(this.datas);
       this.doc_date.nativeElement.value = this.model.doc_date;
-      
-      // this.time_delay = await this._productionRecListSvc.getTimeDelay('H10','WHRPD');
-      // this.time_delay = this.time_delay * 1000;
-      // console.log(this.time_delay);
-      // this.updateSubscription = interval(this.time_delay).subscribe(
-      //   (val) => { this.searchProductionRecRefreshList()});
+   
   } 
 
 

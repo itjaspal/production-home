@@ -98,6 +98,7 @@ namespace api.ModelViews
         public string req_date { get; set; }
         public string job_no { get; set; }
         public string set_no { get; set; }
+        public string ref_no { get; set; }
     }
 
     public class SendSetNoView

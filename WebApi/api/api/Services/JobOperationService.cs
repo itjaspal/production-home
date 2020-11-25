@@ -184,6 +184,7 @@ namespace api.Services
                 string vpdjit_grp = model.pdjit_grp;
                 DateTime vreq_date = model.req_date;
                 string vbuild_type = model.build_type;
+                string vwc_code = model.wc_code;
                 string vspec = "";
 
                 string sql = "select req_date , pdjit_grp ,  sum(qty_req) total_plan_qty , sum(nvl(qty_fgg,0)) total_actual_qty from mps_det where entity= :p_entity and req_date = trunc(:p_req_date) and nvl(build_type,'HMJIT') = :p_build_type and pdjit_grp = :p_pdjit_grp group by req_date , pdjit_grp";
@@ -206,6 +207,11 @@ namespace api.Services
 
                 foreach(var x in prod)
                 {
+                    string sql1 = "select nvl(sum(qty_pdt),0) from mps_det_wc where entity=:p_entity and req_date = trunc(:p_req_date) and wc_code=:p_wc_code and pdjit_grp=:p_pdjit_grp and nvl(build_type,'HMJIT') =:p_build_type and mps_st =  'Y' and prod_code=:p_prod_code";
+                    int act_qty = ctx.Database.SqlQuery<int>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
+
+                    
+
                     List<PorDetailView> porViews = new List<PorDetailView>();
 
                     //string sqlp = "select a.por_no , b.qty_req , nvl(b.weight_net,0) weight from mps_det a, por_det b  where a.por_no=b.por_no and a.prod_code=b.prod_code  and a.entity= :p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and b.prod_code= :p_prod_code";
@@ -245,8 +251,8 @@ namespace api.Services
                         spec = x.spec,
                         weight_kg = (x.weight*x.plan_qty)/1000,
                         plan_qty = x.plan_qty,
-                        act_qty = x.act_qty,
-                        diff_qty = x.plan_qty - x.act_qty,
+                        act_qty = act_qty,
+                        diff_qty = x.plan_qty - act_qty,
                         porDetail = porViews,
 
                     });
@@ -361,7 +367,7 @@ namespace api.Services
                     sql += " and nvl(build_type,'HMJIT') = :p_build_type";
                     sql += " and wc_code = :p_wc_code";
                     sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
-                    sql += " group by por_no , req_date , pdjit_grp , wc_code";
+                    sql += " group by req_date , pdjit_grp , wc_code";
                     sql += " union";
                     sql += " select req_date , pdjit_grp , wc_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
                     sql += " from mps_det_wc where entity= :p_entity ";
@@ -370,7 +376,7 @@ namespace api.Services
                     sql += " and nvl(build_type,'HMJIT') = :p_build_type";
                     sql += " and wc_code = :p_wc_code";
                     sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
-                    sql += " group by por_no , req_date , pdjit_grp , wc_code ";
+                    sql += " group by req_date , pdjit_grp , wc_code ";
                     sql += " ) group by req_date , pdjit_grp , wc_code";
                     sql += " order by req_date , pdjit_grp";
 
@@ -528,7 +534,7 @@ namespace api.Services
                         sql += " and nvl(build_type,'HMJIT') = :p_build_type";
                         sql += " and wc_code = :p_wc_code";
                         sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
-                        sql += " group by por_no , req_date , pdjit_grp , wc_code";
+                        sql += " group by req_date , pdjit_grp , wc_code";
                         sql += " union";
                         sql += " select req_date , pdjit_grp , wc_code , 0 plan_qty ,  0 act_qty , count(*) cancel_qty , 0 defect_qty";
                         sql += " from mps_det_wc where entity= :p_entity ";
@@ -537,7 +543,7 @@ namespace api.Services
                         sql += " and nvl(build_type,'HMJIT') = :p_build_type";
                         sql += " and wc_code = :p_wc_code";
                         sql += " and pdjit_grp not in ( select jit_grp from pd_disgrp_ctl where entity = :p_entity2  and user_id = :p_user_id)";
-                        sql += " group by por_no , req_date , pdjit_grp , wc_code ";
+                        sql += " group by req_date , pdjit_grp , wc_code ";
                         sql += " ) group by req_date , pdjit_grp , wc_code";
                         sql += " order by req_date , pdjit_grp";
 

@@ -31,9 +31,10 @@ namespace api.Services
                 };
 
                 
-                string sql1 = "select a.line_no , a.prod_code , a.qty_pdt , a.por_no job_no , b.prod_tname prod_name , b.uom_code , to_char(c.req_date,'dd/mm/yyyy') req_date from pd_det a , product b , por_mast c where a.prod_code = b.prod_code and a.pd_entity = c.pd_entity and a.plan_no = c.por_no and a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
+                string sql1 = "select a.line_no , a.prod_code , a.qty_pdt , a.por_no job_no , a.plan_no ref_no , b.prod_tname prod_name , b.uom_code  from pd_det a , product b  where a.prod_code = b.prod_code and  a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
                 List<SendDataDetailView> send = ctx.Database.SqlQuery<SendDataDetailView>(sql1, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).ToList();
 
+                
                 view.total_item = send.Count;
 
                 string vset_no = "";
@@ -49,6 +50,11 @@ namespace api.Services
                         vset_no = vset_no + i.set_no + "(" + i.qty + ") ,";
                     }
 
+                    string sql = "select distinct to_char(b.req_date,'dd/mm/yyyy') from pd_det a , mps_det b where a.pd_entity = :p_entity and a.doc_no = :p_doc_no and a.plan_no = b.por_no  and a.por_no = b.ref_no and rownum=1";
+                    //string sql = "select to_char(req_date,'dd/mm/yyyy') from mps_det where entity = :p_entity and por_no= :p_por_no and ref_no=:p_ref_no and rownum = 1";
+                    string vreq_date = ctx.Database.SqlQuery<string>(sql, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).FirstOrDefault();
+
+
                     view.datas.Add(new ModelViews.SendDataDetailView()
                     {
 
@@ -57,7 +63,7 @@ namespace api.Services
                         prod_name = x.prod_name,
                         uom_code = x.uom_code,
                         qty_pdt = x.qty_pdt,
-                        req_date = x.req_date,
+                        req_date = vreq_date,
                         job_no = x.job_no,
                         set_no = vset_no
                     });
@@ -403,7 +409,7 @@ namespace api.Services
             {
                 string ventity = model.entity;
                 string vbuild_type = model.build_type;               
-                string vdoc_no = model.doc_no;
+                string vdoc_no = model.doc_no.Trim(' '); ;
                 string vdoc_date = model.doc_date;
                 string vsend_type = model.send_type;
                 string vuser_id = model.user_id;

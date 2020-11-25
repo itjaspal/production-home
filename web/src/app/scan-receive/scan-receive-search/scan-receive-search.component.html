@@ -42,7 +42,7 @@
 
                 <div class="hiddenradio">
                   <label>
-                    <input type="radio" name="send_type" value="WAIT" (change)="radioTypeChange('WAIT')"> รอยืนยันรับมอบ
+                    <input type="radio" name="send_type" value="WAIT" (change)="radioTypeChange('WAIT')" checked> รอยืนยันรับมอบ
                   </label>
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <label>
@@ -112,7 +112,7 @@
               <tbody>
                 <tr>
                   <th style="width: 30px" class="text-center">Item</th>
-                  <th style="width: 50px" class="text-center">JIT Date</th>
+                  <!-- <th style="width: 50px" class="text-center">JIT Date</th> -->
                   <th style="width: 80px" class="text-center">เลขที่ใบส่งมอบ</th>
                   <th style="width: 50px" class="text-center">หน่วยผลิต</th>
                   <th style="width: 50px" class="text-center">ผู้ส่งมอบ</th>
@@ -123,7 +123,7 @@
                 </tr>
                 <tr *ngFor="let x of data.datas; let i = index;">
                   <td class="text-center">{{i+1}}</td>
-                  <td class="text-center">{{x.req_date}}</td>
+                  <!-- <td class="text-center">{{x.req_date}}</td> -->
                   <td class="text-center">{{x.doc_no}}</td>
                   <td class="text-center">{{x.wc_code}}</td>
                   <td class="text-center">{{x.gen_by}}</td>
