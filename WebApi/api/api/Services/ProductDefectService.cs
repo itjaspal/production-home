@@ -469,64 +469,64 @@ namespace api.Services
                 }
                 else if (model.build_type == "HMSTK")
                 {
-                    //string sql1 = "select a.entity , a.por_no , nvl(a.ref_no,a.por_no) ref_no , a.prod_code , max(a.prod_tname) prod_name , max(b.pdbrnd_desc) brand_name , max(a.model_name) design_name , max(a.size_name) size_name , sum(qty_req) qty_pdt , max(b.bar_code) bar_code " +
-                    //    "from mps_det a , product b " +
-                    //    "where a.prod_code = b.prod_code " +
-                    //    "and a.entity = :p_entity " +
-                    //    "and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy') " +
-                    //    "and a.por_no like :p_doc_no " +
-                    //    "and a.build_type = 'HMSTK' " +
-                    //    "group by  a.entity , a.por_no , a.ref_no , a.prod_code " +
-                    //    "order by a.por_no , a.ref_no";
+                    string sql1 = "select a.entity , a.por_no , nvl(a.ref_no,a.por_no) ref_no , a.prod_code , max(a.prod_tname) prod_name , max(b.pdbrnd_desc) brand_name , max(a.model_name) design_name , max(a.size_name) size_name , sum(qty_req) qty_pdt , max(b.bar_code) bar_code " +
+                        "from mps_det a , product b " +
+                        "where a.prod_code = b.prod_code " +
+                        "and a.entity = :p_entity " +
+                        "and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy') " +
+                        "and a.por_no like :p_doc_no " +
+                        "and a.build_type = 'HMSTK' " +
+                        "group by  a.entity , a.por_no , a.ref_no , a.prod_code " +
+                        "order by a.por_no , a.ref_no";
 
-                    //List<ProductDefectDetailView> prod = ctx.Database.SqlQuery<ProductDefectDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_doc_no", vpor_no + "%")).ToList();
+                    List<ProductDefectDetailView> prod = ctx.Database.SqlQuery<ProductDefectDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_doc_no", vpor_no + "%")).ToList();
 
-                    //view.totalItem = prod.Count;
-                    //prod = prod.Skip(view.pageIndex * view.itemPerPage)
-                    //    .Take(view.itemPerPage)
-                    //    .ToList();
+                    view.totalItem = prod.Count;
+                    prod = prod.Skip(view.pageIndex * view.itemPerPage)
+                        .Take(view.itemPerPage)
+                        .ToList();
 
-                    //foreach (var x in prod)
-                    //{
+                    foreach (var x in prod)
+                    {
 
-                    //    string sql2 = "select nvl(sum(qc_qty),0) from pd_qc_mast where pd_entity = :p_entity and doc_no = :p_doc_no and ref_por_no = :p_ref_no and prod_code = :p_prod_code and qc_process='CUTTING'";
-                    //    int vqty_cutting = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
+                        string sql2 = "select nvl(sum(qc_qty),0) from pd_qc_mast where pd_entity = :p_entity and doc_no = :p_doc_no and ref_por_no = :p_ref_no and prod_code = :p_prod_code and qc_process='CUTTING'";
+                        int vqty_cutting = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
 
-                    //    string sql3 = "select nvl(sum(qc_qty),0) from pd_qc_mast where pd_entity = :p_entity and doc_no = :p_doc_no and ref_por_no = :p_ref_no and prod_code = :p_prod_code and qc_process='WIP'";
-                    //    int vqty_wip = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
+                        string sql3 = "select nvl(sum(qc_qty),0) from pd_qc_mast where pd_entity = :p_entity and doc_no = :p_doc_no and ref_por_no = :p_ref_no and prod_code = :p_prod_code and qc_process='WIP'";
+                        int vqty_wip = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
 
-                    //    string sql4 = "select nvl(sum(qc_qty),0) from pd_qc_mast where pd_entity = :p_entity and doc_no = :p_doc_no and ref_por_no = :p_ref_no and prod_code = :p_prod_code and qc_process='FG'";
-                    //    int vqty_fin = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
+                        string sql4 = "select nvl(sum(qc_qty),0) from pd_qc_mast where pd_entity = :p_entity and doc_no = :p_doc_no and ref_por_no = :p_ref_no and prod_code = :p_prod_code and qc_process='FG'";
+                        int vqty_fin = ctx.Database.SqlQuery<int>(sql4, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
 
 
-                    //    view.datas.Add(new ModelViews.ProductDefectDetailView()
-                    //    {
-                    //        entity = ventity,
-                    //        por_no = x.por_no,
-                    //        ref_no = x.ref_no,
-                    //        prod_code = x.prod_code,
-                    //        prod_name = x.prod_name,
-                    //        brand_name = x.brand_name,
-                    //        design_name = x.design_name,
-                    //        size_name = x.size_name,
-                    //        qty_pdt = x.qty_pdt,
-                    //        qty_cutting = vqty_cutting,
-                    //        qty_wip = vqty_wip,
-                    //        qty_fin = vqty_fin,
-                    //        bar_code = x.bar_code
+                        view.datas.Add(new ModelViews.ProductDefectDetailView()
+                        {
+                            entity = ventity,
+                            por_no = x.por_no,
+                            ref_no = x.ref_no,
+                            prod_code = x.prod_code,
+                            prod_name = x.prod_name,
+                            brand_name = x.brand_name,
+                            design_name = x.design_name,
+                            size_name = x.size_name,
+                            qty_pdt = x.qty_pdt,
+                            qty_cutting = vqty_cutting,
+                            qty_wip = vqty_wip,
+                            qty_fin = vqty_fin,
+                            bar_code = x.bar_code
 
-                    //    });
+                        });
 
-                    //    total_qty_pdt = total_qty_pdt + x.qty_pdt;
-                    //    total_qty_cutting = total_qty_cutting + vqty_cutting;
-                    //    total_qty_wip = total_qty_wip + vqty_wip;
-                    //    total_qty_fin = total_qty_fin + vqty_fin;
-                    //}
+                        total_qty_pdt = total_qty_pdt + x.qty_pdt;
+                        total_qty_cutting = total_qty_cutting + vqty_cutting;
+                        total_qty_wip = total_qty_wip + vqty_wip;
+                        total_qty_fin = total_qty_fin + vqty_fin;
+                    }
 
-                    //view.total_qty_pdt = total_qty_pdt;
-                    //view.total_qty_cutting = total_qty_cutting;
-                    //view.total_qty_wip = total_qty_wip;
-                    //view.total_qty_fin = total_qty_fin;
+                    view.total_qty_pdt = total_qty_pdt;
+                    view.total_qty_cutting = total_qty_cutting;
+                    view.total_qty_wip = total_qty_wip;
+                    view.total_qty_fin = total_qty_fin;
                 }
 
                 //return data to contoller

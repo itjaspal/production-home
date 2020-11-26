@@ -85,7 +85,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("QR ไม่ถูกต้อง");
+                    throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
                 if (vqty > (mps_in_process.qty_plan - mps_in_process.qty_fin))
@@ -182,7 +182,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("ข้อมูลไม่ถูกต้อง");
+                    throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
                 if (vqty > mps_in_process.qty_fin)
@@ -262,7 +262,7 @@ namespace api.Services
                     datas = new List<ModelViews.ProductSubView>()
                 };
 
-                string sql = "select distinct prod_code , prod_code_sub sub_prod_code , prod_name_sub sub_prod_name , qty_plan , qty_fin from mps_det_wc_stk where entity= :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code= :p_wc_code and por_no=:p_por_no and ref_no= :p_ref_no and qty_plan > qty_fin order by prod_code , prod_code_sub";
+                string sql = "select distinct prod_code , prod_code_sub sub_prod_code , prod_name_sub sub_prod_name , qty_plan , qty_fin from mps_det_wc_stk where entity= :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code= :p_wc_code and por_no=:p_por_no and ref_no= :p_ref_no and qty_plan > qty_fin order by prod_code_sub , prod_code";
                 List<ProductSubView> prod = ctx.Database.SqlQuery<ProductSubView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no)).ToList();
 
                 foreach (var i in prod)
@@ -339,8 +339,8 @@ namespace api.Services
                 String[] strlist = model.scan_data.Split('|');
                 string vprod_code = strlist[0];
                 string vsub_prod_code = strlist[1];
-                int vqty = Int32.Parse(strlist[4]);
-
+                //int vqty = Int32.Parse(strlist[4]);
+                int vqty = model.qty;
                 string ventity = model.entity;
                 string vreq_date = model.req_date;
                 string vwc_code = model.wc_code;
@@ -365,7 +365,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("QR ไม่ถูกต้อง");
+                    throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
                 if (vqty > (mps_in_process.qty_plan - mps_in_process.qty_fin))

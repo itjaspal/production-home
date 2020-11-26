@@ -41,4 +41,8 @@ export class ScanDefectService {
   public async EntryRemark(_model : DataQcCuttingView) {
     return await this.http.post<ScanDefectView>(environment.API_URL + 'scan-defect/postEntryRemark', _model).toPromise();
   }
+
+  public async getSummaryDefect(_model: DefectProductSubSearchView) {
+    return await this.http.post<DefectProductSubView[]>(environment.API_URL + 'scan-defect/postGetSummaryDefect', _model).toPromise();
+  }
 }

@@ -12,7 +12,7 @@
                  <div class="col-lg-2 col-sm-5 col-5">
                   
                    <mat-form-field class="full-width">
-                     <input #doc_date matInput [matDatepicker]="picker" placeholder="วันที่ส่งมอบ" [(ngModel)]="model.doc_date"
+                     <input #doc_date matInput [matDatepicker]="picker" placeholder="วันที่ส่งมอบ" [(ngModel)]="searchModel.doc_date"
                        name="doc_date">
                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                      <mat-datepicker #picker></mat-datepicker>
@@ -33,9 +33,48 @@
 
          
              <!-- Table -->
-             <table style="width: 100%" >
+             <table style="width: 100%">
+              <tbody>
+                <tr>
+                  <th style="width: 30px" class="text-center">Item</th>
+                  <!-- <th style="width: 50px" class="text-center">JIT Date</th> -->
+                  <th style="width: 80px" class="text-center">เลขที่ใบส่งมอบ</th>
+                  <th style="width: 50px" class="text-center">หน่วยผลิต</th>
+                  <th style="width: 50px" class="text-center">ผู้ส่งมอบ</th>
+                  <th style="width: 50px" class="text-center">วัน / เวลา</th>
+                  <th style="width: 50px" class="text-center">จำนวนส่งมอบ</th>
+                  <th style="width: 70px" class="text-center">จำนวนยืนยันรับ</th>
+                  <th style="width: 10px"></th>
+                </tr>
+                <tr *ngFor="let x of data.datas; let i = index;">
+                  <td class="text-center">{{i+1}}</td>
+                  <!-- <td class="text-center">{{x.req_date}}</td> -->
+                  <td class="text-center">{{x.doc_no}}</td>
+                  <td class="text-center">{{x.wc_code}}</td>
+                  <td class="text-center">{{x.gen_by}}</td>
+                  <td class="text-center">{{x.gen_date}}</td>
+                  <td class="text-center">{{x.qty_pdt}}</td>
+                  <td class="text-center">{{x.qty_rec}}</td>
+                  <td><button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                      <mat-icon class="material-icons">more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #appMenu1="matMenu">
+
+                     
+                      <button mat-menu-item (click)="openProductDetail(x.entity,x.doc_no)">
+                        <mat-icon class="material-icons">description</mat-icon> <span>รายละเอียดสินค้า</span>
+                      </button>
+                    </mat-menu>
+                  </td>
+
+                </tr>
+
+
+              </tbody>
+            </table>
+             <!-- <table style="width: 100%" >
                <tbody>
-                 <!-- In Process Movement -->
+                 
                  <tr>
                    <th colspan="8">รายการรอยืนยันส่งมอบสินค้า</th>
                 </tr>
@@ -78,7 +117,7 @@
                 </tr>  
               
                </tbody>
-             </table>
+             </table> -->
              
              
 

@@ -44,11 +44,13 @@ export class ProductDefectSearchComponent implements OnInit {
   public datas_print: any = {};
   public data_qty : any;
   public data_reqdate : any;
+  public reqDate : any;
   
   async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
-  
+    this.reqDate = new Date();
+    this.searchModel.req_date = this.reqDate;
   }
 
   private buildForm() {

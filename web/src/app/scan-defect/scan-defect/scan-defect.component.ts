@@ -14,6 +14,7 @@ import { ScanInprocessStockService } from '../../_service/scan-inprocess-stock.s
 import { ScanDefectEntryAddComponent } from '../scan-defect-entry-add/scan-defect-entry-add.component';
 import { ScanDefectEntryCancelComponent } from '../scan-defect-entry-cancel/scan-defect-entry-cancel.component';
 import { ScanDefectScanAddComponent } from '../scan-defect-scan-add/scan-defect-scan-add.component';
+import { SummaryDefectComponent } from '../summary-defect/summary-defect.component';
 
 @Component({
   selector: 'app-scan-defect',
@@ -56,7 +57,7 @@ export class ScanDefectComponent implements OnInit {
     this.searchModel.build_type = this.user.branch.entity_code;
     this.wclist = await this._dll.getDdlWCInprocessStock(this.user.username);
     // console.log(this.wclist);
-    if(this.wclist.length > 1)
+    if(this.wclist.length >= 1)
     {
       this.searchModel.wc_code = this.wclist[0].key;
       // console.log(this.searchModel.wc_code);
@@ -117,6 +118,11 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
 
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+   
+    })
+
   }
 
   openEntryAdd(p_entity : string ,p_por_no: string ,p_ref_no: string,p_req_date: string ,p_wc_code: string , _index: number = -1)
@@ -135,6 +141,11 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
       }
 
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+   
+    })
 
   }
 
@@ -156,12 +167,41 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
 
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+      // if (result.length > 0) {
+      //   //this.add_prod(result);
+      // }
+    })
+  }
+
+  openSummaryDefect(p_entity : string ,p_por_no: string ,p_ref_no: string,p_req_date: string ,p_wc_code: string , _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(SummaryDefectComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        por_no: p_por_no,
+        entity:p_entity,
+        ref_no : p_ref_no,
+        req_date : p_req_date,
+        wc_code : p_wc_code
+       
+      }
+
+    });
+
     // dialogRef.afterClosed().subscribe(result => {
-    //   if (result.length > 0) {
-    //     //this.add_prod(result);
-    //   }
+    //   this.search();
+    //   // if (result.length > 0) {
+    //   //   //this.add_prod(result);
+    //   // }
     // })
   }
+
+
 
 close() {
   this._router.navigateByUrl('/app/home');

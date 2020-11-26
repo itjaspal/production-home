@@ -70,7 +70,7 @@ namespace api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
             }
         }
 
@@ -102,7 +102,7 @@ namespace api.Controllers
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
             }
         }
 
@@ -136,6 +136,21 @@ namespace api.Controllers
                 };
 
                 return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("scan-defect/postGetSummaryDefect")]
+        public HttpResponseMessage postGetSummaryDEfect(DefectProductSubSearchView model)
+        {
+            try
+            {
+                var result = defectService.getSummaryDefect(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
             {

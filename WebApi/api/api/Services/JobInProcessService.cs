@@ -491,7 +491,7 @@ namespace api.Services
 
                     if (mps_in_process == null)
                     {
-                        throw new Exception("Barcode ไม่ถูกต้อง");
+                        throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                     }
 
                     //define model view
@@ -646,7 +646,7 @@ namespace api.Services
 
                     if (mps_in_process == null)
                     {
-                        throw new Exception("Barcodeไม่ถูกต้อง");
+                        throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                     }
 
 

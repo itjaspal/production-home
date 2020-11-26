@@ -56,7 +56,7 @@ export class ScanInprocessStockComponent implements OnInit {
     this.searchModel.build_type = this.user.branch.entity_code;
     this.wclist = await this._dll.getDdlWCInprocessStock(this.user.username);
     // console.log(this.wclist);
-    if(this.wclist.length > 1)
+    if(this.wclist.length >= 1)
     {
       this.searchModel.wc_code = this.wclist[0].key;
       // console.log(this.searchModel.wc_code);
@@ -117,6 +117,10 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
 
     });
 
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+    })
+
   }
 
   openEntryAdd(p_entity : string ,p_por_no: string ,p_ref_no: string,p_req_date: string ,p_wc_code: string , _index: number = -1)
@@ -135,6 +139,10 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
       }
 
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+    })
 
   }
 
@@ -156,11 +164,12 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
 
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result.length > 0) {
-    //     //this.add_prod(result);
-    //   }
-    // })
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+      // if (result.length > 0) {
+      //   //this.add_prod(result);
+      // }
+    })
   }
 
 close() {

@@ -71,7 +71,8 @@ export class ScanInprocessStockScanAddComponent implements OnInit {
 
   private buildForm() {
     this.validationForm = this._fb.group({
-      qr: [null, []]
+      qr: [null, []],
+      qty: [null, []]
     });
   }
 
@@ -80,6 +81,12 @@ export class ScanInprocessStockScanAddComponent implements OnInit {
     if (_qr == null || _qr == "") {
       return;
     }
+    if(this.searchModel.qty == 0)
+    {
+      this._msgSvc.warningPopup("ต้องใส่จำนวน");
+    }
+    else
+    {
 
     var datePipe = new DatePipe("en-US");
 
@@ -99,6 +106,7 @@ export class ScanInprocessStockScanAddComponent implements OnInit {
 
 
     this.add(this.datas);
+    }
 
   }
 

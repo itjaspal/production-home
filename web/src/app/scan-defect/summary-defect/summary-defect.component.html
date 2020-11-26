@@ -1,0 +1,66 @@
+<div class="container-fluid no-breadcrumbs">
+  <!-- container-->
+  <mat-card>
+    <!-- mat-card 1 -->
+    <mat-card-title>
+      <h6> สรุปรายการสินค้า Defect</h6>
+    </mat-card-title>
+    <br />
+
+
+    <!-- <div class="col-12">
+        <br/>
+      </div>  -->
+
+    <mat-card-content class="no-margin">
+      <!-- Detail-->
+      <div class="row">
+          <div class="col-lg-5 col-sm-5">
+            <dt>POR No. : {{model.por_no}}</dt>
+          </div>
+        </div>
+      <mat-card-content>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              
+              <th style="width: 150px" class="text-center">Product Code</th>
+              <th style="width: 150px" class="text-center">Sub Product Code</th>
+              <th style="width: 200px" class="text-center">Sub Product Description</th>
+              <th style="width: 50px" class="text-center">จำนวน</th>
+             
+
+            </tr>
+            
+            <tr *ngFor="let x of datas.datas; let i = index;">
+              
+              <td>{{x.prod_code}}</td>
+              <td>{{x.sub_prod_code}}</td>
+              <td>{{x.sub_prod_name}}</td>
+              <td class="text-center">{{x.qty_defect}}</td>
+              
+            </tr>
+            
+
+          </tbody>
+          
+        </table>
+      </mat-card-content>
+    </mat-card-content> <!-- Detail-->
+    <br />
+
+
+
+
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+
+  </mat-card> <!-- mat-card 1 -->
+</div> <!-- container-->

@@ -102,7 +102,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("QR ไม่ถูกต้อง");
+                    throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
                 //if (vqty > mps_in_process.qty_fin)
@@ -227,7 +227,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("ข้อมูลไม่ถูกต้อง");
+                    throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
 
@@ -364,7 +364,7 @@ namespace api.Services
                     datas = new List<ModelViews.DefectProductSubView>()
                 };
 
-                string sql = "select distinct prod_code , prod_code_sub sub_prod_code , prod_name_sub sub_prod_name , qty_plan , qty_fin from mps_det_wc_stk where entity= :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code= :p_wc_code and por_no=:p_por_no and ref_no= :p_ref_no  order by prod_code , prod_code_sub";
+                string sql = "select distinct prod_code , prod_code_sub sub_prod_code , prod_name_sub sub_prod_name , qty_plan , qty_fin from mps_det_wc_stk where entity= :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code= :p_wc_code and por_no=:p_por_no and ref_no= :p_ref_no  order by prod_code_sub , prod_code";
                 List<ProductSubView> prod = ctx.Database.SqlQuery<ProductSubView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no)).ToList();
 
                 foreach (var i in prod)
@@ -434,6 +434,48 @@ namespace api.Services
             
         }
 
+        public DefectProductSubModalView getSummaryDefect(DefectProductSubSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity;
+                string vreq_date = model.req_date;
+                string vwc_code = model.wc_code;
+                string vpor_no = model.por_no;
+                string vref_no = model.ref_no;
+
+                DefectProductSubModalView view = new ModelViews.DefectProductSubModalView()
+                {
+
+                    datas = new List<ModelViews.DefectProductSubView>()
+                };
+
+                string sql = "select a.ref_prod_code prod_code, a.prod_code sub_prod_code , sum(a.no_pass_qty) qty_defect , b.bom_name sub_prod_name from pd_qc_mast a , bm_sub_bom_code b  where  a.prod_Code = b.bom_code and a.pd_entity = :p_entity and a.doc_no = :p_por_no and a.ref_por_no = :p_ref_no and qc_process = 'FG' group by a.ref_prod_code ,a.prod_code ,b.bom_name";
+                List<DefectProductSubView> prod = ctx.Database.SqlQuery<DefectProductSubView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no)).ToList();
+
+                foreach (var i in prod)
+                {
+
+                    view.datas.Add(new ModelViews.DefectProductSubView()
+                    {
+
+                        prod_code = i.prod_code,
+                        sub_prod_code = i.sub_prod_code,
+                        sub_prod_name = i.sub_prod_name,
+                        qty_defect = i.qty_defect,
+                       
+
+                    });
+                }
+
+
+                //return data to contoller
+                return view;
+
+
+            }
+        }
+
         public ScanDefectView ScanAdd(ScanDefectSearchView model)
         {
             using (var ctx = new ConXContext())
@@ -476,7 +518,7 @@ namespace api.Services
 
                 if (mps_in_process == null)
                 {
-                    throw new Exception("QR ไม่ถูกต้อง");
+                    throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
                 //if (vqty > mps_in_process.qty_fin)

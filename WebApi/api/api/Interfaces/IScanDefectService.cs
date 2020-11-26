@@ -16,6 +16,7 @@ namespace api.Interfaces
         ScanDefectView EntryCancel(ScanDefectSearchView model);
         DefectProductSubModalView getSubProductCancel(DefectProductSubSearchView model);
         void EntryRemark(DataQcCuttingView model);
+        DefectProductSubModalView getSummaryDefect(DefectProductSubSearchView model);
 
     }
 }
