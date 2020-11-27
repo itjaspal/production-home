@@ -12,6 +12,7 @@ import { MessageService } from '../../_service/message.service';
 import { JobOrderDetailComponent } from '../job-order-detail/job-order-detail.component';
 import { PorDetailComponent } from '../por-detail/por-detail.component';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
+import { ProductGroupDetailComponent } from '../product-group-detail/product-group-detail.component';
 
 @Component({
   selector: 'app-job-operation-stock',
@@ -73,7 +74,7 @@ export class JobOperationStockComponent implements OnInit {
     this.searchModel.user_id = this.user.username;
     this.searchModel.build_type = this.user.branch.entity_code;
 
-    console.log(this.searchModel);
+    // console.log(this.searchModel);
     this.data =  await this._jobSvc.searchDataPlan(this.searchModel);
     this.data_fin =  await this._jobSvc.searchDataFin(this.searchModel);
     this.data_defect =  await this._jobSvc.searchDataDefect(this.searchModel);
@@ -129,6 +130,35 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
         por_no: p_por_no,
         entity_code:p_entity
        
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
+  }
+
+  openProductGroupDetail(p_entity : string ,p_por_no: string,p_ref_no: string , _index: number = -1)
+  {
+    console.log(p_por_no);
+    console.log(p_ref_no);
+    console.log(this.searchModel.req_date);
+    console.log(p_entity);
+    const dialogRef = this._dialog.open(ProductGroupDetailComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        por_no: p_por_no,
+        entity_code:p_entity,
+        ref_no :p_ref_no,
+        req_date : this.searchModel.req_date,
+        // build_type : this.user.branch.entity_code,
+        // user_id : this.user.username
       }
 
     });

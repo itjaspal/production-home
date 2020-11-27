@@ -108,6 +108,9 @@ namespace api.Services
                     }
 
 
+                    
+
+
                     view.porGroups.Add(new ModelViews.PorStockGroupView()
                     {
                         entity = ventity,
@@ -349,6 +352,55 @@ namespace api.Services
 
                     }
 
+                    //displayGroupViews.Add(new ModelViews.DisplayGroupView()
+                    //{
+                    //    disgroup_code = "OTHER",
+                    //    disgroup_desc = "OTHER",
+                    //});
+
+
+                    string sql3 = "select to_char(nvl(sum(a1.qty_plan),0)) " +
+                    "from mps_det_wc_stk a1 , bm_sub_bom_code a2 " +
+                    "where a1.entity = :p_entity " +
+                    "and a1.req_date =to_date(:p_req_date,'dd/mm/yyyy') " +
+                    "and a1.por_no = :p_por_no " +
+                    "and a1.ref_no = :p_ref_no " +
+                    "and a1.prod_code_sub = a2.bom_code " +
+                    "and a2.distype_code is null " +
+                    "and wc_code = :p_wc_code";
+                    string qty_other = ctx.Database.SqlQuery<string>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_wc_code", wc.wc_code)).FirstOrDefault();
+
+                    if(qty_other == null)
+                    {
+                        qty_other = "0";
+                    }
+
+                    if(qty_other != "0")
+                    {
+                        displayGroupViews.Add(new ModelViews.DisplayGroupView()
+                        {
+                            disgroup_code = "OTHER",
+                            disgroup_desc = "OTHER",
+                        });
+
+
+                        groupViews.Add(new ModelViews.PorStockGroupDetailView()
+                        {
+                            disgroup_code = "OTHER",
+                            disgroup_desc = "OTHER",
+                            qty = qty_other.ToString()
+                        });
+
+                    }
+
+
+                    //groupViews.Add(new ModelViews.PorStockGroupDetailView()
+                    //{
+                    //    disgroup_code = "OTHER",
+                    //    disgroup_desc = "OTHER",
+                    //    qty = qty_other.ToString()
+                    //});
+
 
                     view.porGroups.Add(new ModelViews.PorStockGroupView()
                     {
@@ -373,5 +425,75 @@ namespace api.Services
             
         }
 
-    }
+        public ProductGroupView SearchSummaryProdcutGroup(ProductGroupSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity_code;
+                string vreq_date = model.req_date;
+                string vbuild_type = model.build_type;
+                string vuser_id = model.user_id;
+                string vpor_no = model.por_no;
+                string vref_no = model.ref_no;
+
+                ProductGroupView view = new ModelViews.ProductGroupView()
+                {
+
+                    datas = new List<ModelViews.ProductGroupDetailView>()
+                };
+
+                string sql1 = "select a.dept_code wc_code , b.wc_tdesc wc_name  from auth_function a, wc_mast b where a.dept_code = b.wc_code and  a.function_id='PDOPTHM' and a.doc_code='STK' and a.user_id=:p_user_id";
+                WcDataView wc = ctx.Database.SqlQuery<WcDataView>(sql1, new OracleParameter("p_user_id", vuser_id)).SingleOrDefault();
+
+                string sql2 = "select c.disgrp_line_code ,d.disgrp_line_desc , b.distype_code , c.distype_desc , sum(a.qty_plan) qty_plan , sum(a.qty_fin) qty_fin , nvl(sum(a.qty_defect),0) qty_defect , c.distype_sortid " +
+                    "from mps_det_wc_stk a , bm_sub_bom_code b , pd_distype_mast c , pd_disgrp_line d " +
+                    "where a.prod_code_sub = b.bom_code " +
+                    "and b.distype_code = c.distype_code " +
+                    "and c.disgrp_line_code = d.disgrp_line_code " +
+                    "and a.entity = :p_entity " +
+                    "and a.req_date =to_date(:p_req_date,'dd/mm/yyyy') " +
+                    "and a.por_no = :p_por_no " +
+                    "and a.ref_no = :p_ref_no " +
+                    "and a.wc_code = :p_wc_code " +
+                    "group by c.disgrp_line_code  , b.distype_code , d.disgrp_line_desc , c.distype_desc ,  c.distype_sortid " +
+                    //"order by c.disgrp_line_code , c.distype_sortid" +
+                    "union " +
+                    "select 'OTHER' disgrp_line_code  ,'OTHER' disgrp_line_desc , 'OTHER' distype_code  ,'OTHER' distype_desc , nvl(sum(a1.qty_plan),0) , nvl(sum(a1.qty_fin),0) , nvl(sum(a1.qty_defect),0) , 99 distype_sortid " +
+                    "from mps_det_wc_stk a1 , bm_sub_bom_code a2 " +
+                    "where a1.entity = :p_entity " +
+                    "and a1.req_date =to_date(:p_req_date,'dd/mm/yyyy') " +
+                    "and a1.por_no = :p_por_no " +
+                    "and a1.ref_no = :p_ref_no " +
+                    "and a1.prod_code_sub = a2.bom_code " +
+                    "and a2.distype_code is null " +
+                    "and wc_code = :p_wc_code " +
+                    "having nvl(sum(a1.qty_plan),0) > 0  " +
+                    "order by 1 , 8";
+
+                List<ProductGroupDetailView> prod = ctx.Database.SqlQuery<ProductGroupDetailView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_wc_code", wc.wc_code)).ToList();
+
+                foreach (var i in prod)
+                {
+
+                    view.datas.Add(new ModelViews.ProductGroupDetailView()
+                    {
+                        disgrp_line_desc = i.disgrp_line_desc,
+                        distype_desc = i.distype_desc,
+                        qty_plan = i.qty_plan,
+                        qty_fin = i.qty_fin,
+                        qty_defect = i.qty_defect,
+                        
+
+                    });
+                }
+
+
+                //return data to contoller
+                return view;
+
+
+            }
+        } 
+        
+        }
 }

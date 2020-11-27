@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { JobOperationStockSearchView } from '../_model/job-operation-stock';
+import { JobOperationStockSearchView, ProductGroupSearchView } from '../_model/job-operation-stock';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -24,5 +24,9 @@ export class JobOperationStockService {
 
   public async searchDataDefect(_model: JobOperationStockSearchView) { 
     return await this.http.post<JobOperationStockSearchView>(environment.API_URL + 'job-operation-stock/postSearchDataDefect', _model).toPromise();   
+  } 
+
+  public async SearchSummaryProdcutGroup(_model: ProductGroupSearchView) { 
+    return await this.http.post<ProductGroupSearchView>(environment.API_URL + 'job-operation-stock/postSearchSummaryProdcutGroup', _model).toPromise();   
   } 
 }

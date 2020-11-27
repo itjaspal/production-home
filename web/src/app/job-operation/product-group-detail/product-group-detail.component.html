@@ -1,0 +1,67 @@
+<div class="container-fluid no-breadcrumbs">
+  <!-- container-->
+  <mat-card>
+    <!-- mat-card 1 -->
+    <mat-card-title>
+      <h6> Product Detail By Group</h6>
+    </mat-card-title>
+    <br />
+
+
+    <!-- <div class="col-12">
+        <br/>
+      </div>  -->
+
+    <mat-card-content class="no-margin">
+      <!-- Detail-->
+      <div class="row">
+          <div class="col-lg-5 col-sm-5">
+            <dt>POR No. : {{model.por_no}}</dt>
+          </div>
+        </div>
+      <mat-card-content>
+        <table style="width: 100%">
+          <tbody>
+            <tr>
+              
+              <th style="width: 150px" class="text-center">Product Group</th>
+              <th style="width: 150px" class="text-center">Product Type</th>
+              <th style="width: 50px" class="text-center">Qty Paln</th>
+              <th style="width: 50px" class="text-center">Qty Actual</th>
+              <th style="width: 50px" class="text-center">Qty Defect</th>
+
+            </tr>
+            
+            <tr *ngFor="let x of datas.datas; let i = index;">
+              
+              <td>{{x.disgrp_line_desc}}</td>
+              <td>{{x.distype_desc}}</td>
+              <td class="text-center">{{x.qty_plan}}</td>
+              <td class="text-center">{{x.qty_fin}}</td>
+              <td class="text-center">{{x.qty_defect}}</td>
+              
+            </tr>
+            
+
+          </tbody>
+          
+        </table>
+      </mat-card-content>
+    </mat-card-content> <!-- Detail-->
+    <br />
+
+
+
+
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+
+  </mat-card> <!-- mat-card 1 -->
+</div> <!-- container-->

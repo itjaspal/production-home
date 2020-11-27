@@ -75,13 +75,14 @@ namespace api.Services
                 sql2 += " where  entity = :p_entity";
                 sql2 += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                 sql2 += " and wc_code =:p_wc_code";
-                sql2 += " and por_no =:p_por_no";
-                sql2 += " and ref_no =:p_ref_no";
+                //sql2 += " and por_no =:p_por_no";
+                //sql2 += " and ref_no =:p_ref_no";
                 sql2 += " and prod_code = :p_prod_code";
                 sql2 += " and prod_code_sub = :p_prod_code_sub";
                 sql2 += " group by prod_name ,prod_code , prod_code_sub , prod_name_sub , por_no , ref_no";
 
-                JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
+                //JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
+                JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
 
                 if (mps_in_process == null)
                 {
@@ -172,13 +173,14 @@ namespace api.Services
                 sql2 += " where  entity = :p_entity";
                 sql2 += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                 sql2 += " and wc_code =:p_wc_code";
-                sql2 += " and por_no =:p_por_no";
-                sql2 += " and ref_no =:p_ref_no";
+                //sql2 += " and por_no =:p_por_no";
+                //sql2 += " and ref_no =:p_ref_no";
                 sql2 += " and prod_code = :p_prod_code";
                 sql2 += " and prod_code_sub = :p_prod_code_sub";
                 sql2 += " group by prod_name ,prod_code , prod_code_sub , prod_name_sub , por_no , ref_no";
 
-                JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
+                //JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
+                JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
 
                 if (mps_in_process == null)
                 {
@@ -355,13 +357,14 @@ namespace api.Services
                 sql2 += " where  entity = :p_entity";
                 sql2 += " and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy')";
                 sql2 += " and wc_code =:p_wc_code";
-                sql2 += " and por_no =:p_por_no";
-                sql2 += " and ref_no =:p_ref_no";
+                //sql2 += " and por_no =:p_por_no";
+                //sql2 += " and ref_no =:p_ref_no";
                 sql2 += " and prod_code = :p_prod_code";
                 sql2 += " and prod_code_sub = :p_prod_code_sub";
                 sql2 += " group by prod_name ,prod_code , prod_code_sub , prod_name_sub , por_no , ref_no";
 
-                JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
+                //JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_por_no", vpor_no), new OracleParameter("p_ref_no", vref_no), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
+                JobInProcessStockView mps_in_process = ctx.Database.SqlQuery<JobInProcessStockView>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", model.wc_code), new OracleParameter("p_prod_code", vprod_code), new OracleParameter("p_prod_code_sub", vsub_prod_code)).FirstOrDefault();
 
                 if (mps_in_process == null)
                 {

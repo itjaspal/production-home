@@ -72,6 +72,7 @@ namespace api.Services
                    
                 }
                 view.total_qty = vtotal_qty;
+                view.set_no = vset_no;
 
                 return view;
 
@@ -432,8 +433,8 @@ namespace api.Services
                 };
 
                 //query data
-                if (model.build_type == "HMJIT")
-                {
+                //if (model.build_type == "HMJIT")
+                //{
                     if (vsend_type == "WAIT")
                     {
                         string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
@@ -546,11 +547,11 @@ namespace api.Services
                         view.total_qty_rec = total_qty_rec;
                     }
 
-                }
-                else if (model.build_type == "HMSTK")
-                {
+                //}
+                //else if (model.build_type == "HMSTK")
+                //{
 
-                }
+                //}
 
                 //return data to contoller
                 return view;

@@ -85,6 +85,7 @@ namespace api.ModelViews
         public string doc_no { get; set; }
         public int total_item { get; set; }
         public int total_qty { get; set; }
+        public string set_no { get; set; }
         public List<SendDataDetailView> datas { get; set; }
     }
 

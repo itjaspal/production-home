@@ -206,6 +206,7 @@ import { ScanDefectRemarkComponent } from './scan-defect/scan-defect-remark/scan
 import { ScanDefectScanAddComponent } from './scan-defect/scan-defect-scan-add/scan-defect-scan-add.component';
 import { SubProductDefectCancelSearchComponent } from './scan-defect/sub-product-defect-cancel-search/sub-product-defect-cancel-search.component';
 import { SummaryDefectComponent } from './scan-defect/summary-defect/summary-defect.component';
+import { ProductGroupDetailComponent } from './job-operation/product-group-detail/product-group-detail.component';
 
 
 
@@ -438,6 +439,7 @@ import { SummaryDefectComponent } from './scan-defect/summary-defect/summary-def
     ScanDefectScanAddComponent,
     SubProductDefectCancelSearchComponent,
     SummaryDefectComponent,
+    ProductGroupDetailComponent,
     
 
   
@@ -482,7 +484,8 @@ import { SummaryDefectComponent } from './scan-defect/summary-defect/summary-def
     ScanDefectEntryCancelComponent,
     SubProductDefectCancelSearchComponent,
     ScanDefectRemarkComponent,
-    SummaryDefectComponent
+    SummaryDefectComponent,
+    ProductGroupDetailComponent
   ],
   bootstrap: [AppComponent]
 })

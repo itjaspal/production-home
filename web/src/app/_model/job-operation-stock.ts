@@ -49,3 +49,15 @@ export class PorTypeDetailView {
     public distype_desc: string = "";
     public qty: number = 0;
 }
+
+export class ProductGroupSearchView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public entity_code: string = AppSetting.entity;
+    public user_id: string = "";
+    public wc_code: string = "";
+    public build_type: string = "";
+    public req_date: string = "";
+    public por_no: string = "";
+    public ref_no: string = "";
+}
