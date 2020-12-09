@@ -64,21 +64,6 @@ namespace api.Controllers
             }
         }
 
-        [Route("productionRec/getTimeDelay/{entity}/{build_type}")]
-        public HttpResponseMessage getgetTimeDelay(string entity , string build_type)
-        {
-            try
-            {
-                var result = jobService.getTimeDelay(entity,build_type);
-
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
-            }
-        }
-
 
     }
 }

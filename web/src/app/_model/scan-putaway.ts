@@ -57,3 +57,16 @@ export class PutAwayCancelSearchView {
     public bar_code: string = "";
     public prod_code: string = "";
 }
+
+
+export class WhDefaultView {
+    public wh_code: string = "";
+}
+
+export class DeptDefaultView {
+    public dept_code: string = "";
+}
+
+export class VerifyLocView {
+    public loc_code: string = "";
+}

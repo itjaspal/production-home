@@ -88,4 +88,30 @@ namespace api.ModelViews
 
     }
 
+    public class WhDefaultView
+    {
+        public string wh_code { get; set; }
+    }
+
+    public class DeptDefaultView
+    {
+        public string dept_code { get; set; }
+    }
+
+    public class VerifyLocView
+    {
+        public string loc_code { get; set; }
+    }
+
+    public class PutAwayRecDetailView
+    {
+        public int item { get; set; }
+        public string prod_code { get; set; }
+        public string bar_code { get; set; }
+        public int qty { get; set; }
+        public int qty_ptw { get; set; }
+        public int net_qty { get; set; }
+    }
+
+
 }

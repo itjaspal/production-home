@@ -1,4 +1,4 @@
-import { PutAwayCancelSearchView, PutAwayDetailSearchView, PutAwayScanFinView, PutAwayScanSearchView, PutAwayScanView, PutAwayTotalView } from './../../_model/scan-putaway';
+import { DeptDefaultView, PutAwayCancelSearchView,PutAwayDetailSearchView, PutAwayScanFinView, PutAwayScanSearchView, PutAwayScanView, PutAwayTotalView, VerifyLocView, WhDefaultView } from './../../_model/scan-putaway';
 import { Dropdownlist } from './../../_model/dropdownlist';
 import { AppSetting } from './../../_constants/app-setting';
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -55,12 +55,23 @@ export class ScanPutawayQrComponent implements OnInit {
   public current_scan: PutAwayScanFinView = new PutAwayScanFinView();
   public model_cancel: PutAwayCancelSearchView;
 
+  public defaultWH: WhDefaultView = new WhDefaultView();
+  public defaultDept: DeptDefaultView = new DeptDefaultView();
+  public verifyLoc: VerifyLocView;
+
   async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
 
     this.wclist = await this._dll.getDdlWCPtwByUser(AppSetting.entity, this.user.username);
     this.whlist = await this._dll.getDdlPutAwayWHMast();
+
+    this.defaultWH = await this._putawaySvc.getWhDefault(AppSetting.entity);
+    this.model_scan.wh_code = this.defaultWH.wh_code;
+
+    this.defaultDept = await this._putawaySvc.getDeptDefault(AppSetting.entity, this.user.username);
+    this.model_scan.wc_code = this.defaultDept.dept_code;
+
 
     
     this.model_ptwDetail.entity     = AppSetting.entity;
@@ -114,6 +125,7 @@ export class ScanPutawayQrComponent implements OnInit {
     sessionStorage.setItem('S2-doc_no', sessionStorage.getItem('S1-doc_no'));
     sessionStorage.setItem('S2-doc_date', sessionStorage.getItem('S1-doc_date'));
     sessionStorage.setItem('S2-doc_status', sessionStorage.getItem('S1-doc_status'));
+    sessionStorage.setItem('Exit_Status', "OK");
 
     sessionStorage.removeItem('S1-doc_no');
     sessionStorage.removeItem('S1-doc_date');
@@ -178,6 +190,23 @@ export class ScanPutawayQrComponent implements OnInit {
      }
      this.qr_barcode.nativeElement.focus();
   }
+
+  async onLocEntered(_locCode: string) {
+    if (_locCode == null || _locCode == "") {
+      return;
+    }
+    var datePipe = new DatePipe("en-US");
+    this.verifyLoc = new VerifyLocView();
+
+    this.verifyLoc = await this._putawaySvc.getVerifyLoc(_locCode);
+
+    if (this.verifyLoc.loc_code != "" || this.verifyLoc.loc_code != null) {
+       this.qr_barcode.nativeElement.focus(); 
+    }else{
+       this.loc_code.nativeElement.focus();
+    }
+
+  }  
 
   add(datas: any) {
 

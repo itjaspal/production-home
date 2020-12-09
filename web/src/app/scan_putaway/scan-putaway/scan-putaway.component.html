@@ -1,10 +1,10 @@
 <div class="container-fluid no-breadcrumbs"> <!-- container-->
   <mat-card> <!-- mat-card 1 -->
       <mat-card-title>
-         <h6>รายการรับมอบสินค้า</h6>
+         <h6>รายการจัดเก็บสินค้า</h6>
       </mat-card-title>
        <mat-card> <!-- mat-card 2 -->
-        <div class="scrollable-child"> 
+        <div class="scrollable-child scroller"> 
           <div class="panel panel-default">
              <form [formGroup]="validationForm"> 
                 <div class="row card-table-body">
@@ -52,26 +52,28 @@
                <tbody>
                  <!-- In Process Movement -->
                  <tr>
-                   <th colspan="8">รายการรอยืนยันส่งมอบสินค้า</th>
+                   <th colspan="9">รายการรอยืนยันส่งมอบสินค้า</th>
                 </tr>
                 <tr>
                   <th style="width: 5px" class="text-center">ลำดับ</th>
-                  <th style="width: 30px" class="text-center">JIT Date</th>
                   <th style="width: 50px"  class="text-center">เลขที่ใบส่งมอบ</th>
                   <th style="width: 200px" class="text-center">หน่วยผลิต</th>
                   <th style="width: 50px"  class="text-center">ผู้ส่งมอบ</th>
                   <th style="width: 50px"  class="text-center">วัน/เวลา</th>
                   <th style="width: 30px" class="text-center">จำนวน</th>
+                  <th style="width: 30px" class="text-center">Putway</th>
+                  <th style="width: 30px" class="text-center">คงเหลือ</th>
                   <th style="width: 10px">&nbsp;</th>
                 </tr>
                 <tr *ngFor="let x of datas.recDetails let i = index;">
                   <td class="text-center">{{i+1}}</td>
-                  <td class="text-center">{{x.jit_date  | date:'dd/MM/yyyy'}}</td>
                   <td class="text-center">{{x.doc_no}}</td>
                   <td class="text-center">{{x.wc_name}} ({{x.wc_code}})</td>
                   <td class="text-center">{{x.gen_by}}</td>
                   <td class="text-center">{{x.gen_date  | date:'dd/MM/yyyy hh:mm:ss'}}</td>
                   <td class="text-center">{{x.conf_qty}}</td>
+                  <td class="text-center">{{x.ptw_qty}}</td>
+                  <td class="text-center">{{x.net_qty}}</td>
                   <td class="text-center">
                       <button mat-icon-button *ngIf="model.doc_status != 'APV'" [matMenuTriggerFor]="appMenu1">
                          <mat-icon class="material-icons">more_horiz</mat-icon>
@@ -86,6 +88,9 @@
                         <button mat-menu-item [routerLink]="['barcode-add/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date]" (click)="set_session()">  
                           <mat-icon class="material-icons">save</mat-icon> <span>Scan ฺBarcode จัดเก็บ</span>
                         </button>
+                        <button mat-menu-item  (click)="openProductDetail(this.vEntity ,x.doc_no )">  
+                          <mat-icon class="material-icons">description</mat-icon> <span>รายการสินค้า</span>
+                        </button>
                       </mat-menu>
                       <mat-menu #appMenu2="matMenu">
                         <button mat-menu-item [routerLink]="['detail/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date]" (click)="set_session()">
@@ -96,8 +101,10 @@
                 </tr>
 
                 <tr>
-                  <th colspan="6" class="text-center">รวม</th>
+                  <th colspan="5" class="text-center">รวม</th>
                   <th class="text-center">{{datas.total_rec_qty}}</th>
+                  <th class="text-center">{{datas.total_ptw_qty}}</th>
+                  <th class="text-center">{{datas.total_net_qty}}</th>
                   <th class="text-center">
                     &nbsp;
                   </th>

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { productionRecListTotalView, productionRecListDetailView } from '../_model/production-rec-list';
-import { PutAwayCancelSearchView, PutAwayDetailSearchView, PutAwayScanFinView, PutAwayScanSearchView, PutAwayScanView, PutAwayTotalView } from '../_model/scan-putaway';
+import { DeptDefaultView, PutAwayCancelSearchView, PutAwayDetailSearchView, PutAwayScanFinView, PutAwayScanSearchView, PutAwayScanView, PutAwayTotalView, VerifyLocView, WhDefaultView } from '../_model/scan-putaway';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,17 @@ export class ScanPutawayService {
 
   }
 
+  public async getWhDefault(_whCode: string) {
+    return await this.http.get<WhDefaultView>(environment.API_URL + 'ScanPutAway/getWhDefault/' + _whCode).toPromise();
+  }
 
+  public async getDeptDefault(_entity: string, _userId: string) {
+    return await this.http.get<DeptDefaultView>(environment.API_URL + 'ScanPutAway/getDeptDefault/' + _entity + '/' + _userId).toPromise();
+  }
+
+  public async getVerifyLoc(_locCode: string) {
+    return await this.http.get<VerifyLocView>(environment.API_URL + 'ScanPutAway/getVerifyLoc/' + _locCode).toPromise();
+  }
 
 
 }

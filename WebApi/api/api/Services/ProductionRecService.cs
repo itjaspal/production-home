@@ -11,17 +11,6 @@ namespace api.Services
 {
     public class ProductionRecService : IProductionRecService
     {
-        public int getTimeDelay(string entity, string build_type)
-        {
-            using (var ctx = new ConXContext())
-            {
-                string sql = "select time_delay from pd_monitor_ctl where pd_entity = :p_entity and build_type = :p_build_type";
-                int vtime = ctx.Database.SqlQuery<int> (sql, new OracleParameter("p_entity", entity), new OracleParameter("p_build_type", build_type)).FirstOrDefault();
-
-                return vtime;
-            }  
-        }
-
         public ProductionRecTotalView SearchProductionRec(ProductionRecSearchView model)
         {
             using (var ctx = new ConXContext())
@@ -62,7 +51,7 @@ namespace api.Services
 
                 //query data
                 string sql = "";
-                sql += " select b.tran_date as jit_date, a.doc_no, a.doc_code , a.doc_date, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(1) as conf_qty";
+                sql += " select b.tran_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(1) as conf_qty";
                 sql += " from pd_mast a, pkg_barcode b";
                 sql += " where a.doc_no = b.ref_pd_docno";
                 sql += " and a.pd_entity = b.entity";
@@ -73,7 +62,7 @@ namespace api.Services
                 sql += " and a.doc_no = nvl(:pDocNo,a.doc_no)";
                 sql += " and a.doc_status = nvl(:pDocStatus,'PAL')";
                 //sql += " and a.doc_status = 'PAL'";
-                sql += " group by b.tran_date, a.doc_no,  a.doc_code , a.doc_date , a.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                sql += " group by b.tran_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
 
                 List<ProductionRecView> productionRecView = ctx.Database.SqlQuery<ProductionRecView>
                                                         (sql, new OracleParameter("pReqDate", vreq_date),
@@ -92,13 +81,12 @@ namespace api.Services
                                                    .Take(view.itemPerPage)
                                                    .ToList();
                 int vTotal_rec_qty = 0;
-                DateTime vdoc_date;
 
                 ////prepare model to modelView
                 foreach (var i in productionRecView)
                 {
                     vTotal_rec_qty += i.conf_qty;
-                    vdoc_date = i.doc_date;
+
                     //find wc_name
                     string sql1 = "select wc_tdesc from wc_mast where wc_code = :p_wcCode and  rownum = 1";
                     string wcName = ctx.Database.SqlQuery<string>(sql1, new OracleParameter("p_wcCode", i.wc_code)).SingleOrDefault();
@@ -116,11 +104,9 @@ namespace api.Services
                         gen_by   = i.gen_by,
                         conf_qty = i.conf_qty,
                     });
-                    view.doc_date = vdoc_date;
                 }
 
                 view.total_rec_qty = vTotal_rec_qty;
-                
 
                 //return data to contoller
                 return view;
@@ -172,7 +158,7 @@ namespace api.Services
 
                 //query data
                 string sql = "";
-                sql += " select a.doc_no, b.wc_code , a.prod_code, c.prod_tname, a.qty_pdt, a.por_no, c.uom_code,";
+                sql += " select a.doc_no, b.wc_code, a.prod_code, c.prod_tname, a.qty_pdt, a.por_no, c.uom_code,";
                 sql += " (select tran_date from pkg_barcode where por_no = a.por_no and ref_pd_docno = a.doc_no and rownum = 1) as mps_date";
                 sql += " from pd_det a, pd_mast b, product c";
                 sql += " where a.pd_entity = b.pd_entity";
@@ -202,14 +188,12 @@ namespace api.Services
                                                    .ToList();
                 int vTotal_rec_qty   = 0;
                 int vTotal_prod_item = 0;
-               
 
                 ////prepare model to modelView
                 foreach (var i in productionRecDetailView)
                 {
                     vTotal_rec_qty   += i.qty_pdt;
                     vTotal_prod_item += 1;
-                    
 
                     //find barcode set
                     // Find Sub Product    
@@ -246,7 +230,6 @@ namespace api.Services
                     }   
                     // End find barcode set
 
-
                     view.recDetails.Add(new ModelViews.ProductionRecDetailView()
                     {
                         doc_no = i.doc_no,
@@ -264,7 +247,6 @@ namespace api.Services
 
                 view.total_rec_qty   = vTotal_rec_qty;
                 view.total_prod_item = vTotal_prod_item;
-               
 
                 //return data to contoller
                 return view;
@@ -362,6 +344,8 @@ namespace api.Services
                                                    .Take(view.itemPerPage)
                                                    .ToList();
                 int vTotal_rec_qty = 0;
+                int vTotal_ptw_qty = 0;
+                int vTotal_net_qty = 0;
 
                 ////prepare model to modelView
                 foreach (var i in productionRecView)
@@ -372,6 +356,16 @@ namespace api.Services
                     string sql1 = "select wc_tdesc from wc_mast where wc_code = :p_wcCode and  rownum = 1";
                     string wcName = ctx.Database.SqlQuery<string>(sql1, new OracleParameter("p_wcCode", i.wc_code)).SingleOrDefault();
                     //************
+
+                    //find ptw_qty
+                   string sql_ptwQty = "select nvl(sum(nvl(qty,0)),0) ptw_qty from whtran_det where ic_entity = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and doc_code = :pdoc_code";
+                   int vPtwQty = ctx.Database.SqlQuery<int>(sql_ptwQty, new OracleParameter("pic_entity", ventity),
+                                                                   new OracleParameter("pdoc_no", i.doc_no),
+                                                                   new OracleParameter("pdoc_code", i.doc_code)).SingleOrDefault();
+
+
+                    vTotal_ptw_qty += vPtwQty;
+                    vTotal_net_qty += (i.conf_qty - vPtwQty);
 
                     view.recDetails.Add(new ModelViews.ProductionRecView()
                     {
@@ -384,10 +378,14 @@ namespace api.Services
                         gen_date = i.gen_date,
                         gen_by = i.gen_by,
                         conf_qty = i.conf_qty,
+                        ptw_qty  = vPtwQty,
+                        net_qty  = (i.conf_qty - vPtwQty)
                     });
                 }
 
                 view.total_rec_qty = vTotal_rec_qty;
+                view.total_ptw_qty = vTotal_ptw_qty;
+                view.total_net_qty = vTotal_net_qty;
 
                 //return data to contoller
                 return view;

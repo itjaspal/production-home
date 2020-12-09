@@ -13,5 +13,8 @@ namespace api.Interfaces
         ScanPutAwaysTotalView ScanPutAwayManualAdd(ScanPutAwaySearchView model);
         ScanPutAwaysTotalView PostSearhPtwDetail(ScanPutAwayDetailSearchView model);
         ScanPutAwaysTotalView ScanPutAwayCancel(ScanPutAwayCancelSearchView model);
+        WhDefaultView GetWhDefault(string ic_entity);
+        DeptDefaultView GetDeptDefault(string ic_entity, string user_id);
+        VerifyLocView GetVerifyLoc(string loc_code);
     }
 }

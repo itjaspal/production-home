@@ -1,3 +1,4 @@
+import { ScanPutawayProductViewComponent } from './../scan_putaway/scan-putaway-product-view/scan-putaway-product-view.component';
 import { DefaultPrinterComponent } from './../default-printer/default-printer/default-printer.component';
 import { AuthenGuard } from './../_service/authen.guard';
 import { HomeComponent } from './../home/home.component';
@@ -188,6 +189,7 @@ const routes: Routes = [
       { path: 'scanPtw/barcode-add/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayBarcodeComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
       { path: 'scanPtw/barcode-cancel/:doc_no/:doc_code/:wh_code/:doc_date', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
       { path: 'scanPtw/detail/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
+      { path: 'scanPtwProdView', component: ScanPutawayProductViewComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
 
 
       

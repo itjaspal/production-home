@@ -1,3 +1,5 @@
+import { AppSetting } from './../../_constants/app-setting';
+import { ScanPutawayProductViewComponent } from './../scan-putaway-product-view/scan-putaway-product-view.component';
 import { ProductionRecListDetailComponent } from './../../production-rec-report/production-rec-list-detail/production-rec-list-detail.component';
 import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { PageEvent, MatDialogRef, MatDialog } from '@angular/material';
@@ -22,6 +24,7 @@ export class ScanPutawayComponent implements OnInit {
   public user: any; 
   public datePipe = new DatePipe('en-US'); 
   public validationForm: FormGroup;
+  public vEntity: any = AppSetting.entity; 
 
   @ViewChild('doc_date') doc_date: ElementRef;
   @ViewChild('doc_status') doc_status: ElementRef;
@@ -40,11 +43,17 @@ export class ScanPutawayComponent implements OnInit {
     this.buildForm();
     this.user = this._authSvc.getLoginUser(); 
 
-    console.log(sessionStorage.getItem('S2-doc_no') + "|" + sessionStorage.getItem('S2-doc_date') + "|" + sessionStorage.getItem('S2-doc_status'));
+    //console.log(sessionStorage.getItem('S2-doc_no') + "|" + sessionStorage.getItem('S2-doc_date') + "|" + sessionStorage.getItem('S2-doc_status'));
 
     this.doc_no.nativeElement.value     = sessionStorage.getItem('S2-doc_no');
-    this.doc_date.nativeElement.value   = sessionStorage.getItem('S2-doc_date');
     this.model.doc_status  = sessionStorage.getItem('S2-doc_status');
+
+    if (sessionStorage.getItem('Exit_Status') == "" || sessionStorage.getItem('Exit_Status') == null ) {
+       this.doc_date.nativeElement.value   =  this.datePipe.transform(new Date(),"dd/MM/yyyy");
+    } else { 
+       this.doc_date.nativeElement.value   = sessionStorage.getItem('S2-doc_date');
+    }
+
 
     //this.doc_no.nativeElement.value = sessionStorage.getItem('Session-doc_no');
     if (this.model.doc_status == "" || this.model.doc_status == null){this.model.doc_status = 'PAL';}
@@ -75,6 +84,7 @@ export class ScanPutawayComponent implements OnInit {
     sessionStorage.removeItem('S2-doc_no');
     sessionStorage.removeItem('S2-doc_date');
     sessionStorage.removeItem('S2-doc_status');
+    sessionStorage.removeItem('Exit_Status');
   }
 
   async searchProductionRecList(event: PageEvent = null) {   
@@ -97,6 +107,28 @@ export class ScanPutawayComponent implements OnInit {
       console.log(this.datas);
       this.doc_date.nativeElement.value = this.model.doc_date;
      
+  }
+
+  openProductDetail(p_entity : string ,p_doc_no: string  , _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(ScanPutawayProductViewComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        doc_no: p_doc_no,
+        entity:p_entity
+       
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
   }
 
  /* openProductionRecListDetailDialog(p_docNo: string, p_docDate: string, _isEdit: boolean = false, _index: number = -1) {

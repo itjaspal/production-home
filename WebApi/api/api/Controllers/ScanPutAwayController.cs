@@ -80,6 +80,51 @@ namespace api.Controllers
             }
         }
 
+        [Route("ScanPutAway/getWhDefault/{ic_entity}")]
+        public HttpResponseMessage getWhDefault(string ic_entity)
+        {
+            try
+            {
+                var result = scanPutAwayService.GetWhDefault(ic_entity);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
+        [Route("ScanPutAway/getDeptDefault/{ic_entity}/{user_id}")]
+        public HttpResponseMessage getDeptDefault(string ic_entity, string user_id)
+        {
+            try
+            {
+                var result = scanPutAwayService.GetDeptDefault(ic_entity, user_id);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
+        [Route("ScanPutAway/getVerifyLoc/{loc_code}")]
+        public HttpResponseMessage getVerifyLoc(string loc_code)
+        {
+            try
+            {
+                var result = scanPutAwayService.GetVerifyLoc(loc_code);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
 
     }
 }

@@ -15,16 +15,16 @@ export class productionRecListSearchView {
 export class productionRecListTotalView<T>{ 
     public pageIndex: number = 0;
     public itemPerPage: number = 0;
-    public doc_date : Date = null;
     public totalItem: number = 0;
     public total_rec_qty: number = 0;
+    public total_ptw_qty: number = 0;
+    public total_net_qty: number = 0;
     public recDetails: Array<T> = [];
 }
 
 export class productionRecListDetailView{ 
     public jit_date: any = null;
     public doc_no: string = "";
-    public doc_date: Date = null;
     public doc_code: string = "";
     public wh_code: string = "";
     public wc_code: string = "";
@@ -32,6 +32,8 @@ export class productionRecListDetailView{
     public gen_date: any = null;
     public gen_by: string = "";
     public conf_qty: number = 0;
+    public ptw_qty: number = 0;
+    public net_qty: number = 0;
 }
 
 // production receiving list Detail

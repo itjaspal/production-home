@@ -22,6 +22,7 @@ namespace api.Services
             string file_path = "";
             //string file_paths = "";
             string vfile_name = "";
+            
 
             using (var ctx = new ConXContext())
             {
@@ -33,7 +34,7 @@ namespace api.Services
 
                 SpecDrawingView datas = ctx.Database.SqlQuery<SpecDrawingView>(sql, new OracleParameter("p_barcode", barcode)).SingleOrDefault();
 
-
+                string file = "";
 
                 if (datas == null)
                 {
@@ -49,18 +50,19 @@ namespace api.Services
                     string sqlp = "select hm_design_path from bm_basic_mast";
                     file_path = ctx.Database.SqlQuery<string>(sqlp).SingleOrDefault();
                     type = "Design";
+                    file = "*" + datas.design_code + ".pdf";
                 }
                 else
                 {
                     string sqlp = "select hm_sd_path from bm_basic_mast";
                     file_path = ctx.Database.SqlQuery<string>(sqlp).SingleOrDefault();
                     type = "SD";
+                    file = "*" + datas.sd_no + ".pdf";
                 }
 
 
-                //file_paths = "c:\\temp\\";
-                //file_paths = "\\\\192.168.8.20\\DataCenter\\PDV_DataShare\\NewDesignSpec\\PDV\\";
-                string file = "*" + datas.design_code + ".pdf";
+                
+                //string file = "*" + datas.design_code + ".pdf";
                 //string file = "Test.pdf";
 
 

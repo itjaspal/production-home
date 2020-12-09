@@ -207,6 +207,7 @@ import { ScanDefectScanAddComponent } from './scan-defect/scan-defect-scan-add/s
 import { SubProductDefectCancelSearchComponent } from './scan-defect/sub-product-defect-cancel-search/sub-product-defect-cancel-search.component';
 import { SummaryDefectComponent } from './scan-defect/summary-defect/summary-defect.component';
 import { ProductGroupDetailComponent } from './job-operation/product-group-detail/product-group-detail.component';
+import { ScanPutawayProductViewComponent } from './scan_putaway/scan-putaway-product-view/scan-putaway-product-view.component';
 
 
 
@@ -440,6 +441,7 @@ import { ProductGroupDetailComponent } from './job-operation/product-group-detai
     SubProductDefectCancelSearchComponent,
     SummaryDefectComponent,
     ProductGroupDetailComponent,
+    ScanPutawayProductViewComponent,
     
 
   
