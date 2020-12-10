@@ -294,43 +294,60 @@ namespace api.Services
 
                 //query data
                 string sql = "";
-                sql += " select b.tran_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(1) as conf_qty";
-                sql += " from pd_mast a, pkg_barcode b";
-                sql += " where a.doc_no = b.ref_pd_docno";
-                sql += " and a.pd_entity = b.entity";
-                sql += " and a.wc_code = b.wc_code";
-                sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate,'dd/mm/yyyy'),trunc(a.doc_date))";
+                     sql += " select a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt,0)) as conf_qty";
+                     sql += " from pd_mast a, pd_det b";
+                     sql += " where a.pd_entity = b.pd_entity";
+                     sql += " and   a.doc_no    = b.doc_no";
+                     sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate,'dd/mm/yyyy'),trunc(a.doc_date))";
+                     sql += " and a.pd_entity = :pEntity";
+                     sql += " and((a.build_type = :pBuildType) or(a.build_type is null))";
+                     sql += " and a.doc_no = nvl(:pDocNo,a.doc_no)";
+                     sql += " and a.doc_status = 'APV'";
+
+                     if (vdoc_status == "APV")
+                     {
+
+                         sql += "    and a.doc_no in (select doc_no";
+                         sql += "                        from whtran_mast";
+                         sql += "                        where ic_entity = a.pd_entity";
+                         sql += "                        and trans_code  = 'PTW'";
+                         sql += "                        and doc_status  = 'APV')";
+
+                     }
+                     else
+                     {
+                         sql += "    and a.doc_no not in (select doc_no";
+                         sql += "                      from whtran_mast";
+                         sql += "                      where ic_entity = a.pd_entity";
+                         sql += "                      and trans_code  = 'PTW'";
+                         sql += "                      and doc_status  = 'APV')";
+
+                     }
+
+                     sql += " group by a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                     
+
+              /*  sql += " select a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt, 0)) as conf_qty";
+                sql += " from pd_mast a, pd_det b";
+                sql += " where a.pd_entity = b.pd_entity";
+                sql += " and a.doc_no = b.doc_no";
                 sql += " and a.pd_entity = :pEntity";
+                sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate, 'dd/mm/yyyy'), trunc(a.doc_date))";
                 sql += " and((a.build_type = :pBuildType) or(a.build_type is null))";
-                sql += " and a.doc_no = nvl(:pDocNo,a.doc_no)";
+                sql += " and a.doc_no = nvl(:pDocNo, a.doc_no)";
                 sql += " and a.doc_status = 'APV'";
-
-                if (vdoc_status == "APV")
-                {
-
-                    sql += "    and a.doc_no in (select doc_no";
-                    sql += "                        from whtran_mast";
-                    sql += "                        where ic_entity = a.pd_entity";
-                    sql += "                        and trans_code  = 'PTW'";
-                    sql += "                        and doc_status  = 'APV')";
-
-                }
-                else
-                {
-                    sql += "    and a.doc_no not in (select doc_no";
-                    sql += "                      from whtran_mast";
-                    sql += "                      where ic_entity = a.pd_entity";
-                    sql += "                      and trans_code  = 'PTW'";
-                    sql += "                      and doc_status  = 'APV')";
-
-                }
-
-                sql += " group by b.tran_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                sql += " and a.doc_no not in (select doc_no";
+                sql += "                         from whtran_mast";
+                sql += "                         where ic_entity = a.pd_entity";
+                sql += "                         and trans_code = 'PTW'";
+                sql += "                         and doc_status = 'APV')";
+                sql += " group by a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                */
 
                 List<ProductionRecView> productionRecView = ctx.Database.SqlQuery<ProductionRecView>
                                                         (sql, new OracleParameter("pReqDate", vreq_date),
                                                               new OracleParameter("pEntity", ventity),
-                                                              new OracleParameter("pBuildType", ventity),
+                                                              new OracleParameter("pBuildType", vbuild_type),
                                                               new OracleParameter("pDocNo", vdoc_no)).ToList();
                                                               //new OracleParameter("pDocStatus", vdoc_status)).ToList();
 

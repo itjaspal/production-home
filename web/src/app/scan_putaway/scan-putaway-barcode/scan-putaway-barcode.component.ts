@@ -63,7 +63,7 @@ export class ScanPutawayBarcodeComponent implements OnInit {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
 
-    this.wclist = await this._dll.getDdlWCPtwByUser(AppSetting.entity, this.user.username);
+    //this.wclist = await this._dll.getDdlWCPtwByUser(AppSetting.entity, this.user.username);
     this.whlist = await this._dll.getDdlPutAwayWHMast();
 
     this.defaultWH = await this._putawaySvc.getWhDefault(AppSetting.entity);

@@ -9,16 +9,7 @@
               <mat-card-content> 
                   <form [formGroup]="validationForm">
                     <div class="row card-table-body">
-                        <div class="col-lg-3 col-sm-4 col-12">
-                            <mat-form-field class="full-width">
-                                <mat-select autocomplete="off"  placeholder="หน่วยเก็บ" [(ngModel)]="model_scan.wc_code"
-                                  formControlName="wc_code" #wc_code>
-                                  <mat-option value="0">ไม่ระบุ</mat-option>
-                                  <mat-option *ngFor="let x of wclist" [value]="x.key">{{x.value}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-lg-3 col-sm-4 col-12">
+                      <div class="col-lg-4 col-sm-4 col-12">
                             <mat-form-field class="full-width">
                                 <mat-select autocomplete="off"  placeholder="คลังสินค้า" [(ngModel)]="model_scan.wh_code"
                                   formControlName="wh_code" #wh_code> 
