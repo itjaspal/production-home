@@ -12,7 +12,7 @@
 
           <form [formGroup]="validationForm">
             <div class="row card-table-body">
-              <div class="col-3 col-lg-3">
+              <div class="col-4 col-lg-3">
                 <mat-form-field class="full-width">
                   <input matInput placeholder="Barcode" formControlName="bar_code" name="bar_code" #bar_code [(ngModel)] ="searchModel.bar_code">
                 </mat-form-field>
@@ -25,7 +25,7 @@
                 
               </div>
 
-              <div class="col-2 col-lg-2">
+              <div class="col-6 col-lg-2">
                 <mat-card-actions class="no-margin">
                   <button mat-raised-button color="primary" type="button" (click)="openSearchProductModal()">
                     <mat-icon class="material-icons">search</mat-icon> เลือก

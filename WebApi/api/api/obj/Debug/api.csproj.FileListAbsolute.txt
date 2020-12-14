@@ -283,4 +283,5 @@ D:\Angular\Project\production-home\WebApi\api\api\bin\Microsoft.AI.Web.xml
 D:\Angular\Project\production-home\WebApi\api\api\obj\Debug\api.csproj.CoreCompileInputs.cache
 D:\Angular\Project\production-home\WebApi\api\api\obj\Debug\api.dll
 D:\Angular\Project\production-home\WebApi\api\api\obj\Debug\api.pdb
-D:\Angular\Project\production-home\WebApi\api\api\obj\Debug\api.csprojResolveAssemblyReference.cache
+D:\Angular\project\production-home\WebApi\api\api\obj\Debug\api.csprojAssemblyReference.cache
+D:\Angular\project\production-home\WebApi\api\api\obj\Debug\api.csproj.CopyComplete
