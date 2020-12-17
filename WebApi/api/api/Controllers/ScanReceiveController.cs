@@ -45,6 +45,7 @@ namespace api.Controllers
             }
             catch (Exception ex)
             {
+
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
             }
         }
@@ -87,6 +88,27 @@ namespace api.Controllers
             
         }
 
+        [Route("scan-receive/getSendMail/{entity}/{doc_no}")]
+        public HttpResponseMessage getSendMail(string entity ,string doc_no)
+        {
+            try
+            {
+
+                receiveService.SendMail(entity,doc_no);
+
+                CommonResponseView res = new CommonResponseView()
+                {
+                    status = CommonStatus.SUCCESS,
+                    message = "ส่ง Mail สำเร็จ"
+                };
+
+                return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
 
         //[Route("scan-receive/postApproveReceive")]
         //public HttpResponseMessage postApproveReceive(ScanReceiveDataDetailView model)

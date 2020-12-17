@@ -66,6 +66,9 @@ import { JobOperationStockComponent } from '../job-operation/job-operation-stock
 import { ScanInprocessStockComponent } from '../scan-inprocess-stock/scan-inprocess-stock/scan-inprocess-stock.component';
 import { PrintInprocessStockComponent } from '../print-inprocess-tag-stock/print-inprocess-stock/print-inprocess-stock.component';
 import { ScanDefectComponent } from '../scan-defect/scan-defect/scan-defect.component';
+import { UploadFileSearchComponent } from '../upload-file/upload-file-search/upload-file-search.component';
+import { UploadFileAddComponent } from '../upload-file/upload-file-add/upload-file-add.component';
+import { UploadFileEditComponent } from '../upload-file/upload-file-edit/upload-file-edit.component';
 
 
 
@@ -196,6 +199,10 @@ const routes: Routes = [
       //Scan Approve Send
       { path: 'scanrec', component: ScanReceiveSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
 
+      //Upload File
+      { path: 'upload', component: UploadFileSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      { path: 'upload/create', component: UploadFileAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      { path: 'upload/edit/:pddsgn_code', component: UploadFileEditComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
        
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

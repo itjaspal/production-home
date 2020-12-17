@@ -28,4 +28,9 @@ export class ScanReceiveService {
     return await this.http.get(environment.API_URL + 'scan-receive/getProductDetail/' + _entity+'/'+_docNo).toPromise(); 
 
   } 
+
+  public async SendMail(_entity: string , _docNo: string) {
+    return await this.http.get(environment.API_URL + 'scan-receive/getSendMail/' + _entity+'/'+_docNo).toPromise(); 
+
+  } 
 }

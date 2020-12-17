@@ -4,6 +4,7 @@ using api.ModelViews;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -14,15 +15,18 @@ namespace api.Services
     {
         public SpecDrawingView GetSpecInfo(string barcode)
         {
-            System.Diagnostics.Process.Start("net.exe", @"use N: / delete");
-            //System.Diagnostics.Process.Start("net.exe", @"use Z: \\128.1.1.23\prog TOP@007* /USER:128.1.1.23\webadmin").WaitForExit();
-            System.Diagnostics.Process.Start("net.exe", @"use \\192.168.8.20\DataCenter TOP@007* /USER:128.1.1.23\webadmin").WaitForExit();
+            //System.Diagnostics.Process.Start("net.exe", @"use N: / delete");
+            //System.Diagnostics.Process.Start("net.exe", @"use \\192.168.8.20\DataCenter TOP@007* /USER:128.1.1.23\webadmin").WaitForExit();
 
             string type = "";
             string file_path = "";
             //string file_paths = "";
             string vfile_name = "";
-            
+
+            string urlPrefix_sd = ConfigurationManager.AppSettings["upload.urlPrefixSd"];
+            string urlPrefix_spec = ConfigurationManager.AppSettings["upload.urlPrefixSpec"];
+
+            string urlPrefix = "";
 
             using (var ctx = new ConXContext())
             {
@@ -50,14 +54,18 @@ namespace api.Services
                     string sqlp = "select hm_design_path from bm_basic_mast";
                     file_path = ctx.Database.SqlQuery<string>(sqlp).SingleOrDefault();
                     type = "Design";
-                    file = "*" + datas.design_code + ".pdf";
+                    //file = "*" + datas.design_code + ".pdf";
+                    file = datas.design_code + ".pdf";
+                    urlPrefix = urlPrefix_spec;
                 }
                 else
                 {
                     string sqlp = "select hm_sd_path from bm_basic_mast";
                     file_path = ctx.Database.SqlQuery<string>(sqlp).SingleOrDefault();
                     type = "SD";
-                    file = "*" + datas.sd_no + ".pdf";
+                    //file = "*" + datas.sd_no + ".pdf";
+                    file = datas.design_code + ".pdf";
+                    urlPrefix = urlPrefix_sd;
                 }
 
 
@@ -95,7 +103,8 @@ namespace api.Services
                     sd_no = datas.sd_no,
                     design_no = datas.design_no,
                     file_path = file_path,
-                    file_name = vfile_name
+                    //file_name = vfile_name
+                    file_name = urlPrefix + file
                 };
 
                 

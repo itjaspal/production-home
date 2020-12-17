@@ -44,6 +44,7 @@ export class ScanReceiveCreateComponent implements OnInit {
       this.buildForm();
       this.user = this._authSvc.getLoginUser();
       this.searchModel.doc_no = this.data.doc_no;
+      this.searchModel.scan_type = "SETNO";
     }
   
     private buildForm() {

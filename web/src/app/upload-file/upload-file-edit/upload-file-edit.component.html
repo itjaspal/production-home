@@ -1,0 +1,77 @@
+<div class="container-fluid no-breadcrumbs">
+  <mat-card>
+    <mat-card-title>
+      <h6>แก้ไข Upload File</h6>
+    </mat-card-title>
+    <mat-card-content>
+
+      <form [formGroup]="validationForm">
+        <mat-card class="mat-subcard">
+
+          <mat-card-subtitle>
+            <!-- <h6>Upload File</h6> -->
+            <input type="file" #fileInput class="d-none" (change)="fileChange($event)">
+
+            <button mat-fab type="button" color="primary" (click)="fileInput.click()">
+              <mat-icon class="material-icons">cloud_upload</mat-icon>
+            </button>
+          </mat-card-subtitle>
+          <mat-card-content>
+            <div class="row">
+              <div class="col-6 col-lg-3">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Design Code" formControlName="pddsgn_code"
+                    [(ngModel)]="model.pddsgn_code" name="pddsgn_code">
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-6 col-lg-3">
+                <mat-form-field class="full-width">
+                  <mat-select placeholder="Type" formControlName="type" [(ngModel)]="model.type" name="type">
+                    <mat-option>ทั้งหมด</mat-option>
+                    <mat-option value="SD">SD</mat-option>
+                    <mat-option value="DESIGN_SPEC">Design Spec</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+            <br>
+            <div class="output">ไฟล์ที่เลือก: {{ fileName }} </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+              <mat-icon class="material-icons">close</mat-icon> ปิด
+            </button>
+
+            <button mat-raised-button color="primary" class="btn-w-md pull-right" type="button" (click)="save()"
+              [disabled]="!validationForm.valid|| model.file == null">
+              <mat-icon class="material-icons">save</mat-icon> บันทึกข้อมูล
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+
+
+
+    </mat-card-content>
+    <!-- </mat-card>
+
+      </mat-card-content> -->
+
+    <!-- <mat-card-actions>
+      <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+        <mat-icon class="material-icons">close</mat-icon> ปิด
+      </button>
+
+      <button mat-raised-button color="primary" class="btn-w-md pull-right" type="button" (click)="save()"
+        [disabled]="!validationForm.valid">
+        <mat-icon class="material-icons">save</mat-icon> บันทึกข้อมูล
+      </button>
+    </mat-card-actions> -->
+
+
+  </mat-card>
+</div>

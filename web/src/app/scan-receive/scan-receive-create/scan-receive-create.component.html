@@ -32,18 +32,18 @@
               </div>  
               <div class="row card-table-body">
 
-                <div class="col-sm-5 col-5" style="margin-top: 10px;">
+                <div class="col-sm-5 col-12" style="margin-top: 10px;">
                   รูปแบบการ Scan
   
                   <div class="hiddenradio">
                     <label>
-                      <input type="radio" name="scan_type" value="SETNO" (change)="radioTypeChange('SETNO')"> Set No.
+                      <input type="radio" name="scan_type" value="SETNO" (change)="radioTypeChange('SETNO')" checked> Set No.
                     </label>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;
                     <label>
                       <input type="radio" name="scan_type" value="PCS" (change)="radioTypeChange('PCS')"> PCS Barcode
                     </label>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;
                     <label>
                       <input type="radio" name="scan_type" value="BARCODE" (change)="radioTypeChange('BARCODE')"> Barcode
                     </label>
@@ -60,9 +60,13 @@
   
                   <mat-form-field class="full-width">
                     <input matInput placeholder="Set No. / PCS Barcode / Barcode" formControlName="scan_data" name="scan_data" #scan_data
-                    (keydown.enter)="onQrEntered(scan_data.value); scan_data.value = ''" type="none" type="none" [(ngModel)]="searchModel.scan_data">
+                    (keydown.enter)="onQrEntered(scan_data.value); scan_data.value = ''" type="none" type="none" [(ngModel)]="searchModel.scan_data" autocomplete="off">
+                    <button mat-button *ngIf="scan_data.value != ''" matSuffix mat-icon-button aria-label="Clear" type="button"
+                (click)="scan_data.value = ''" >
+                <mat-icon>close</mat-icon>
+              </button>
                   </mat-form-field>
-  
+                  
   
                 </div>
 

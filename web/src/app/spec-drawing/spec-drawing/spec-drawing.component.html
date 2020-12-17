@@ -64,7 +64,7 @@
                         <div class="col-lg-3 col-sm-3 col-12" *ngIf="specDrawingData;">
                           <div *ngIf="specDrawingData.file_name;  else elseBlock">
                              <small>View Spec Drawing</small> 
-                              <dd><a href="{{specDrawingData.file_name}}" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
+                              <dd><a href="{{specDrawingData.file_name}}"  target="_blank" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
                           </div>  
                           <ng-template #elseBlock>
                               <small>&nbsp;</small>  

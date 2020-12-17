@@ -69,8 +69,8 @@ export class ScanPutawayQrComponent implements OnInit {
     this.defaultWH = await this._putawaySvc.getWhDefault(AppSetting.entity);
     this.model_scan.wh_code = this.defaultWH.wh_code;
 
-    this.defaultDept = await this._putawaySvc.getDeptDefault(AppSetting.entity, this.user.username);
-    this.model_scan.wc_code = this.defaultDept.dept_code;
+    //this.defaultDept = await this._putawaySvc.getDeptDefault(AppSetting.entity, this.user.username);
+    //this.model_scan.wc_code = this.defaultDept.dept_code;
 
 
     
@@ -142,9 +142,9 @@ export class ScanPutawayQrComponent implements OnInit {
       return;
     }
 
-    if (this.model_scan.wc_code == null || this.model_scan.wc_code == "" || this.model_scan.wc_code == "0") {
+    /*if (this.model_scan.wc_code == null || this.model_scan.wc_code == "" || this.model_scan.wc_code == "0") {
       return;
-    }
+    }*/
 
     if (this.model_scan.loc_code == null || this.model_scan.loc_code == "") {
       return;

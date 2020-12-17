@@ -99,7 +99,19 @@ namespace api.Services
                     if (vscan_type == "SETNO")
                     {
                         String[] strlist = model.scan_data.Split('|');
-                        vset_no = strlist[2];
+
+                        if(strlist.Length <= 2)
+                        {
+                            throw new Exception("Set No. ไม่ถูกต้อง");
+                        }
+                        else
+                        {
+                            vset_no = strlist[2];
+                        }
+
+                        
+
+
 
                         string sql1 = "select max(prod_code) prod_code , max(bar_code) bar_code , to_char(max(pkg_barcode_set)) set_no , count(*) scan_qty from pkg_barcode where entity = :p_entity and ref_pd_docno = :p_doc_no and pkg_barcode_set = :p_set_no";
                         ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
@@ -328,10 +340,10 @@ namespace api.Services
 
 
                         // Send Mail
-                        if(total_qty_pdt == total_qty_rec)
-                        {
-                            SendMail(ventity , vdoc_no);
-                        }
+                        //if(total_qty_pdt == total_qty_rec)
+                        //{
+                        //    SendMail(ventity , vdoc_no);
+                        //}
 
                         ScanReceiveView view = new ModelViews.ScanReceiveView()
                         {

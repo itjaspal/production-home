@@ -64,14 +64,14 @@
           <ng-template #show_current_content>
               <div class="panel panel-default" *ngFor="let x of dataCurrent.dataTotals; let i = index;">
                   <div class="row">
-                    <div class="col-lg-2 col-sm-2 col-6">
+                    <div class="col-lg-3 col-sm-3 col-6">
                         <dt>Req Date</dt>
                         <dd>{{x.req_date  | date:'dd/MM/yyyy'}}</dd>
                     </div>
                   </div>
                   <!--INSERT Table (Privious) -->  
                   <!-- Table -->
-                  <table style="width: 100%" > 
+                  <table style="width: 100%"> 
                      <tbody> 
                           <tr>
                               <th style="width: 150px" class="text-center">JIT Group</th>
@@ -136,7 +136,7 @@
           <ng-template #show_pending_content>
             <div class="panel panel-default" *ngFor="let x of dataPending.dataTotals; let i = index;">
               <div class="row">
-                <div class="col-lg-2 col-sm-2 col-6">
+                <div class="col-lg-3 col-sm-3 col-6">
                     <dt>Req Date</dt>
                     <dd>{{x.req_date  | date:'dd/MM/yyyy'}}</dd>
                 </div>
@@ -204,7 +204,7 @@
           <ng-template #show_Forward_content>
             <div class="panel panel-default" *ngFor="let x of dataForward.dataTotals; let i = index;">
               <div class="row">
-                <div class="col-lg-2 col-sm-2 col-6">
+                <div class="col-lg-3 col-sm-3 col-6">
                     <dt>Req Date</dt>
                     <dd>{{x.req_date  | date:'dd/MM/yyyy'}}</dd>
                 </div>

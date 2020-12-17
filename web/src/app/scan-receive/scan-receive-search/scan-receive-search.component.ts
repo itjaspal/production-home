@@ -147,9 +147,11 @@ export class ScanReceiveSearchComponent implements OnInit {
   }
 
 
-  cancel(_index,scan)
+  async sendMail(entity,doc_no)
   {
-
+    let res: any = await this._scanRecSvc.SendMail(entity,doc_no);
+  
+    this._msgSvc.successPopup(res.message);
   }
 
   close() {
