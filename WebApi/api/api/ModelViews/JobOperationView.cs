@@ -118,6 +118,7 @@ namespace api.ModelViews
         public string pdsize_code { get; set; }
         public string uom { get; set; }
         public int qty_ord { get; set; }
+        public int qty_act { get; set; }
         public string gplabel_no { get; set; }
         public string skb_flag { get; set; }
         public string dsgn_no { get; set; }
@@ -209,4 +210,61 @@ namespace api.ModelViews
     }
 
 
+    public class ProductionTrackingSearchView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public string entity_code { get; set; }
+        public string build_type { get; set; }
+        public DateTime req_date { get; set; }
+        public string pdjit_grp { get; set; }
+        public string wc_code { get; set; }
+        public string user_id { get; set; }
+    }
+
+    public class ProductionTrackingView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public string entity { get; set; }
+        public DateTime req_date { get; set; }
+        public string build_type { get; set; }
+        public List<ProductDataGroupView> productGroups { get; set; }
+        public List<DisplayWcGroupView> displayGroups { get; set; }
+    }
+
+    public class ProductDataGroupView
+    {
+        public string prod_code { get; set; }
+        public string prod_name { get; set; }
+        public string style { get; set; }
+        public string model_name { get; set; }
+        public string size_name { get; set; }
+        public string type { get; set; }
+        public int plan_qty { get; set; }
+        public List<ProductDataGroupDetailView> dataGroups { get; set; }
+
+    }
+
+    public class ProductDataGroupDetailView
+    {
+        public string wc_code { get; set; }
+        public string wc_name { get; set; }
+        public int qty { get; set; }
+    }
+
+    public class DisplayWcGroupView
+    {
+        public string wc_code { get; set; }
+        public string wc_name { get; set; }
+
+    }
+
+    public class WcGroupView
+    {
+        public string wc_code { get; set; }
+        public string wc_name { get; set; }
+
+    }
 }

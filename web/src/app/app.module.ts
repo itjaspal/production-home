@@ -211,6 +211,8 @@ import { ScanPutawayProductViewComponent } from './scan_putaway/scan-putaway-pro
 import { UploadFileSearchComponent } from './upload-file/upload-file-search/upload-file-search.component';
 import { UploadFileAddComponent } from './upload-file/upload-file-add/upload-file-add.component';
 import { UploadFileEditComponent } from './upload-file/upload-file-edit/upload-file-edit.component';
+import { ProductionTrackingComponent } from './job-operation/production-tracking/production-tracking.component';
+import { ProductionTrackingStockComponent } from './job-operation/production-tracking-stock/production-tracking-stock.component';
 
 
 
@@ -448,6 +450,8 @@ import { UploadFileEditComponent } from './upload-file/upload-file-edit/upload-f
     UploadFileSearchComponent,
     UploadFileAddComponent,
     UploadFileEditComponent,
+    ProductionTrackingComponent,
+    ProductionTrackingStockComponent,
     
 
   
@@ -493,7 +497,9 @@ import { UploadFileEditComponent } from './upload-file/upload-file-edit/upload-f
     SubProductDefectCancelSearchComponent,
     ScanDefectRemarkComponent,
     SummaryDefectComponent,
-    ProductGroupDetailComponent
+    ProductGroupDetailComponent,
+    ProductionTrackingComponent,
+    ProductionTrackingStockComponent
   ],
   bootstrap: [AppComponent]
 })

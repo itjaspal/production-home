@@ -49,7 +49,7 @@ export class JobOrderSummaryComponent implements OnInit {
 
      console.log("paramData.build_type : " + this.paramData.build_type);
      console.log("paramData.pdjit_grp : " + this.paramData.pdjit_grp);
-     console.log("paramData.pdjit_grp_desc : " + this.paramData.pdjit_grp_desc);
+     console.log("paramData.wc_code : " + this.paramData.wc_code);
      console.log("paramData.req_date : " + this.paramData.req_date);
 
      this.searchOrderSummary();
@@ -73,6 +73,7 @@ export class JobOrderSummaryComponent implements OnInit {
     this.model.build_type = this.paramData.build_type;
     this.model.pdjit_grp  = this.paramData.pdjit_grp;
     this.model.req_date   = this.paramData.req_date;
+    this.model.wc_code   = this.paramData.wc_code;
 
 
     this.dataOrderSummary =  await this._jobOrderSummarySvc.searchOrderSummary(this.model);

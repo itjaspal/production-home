@@ -5,16 +5,56 @@ using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Transactions;
 using System.Web;
 
+
 namespace api.Services
 {
     public class ScanReceiveService : IScanReceiveService
     {
+        public void ConfirmStock(ConfirmStockDataView model)
+        {
+            using (TransactionScope scope = new TransactionScope())
+            {
+                string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
+                var dataConn = new OracleConnectionStringBuilder(strConn);
+                OracleConnection conn = new OracleConnection(dataConn.ToString());
+
+               
+                OracleCommand oraCommand = conn.CreateCommand();
+                oraCommand.CommandText = "Test";
+                
+                oraCommand.CommandType = CommandType.StoredProcedure;
+                //oraCommand.Parameters.Add("p_owner", OracleDbType.Varchar2);
+                //oraCommand.Parameters.Add("pin_deptno", OracleDbType.Varchar2).Value = "20";
+                oraCommand.Parameters.Add("pout_count", OracleDbType.Int16).Direction = ParameterDirection.Output;
+                try
+                {
+                    conn.Open();
+                    oraCommand.ExecuteNonQuery();
+                    System.Console.WriteLine("Number of employees in department 20 is {0}", oraCommand.Parameters["pout_count"].Value);
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Exception: {0}", ex.ToString());
+                }
+
+                oraCommand.ExecuteNonQuery();
+
+                conn.Close();
+
+
+                scope.Complete();
+
+
+            }
+        }
+
         public SendDataView getProductDetail(string entity, string doc_no)
         {
             using (var ctx = new ConXContext())

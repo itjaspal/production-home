@@ -108,4 +108,9 @@ namespace api.ModelViews
         public int qty { get; set; }
     }
 
+    public class ConfirmStockDataView
+    {
+        public string doc_no { get; set; }
+    }
+
 }

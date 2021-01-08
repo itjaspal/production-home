@@ -14,5 +14,6 @@ namespace api.Interfaces
         void ScanReceiveCancel(ScanReceiveView scan);
         void SendMail(string entity , string doc_no);
         SendDataView getProductDetail(string entity, string doc_no);
+        void ConfirmStock(ConfirmStockDataView model);
     }
 }

@@ -96,5 +96,20 @@ namespace api.Controllers
             }
         }
 
+        [Route("job-operation/productionTracking")]
+        public HttpResponseMessage postProductionTracking(ProductionTrackingSearchView model)
+        {
+            try
+            {
+                var result = jobService.ProductionTracking(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
     }
 }

@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, PageEvent } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SummaryDefectComponent } from '../../scan-defect/summary-defect/summary-defect.component';
 import { JobOperationStockView, JobOperationStockSearchView } from '../../_model/job-operation-stock';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { DropdownlistService } from '../../_service/dropdownlist.service';
@@ -13,6 +14,7 @@ import { JobOrderDetailComponent } from '../job-order-detail/job-order-detail.co
 import { PorDetailComponent } from '../por-detail/por-detail.component';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductGroupDetailComponent } from '../product-group-detail/product-group-detail.component';
+import { ProductionTrackingStockComponent } from '../production-tracking-stock/production-tracking-stock.component';
 
 @Component({
   selector: 'app-job-operation-stock',
@@ -45,12 +47,23 @@ export class JobOperationStockComponent implements OnInit {
   public data_docdate : any;
   public count_datagroup : any = {};
   public reqDate : any;
-  
+  public wclist: any; 
+  public wc_code : any;
+
   async ngOnInit() {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
     this.reqDate = new Date();
     this.searchModel.req_date = this.reqDate;
+
+    this.wclist = await this._dll.getDdlWCInprocessStock(this.user.username);
+    // console.log(this.wclist);
+    if(this.wclist.length >= 1)
+    {
+      this.searchModel.wc_code = this.wclist[0].key;
+      // console.log(this.searchModel.wc_code);
+    }
+
   }
 
   private buildForm() {
@@ -141,13 +154,13 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
     // })
   }
 
-  openProductGroupDetail(p_entity : string ,p_por_no: string,p_ref_no: string , _index: number = -1)
+  openProductionTracking(p_entity : string ,p_por_no: string,p_ref_no: string , p_req_date : string , _index: number = -1)
   {
     console.log(p_por_no);
     console.log(p_ref_no);
     console.log(this.searchModel.req_date);
-    console.log(p_entity);
-    const dialogRef = this._dialog.open(ProductGroupDetailComponent, {
+    console.log(this.wc_code);
+    const dialogRef = this._dialog.open(ProductionTrackingStockComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
       height: '100%',
@@ -156,9 +169,11 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
         por_no: p_por_no,
         entity_code:p_entity,
         ref_no :p_ref_no,
-        req_date : this.searchModel.req_date,
+        req_date : p_req_date,
+        wc_code : this.wc_code,
+        user_id : this.user.username
         // build_type : this.user.branch.entity_code,
-        // user_id : this.user.username
+       
       }
 
     });
@@ -167,6 +182,33 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
     //   if (result.length > 0) {
     //     //this.add_prod(result);
     //   }
+    // })
+  }
+
+
+  openSummaryDefect(p_entity : string ,p_por_no: string ,p_ref_no: string,p_req_date: string  , _index: number = -1)
+  {
+    const dialogRef = this._dialog.open(SummaryDefectComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        por_no: p_por_no,
+        entity:p_entity,
+        ref_no : p_ref_no,
+        req_date : p_req_date,
+        wc_code : this.wc_code,
+       
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   this.search();
+    //   // if (result.length > 0) {
+    //   //   //this.add_prod(result);
+    //   // }
     // })
   }
 

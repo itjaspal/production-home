@@ -14,5 +14,6 @@ namespace api.Interfaces
         JobOperationView SearchDataForward(JobOperationSearchView model);
         OrderView getOrderInfo(string entity ,string por_no);
         OrderSumView OrderSummary(OrderSumSearchView model);
+        ProductionTrackingView ProductionTracking(ProductionTrackingSearchView model);
     }
 }

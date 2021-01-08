@@ -37,10 +37,10 @@
             <small>Product Code</small>
             <dd>{{x.prod_code}} </dd>
           </div>
-          <div class="col-sm-3 col-3">
+          <!-- <div class="col-sm-3 col-3">
             <small>Sub Product Code</small>
             <dd>{{x.sub_prod_code}}</dd>
-          </div>
+          </div> -->
           <div class="col-sm-3 col-3">
             <small>Sub Product Name</small>
             <dd>{{x.sub_prod_name}}</dd>
@@ -50,10 +50,13 @@
             <dd>{{x.qty_plan}}</dd>
           </div>
           <div class="col-sm-1 col-1">
-            <small>qty Fin</small>
+            <small>Qty Fin</small>
             <dd>{{x.qty_fin}}</dd>
           </div>
-
+          <div class="col-sm-1 col-1">
+            <small>Qty Diff</small>
+            <dd>{{x.qty_plan - x.qty_fin}}</dd>
+          </div>
 
         </div>
       </ng-template>

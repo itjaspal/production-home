@@ -110,20 +110,20 @@ namespace api.Controllers
             }
         }
 
-        //[Route("scan-receive/postApproveReceive")]
-        //public HttpResponseMessage postApproveReceive(ScanReceiveDataDetailView model)
-        //{
-        //    try
-        //    {
-        //        receiveService.ApproveReceive(model);
+        [Route("scan-receive/postConfirmStock")]
+        public HttpResponseMessage postApproveReceive(ConfirmStockDataView model)
+        {
+            try
+            {
+                receiveService.ConfirmStock(model);
 
-        //        return Request.CreateResponse(HttpStatusCode.OK, "ยืนยันรับมอบเรียบร้อยแล้ว");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
-        //    }
-        //}
+                return Request.CreateResponse(HttpStatusCode.OK, "ยืนยันรับมอบเรียบร้อยแล้ว");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
 
     }
 }

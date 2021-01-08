@@ -20,7 +20,7 @@ export class JobOperationSearchView {
     public req_date: string = "";;
 }
 
-export class JobOperationDetailView<T>{ 
+export class JobOperationDetailView<T>{
     public pageIndex: number = 0;
     public itemPerPage: number = 0;
     public totalItem: number = 0;
@@ -40,7 +40,7 @@ export class JobOperationDataTotalView {
     public dataGroups: JobOperationDataGroupView[] = [];
 }
 
-export class JobOperationDataGroupView{ 
+export class JobOperationDataGroupView {
     public req_date: any = null;
     public display_group: string = "";
     public display_type: string = "";
@@ -50,7 +50,7 @@ export class JobOperationDataGroupView{
     public act_qty: number = 0;
     public defect_qty: number = 0;
     public diff_qty: number = 0;
-    
+
 }
 // ****** end *******
 
@@ -64,10 +64,10 @@ export class OrderSummarySearchView {
     public build_type: string = "";
     public req_date: any = null;
     public pdjit_grp: string = "";
-    public wc_code : string = "";
+    public wc_code: string = "";
 }
 
-export class OrderSummaryProdDetailView<T>{ 
+export class OrderSummaryProdDetailView<T>{
     public req_date: any = null;
     public pdjit_grp: string = "";
     public build_type: string = "";
@@ -93,14 +93,14 @@ export class OrderSummaryProductDetailView {
     public porDetail: OrderSummaryPorDetailView[] = [];
 }
 
-export class OrderSummaryPorDetailView{ 
+export class OrderSummaryPorDetailView {
     public por_no: string = "";
     public qty_req: number = 0;
     public weight: number = 0;
     public special_order: string = "";
 }
 
-export class SpecDrawingView{ 
+export class SpecDrawingView {
     public prod_code: string = "";
     public prod_name: string = "";
     public bar_code: string = "";
@@ -116,7 +116,7 @@ export class SpecDrawingView{
 // ****** end *******
 
 // Order InFo
-export class OrderInfoHeaderView{ 
+export class OrderInfoHeaderView {
     public entity: string = "";
     public entity_name: string = "";
     public por_no: string = "";
@@ -154,11 +154,12 @@ export class OrderInFoDetailView {
     public pdsize_code: string = "";
     public uom: string = "";
     public qty_ord: number = 0;
+    public qty_act: number = 0;
     public gplabel_no: string = "";
     public skb_flag: string = "";
     public dsgn_no: string = "";
     public sd_no: string = "";
-    public bar_code:string = "";
+    public bar_code: string = "";
     public subProduct: OrderSubProdDetailView[] = [];
 }
 
@@ -197,7 +198,7 @@ export class OrderSummaryParamView {
     public pdjit_grp: string = "";
     public pdjit_grp_desc: string = "";
     public req_date: any = null;
-    public wc_code : string = "";
+    public wc_code: string = "";
     public isEdit: boolean = false;
     public hideSerialNo: boolean = false;
     public isSaleBed: boolean = false;
@@ -207,7 +208,7 @@ export class OrderSummaryParamView {
 export class OrderDetailParamView {
     public entity_code: string = "";
     public por_no: string = "";
-    public : boolean = false;
+    public: boolean = false;
     public hideSerialNo: boolean = false;
     public isSaleBed: boolean = false;
 }
@@ -220,4 +221,47 @@ export class SpecDrawingParamView {
 }
 
 
+export class ProductionTrackingSearchView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public entity_code: string = AppSetting.entity;
+    public build_type: string = "";
+    public req_date: any = null;
+    public pdjit_grp: string = "";
+    public wc_code: string = "";
+    public user_id: string = "";
+}
 
+export class ProductionTrackingView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public totalItem: number = 0;
+    public entity: string = AppSetting.entity;
+    public req_date: any = null;
+    public build_type: string = "";
+    public productGroups: ProductDataGroupView[] = [];
+    public displayGroups: DisplayWcGroupView[] = [];
+}
+
+export class ProductDataGroupView {
+    public prod_code: string = "";
+    public prod_name: string = "";
+    public style: string = "";
+    public model_name: string = "";
+    public size_name: string = "";
+    public type : string = "";
+    public plan_qty: number = 0;
+    public dataGroups: ProductDataGroupDetailView[] = [];
+}
+
+export class ProductDataGroupDetailView {
+    public wc_code: string = "";
+    public wc_name: string = "";
+    public qty: number = 0;
+}
+
+export class DisplayWcGroupView {
+    public wc_code: string = "";
+    public wc_name: string = "";
+
+}

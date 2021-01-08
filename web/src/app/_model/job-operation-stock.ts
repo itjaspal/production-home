@@ -1,4 +1,5 @@
 import { AppSetting } from '../_constants/app-setting';
+import { DisplayWcGroupView, ProductDataGroupView } from './job-operation';
 
 export class JobOperationStockSearchView {
     public pageIndex: number = 1;
@@ -61,3 +62,27 @@ export class ProductGroupSearchView {
     public por_no: string = "";
     public ref_no: string = "";
 }
+
+export class ProductionTrackingStockSearchView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public entity_code: string = AppSetting.entity;
+    public user_id: string = "";
+    public wc_code: string = "";
+    public build_type: string = "";
+    public req_date: any = null;
+    public por_no: string = "";
+    public ref_no: string = "";
+}
+
+// export class ProductionTrackingStockView {
+//     public pageIndex: number = 1;
+//     public itemPerPage: number = AppSetting.itemPerPage;
+//     public totalItem: number = 0;
+//     public entity: string = "";
+//     public req_date: string = "";
+//     public build_type: string = "";
+//     public productGroups: ProductDataGroupView[] = [];
+//     public displayGroups: DisplayWcGroupView[] = [];
+
+// }

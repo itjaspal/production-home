@@ -21,7 +21,7 @@ namespace api.Services
             string type = "";
             string file_path = "";
             //string file_paths = "";
-            string vfile_name = "";
+            //string vfile_name = "";
 
             string urlPrefix_sd = ConfigurationManager.AppSettings["upload.urlPrefixSd"];
             string urlPrefix_spec = ConfigurationManager.AppSettings["upload.urlPrefixSpec"];
@@ -69,27 +69,7 @@ namespace api.Services
                 }
 
 
-                
-                //string file = "*" + datas.design_code + ".pdf";
-                //string file = "Test.pdf";
-
-
-                //string[] file_names = Directory.GetFiles(@"c:\temp\", "*.pdf",SearchOption.AllDirectories);
-                string[] file_names = Directory.GetFiles(@file_path, file, SearchOption.AllDirectories);
-                
-                foreach (string file_name in file_names)
-                {
-                    vfile_name = file_name;
-                }
-
-
-                //string imagePath = @spring_path + spring_file;
-
-
-                //string imgBase64String = GetBase64StringForImage(imagePath);
-
-
-
+            
 
 
                 //define model view

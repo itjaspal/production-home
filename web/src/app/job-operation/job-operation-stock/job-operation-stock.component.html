@@ -110,8 +110,8 @@
                   <button mat-menu-item (click)="openProductDetail(x.entity,x.por_no)">
                     <mat-icon class="material-icons">description</mat-icon> <span>Product Detail</span>
                   </button>
-                  <button mat-menu-item (click)="openProductGroupDetail(x.entity,x.por_no,x.ref_no)">
-                    <mat-icon class="material-icons">description</mat-icon> <span>Product Detail By Group</span>
+                  <button mat-menu-item (click)="openProductionTracking(x.entity,x.por_no,x.ref_no,searchModel.req_date)">
+                    <mat-icon class="material-icons">description</mat-icon> <span>Product Tracking</span>
                   </button>
 
                 </mat-menu>
@@ -281,6 +281,9 @@
                   </button>
                   <button mat-menu-item (click)="openProductDetail(x.entity,x.por_no)">
                     <mat-icon class="material-icons">description</mat-icon> <span>Product Detail</span>
+                  </button>
+                  <button mat-menu-item (click)="openSummaryDefect(x.entity,x.por_no,x.ref_no,searchModel.req_date)">
+                    <mat-icon class="material-icons">description</mat-icon> <span>สรุปรายการสินค้า Defect</span>
                   </button>
                 </mat-menu>
               </td>

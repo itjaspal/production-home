@@ -90,10 +90,15 @@ namespace api.Services
                             prod_name = i.prod_name,
                             spc_desc = vspec.Trim('/')
                         });
-                    }    
-                    
+                    }
+
+                    // Find Actual Qty
+                    string sql8 = "select nvl(sum(qty_pdt),0) from pdtran where pd_entity = :p_entity and por_no = :p_por_no and prod_code=:p_prod_code";
+                    int vqty_act = ctx.Database.SqlQuery<int>(sql8, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", por_no),new OracleParameter("p_prod_code", i.prod_code)).SingleOrDefault();
+
+
                     // Find Sub Product    
-                    List <SubProductView> subViews = new List<SubProductView>();
+                    List<SubProductView> subViews = new List<SubProductView>();
 
                     string sqls = "select por_no , item ,bom_code , description , pack , qty_ord , uom_code , width , length ,height , size_uom from por_det1 where pd_entity = :p_entity and por_no =:p_por_no and line_no = :p_line_no";
                     List<SubProductView> subProd = ctx.Database.SqlQuery<SubProductView>(sqls, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", por_no), new OracleParameter("p_line_no", i.line_no)).ToList();
@@ -139,6 +144,7 @@ namespace api.Services
                             prod_code = i.prod_code,
                             prod_name = i.prod_name,
                             qty_ord = i.qty_ord,
+                            qty_act = vqty_act,
                             pdgrp_code = i.pdgrp_code,
                             pdcolor_code = i.pdcolor_code,
                             pdsize_code = i.pdsize_code,
@@ -186,9 +192,14 @@ namespace api.Services
                 string vbuild_type = model.build_type;
                 string vwc_code = model.wc_code;
                 string vspec = "";
+               
 
                 string sql = "select req_date , pdjit_grp ,  sum(qty_req) total_plan_qty , sum(nvl(qty_fgg,0)) total_actual_qty from mps_det where entity= :p_entity and req_date = trunc(:p_req_date) and nvl(build_type,'HMJIT') = :p_build_type and pdjit_grp = :p_pdjit_grp group by req_date , pdjit_grp";
                 OrderSumView mps = ctx.Database.SqlQuery<OrderSumView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_pdjit_grp", vpdjit_grp)).SingleOrDefault();
+
+                string sql2 = "select nvl(sum(qty_pdt),0) from mps_det_wc where entity = :p_entity and req_date = trunc(:p_req_date) and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y'";
+                int total_act_qty = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp)).SingleOrDefault();
+
 
                 //define model view
                 OrderSumView view = new ModelViews.OrderSumView()
@@ -197,8 +208,8 @@ namespace api.Services
                     pdjit_grp = mps.pdjit_grp,
                     build_type = vbuild_type,
                     total_plan_qty = mps.total_plan_qty,
-                    total_actual_qty = mps.total_actual_qty,
-                    total_diff_qty = mps.total_plan_qty - mps.total_actual_qty,
+                    total_actual_qty = total_act_qty,
+                    total_diff_qty = mps.total_plan_qty - total_act_qty,
                     productDetail = new List<ModelViews.OrderProductView>()
                 };
 
@@ -263,6 +274,149 @@ namespace api.Services
                 return view;
             }
 
+        }
+
+        public ProductionTrackingView ProductionTracking(ProductionTrackingSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity_code;
+                DateTime vreq_date = model.req_date;
+                string vbuild_type = model.build_type;
+                string vpdjit_grp = model.pdjit_grp;
+                string vwc_code = model.wc_code;
+                string vuser_id = model.user_id;
+                int vact_qty = 0;
+
+                //int total_plan_qty = 0;
+
+
+                //DateTime req_tmp = DateTime.Now;
+
+                //string sql1 = "select a.dept_code wc_code , b.wc_tdesc wc_name  from auth_function a, wc_mast b where a.dept_code = b.wc_code and  a.function_id='PDOPTHM' and a.doc_code='Y' and a.user_id=:p_user_id";
+
+                //WcDataView wc = ctx.Database.SqlQuery<WcDataView>(sql1, new OracleParameter("p_user_id", vuser_id)).SingleOrDefault();
+
+
+                //define model view
+                ProductionTrackingView view = new ModelViews.ProductionTrackingView()
+                {
+                    pageIndex = model.pageIndex - 1,
+                    itemPerPage = model.itemPerPage,
+                    totalItem = 0,
+                    entity = ventity,
+                    req_date = vreq_date,
+                    build_type = model.build_type,
+                    productGroups = new List<ModelViews.ProductDataGroupView>(),
+                    displayGroups = new List<ModelViews.DisplayWcGroupView>()
+                };
+
+                //query data
+
+                string sqlg = "select a.wc_code , b.wc_tdesc wc_name , c.wc_seq from pd_wcctl_pdgrp a , wc_mast b , pd_wcctl_seq c where a.wc_code=b.wc_code  and a.wc_code=c.wc_code and c.pd_entity= :p_entity and a.pdgrp_code=:p_pdjit_grp order by c.wc_seq";
+                List<WcGroupView> group = ctx.Database.SqlQuery<WcGroupView>(sqlg, new OracleParameter("p_entity", ventity), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
+
+                string sqlp = "select a.prod_code , a.prod_name , a.model_name , a.size_name , b.style_code style , sum(a.qty_pdt) plan_qty from mps_det_wc a , product b where a.prod_code=b.prod_code and a.entity= :p_entity and a.req_date = trunc(:p_req_date) and a.wc_code = :p_wc_code and a.pdjit_grp= :p_pdjit_grp group by a.prod_code , a.prod_name , a.model_name , a.size_name , b.style_code";
+                List<ProductDataGroupView> prod = ctx.Database.SqlQuery<ProductDataGroupView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date) , new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
+
+                List<DisplayWcGroupView> displayGroupViews = new List<DisplayWcGroupView>();
+
+                foreach (var x in prod)
+                {
+                    List<ProductDataGroupDetailView> groupViews = new List<ProductDataGroupDetailView>();
+
+                    foreach (var y in group)
+                    {
+                        
+                            string sql2 = "select nvl(sum(qty_pdt),0) from mps_det_wc where entity= :p_entity and req_date = trunc(:p_req_date) and wc_code = :p_wc_code and pdjit_grp= :p_pdjit_grp and prod_code = :p_prod_code and mps_st='Y'";
+                            int group_qty = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", y.wc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
+
+
+
+
+
+
+                        ProductDataGroupDetailView gView = new ProductDataGroupDetailView()
+                        {
+                            wc_code = y.wc_code,
+                            wc_name = y.wc_name,
+                            qty = group_qty
+
+                        };
+                        vact_qty = group_qty;
+
+                       
+                        groupViews.Add(gView);
+
+                        
+
+                        //DisplayWcGroupView dView = new DisplayWcGroupView()
+                        //{
+                        //    wc_code = y.wc_code,
+                        //    wc_name = y.wc_name,
+
+                        //};
+
+                        //displayGroupViews.Add(dView);
+
+
+                    }
+
+
+                    //displayGroupViews.Add(new ModelViews.DisplayWcGroupView()
+                    //{
+                    //    wc_code = "Diff Qty",
+                    //    wc_name = "Diff Qty",
+                    //});
+
+
+                    groupViews.Add(new ModelViews.ProductDataGroupDetailView()
+                    {
+                        wc_code = "Diff Qty",
+                        wc_name = "Diff Qty",
+                        qty = x.plan_qty - vact_qty
+                    });
+
+
+                    view.productGroups.Add(new ModelViews.ProductDataGroupView()
+                    {
+                        prod_code = x.prod_code,
+                        prod_name = x.prod_name,
+                        style = x.style,
+                        model_name = x.model_name,
+                        size_name = x.size_name,
+                        plan_qty = x.plan_qty,
+                        dataGroups = groupViews,
+
+
+                    });
+
+
+                }
+
+                foreach (var z in group)
+                {
+                    DisplayWcGroupView dView = new DisplayWcGroupView()
+                    {
+                        wc_code = z.wc_code,
+                        wc_name = z.wc_name,
+
+                    };
+
+                    displayGroupViews.Add(dView);
+                }
+
+                displayGroupViews.Add(new ModelViews.DisplayWcGroupView()
+                {
+                    wc_code = "Diff Qty",
+                    wc_name = "Diff Qty",
+                });
+
+                view.displayGroups = displayGroupViews;
+
+
+                return view;
+            }
         }
 
         public JobOperationView SearchDataCurrent(JobOperationSearchView model)

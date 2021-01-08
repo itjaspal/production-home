@@ -79,5 +79,35 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
+
+        [Route("job-operation-stock/postProductionTrackingStock")]
+        public HttpResponseMessage postProductionTrackingStock(ProductGroupSearchView model)
+        {
+            try
+            {
+                var result = jobService.ProductionTrackingStock(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
+
+        [Route("job-operation-stock/postProductionTrackingDetailStock")]
+        public HttpResponseMessage postProductionTrackingDetailStock(ProductGroupSearchView model)
+        {
+            try
+            {
+                var result = jobService.ProductionTrackingDetailStock(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
     }
 }

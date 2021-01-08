@@ -13,5 +13,7 @@ namespace api.Interfaces
         JobOperationStockView SearchDataFin(JobOperationStockSearchView model);
         JobOperationStockView SearchDataDefect(JobOperationStockSearchView model);
         ProductGroupView SearchSummaryProdcutGroup(ProductGroupSearchView model);
+        ProductionTrackingStockView ProductionTrackingStock(ProductGroupSearchView model);
+        ProductionTrackingStockView ProductionTrackingDetailStock(ProductGroupSearchView model);
     }
 }

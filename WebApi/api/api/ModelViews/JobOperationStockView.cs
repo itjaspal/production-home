@@ -136,4 +136,22 @@ namespace api.ModelViews
         public int qty_defect { get; set; }
 
     }
+
+    public class ProductionTrackingStockView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public string entity { get; set; }
+        public string req_date { get; set; }
+        public string build_type { get; set; }
+        public List<ProductDataGroupView> productGroups { get; set; }
+        public List<DisplayWcGroupView> displayGroups { get; set; }
+    }
+
+    public class QtyGroupView
+    {
+        public int qty_fin { get; set; }
+        public int qty_defect { get; set; }
+    }
 }
