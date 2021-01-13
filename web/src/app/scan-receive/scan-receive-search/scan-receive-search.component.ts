@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, PageEvent } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ScanApproveSendCreateComponent } from '../../scan-approve-send/scan-approve-send-create/scan-approve-send-create.component';
-import { ScanReceiveDataView, ScanReceiveDataSearchView } from '../../_model/scan-receive';
+import { ScanReceiveDataView, ScanReceiveDataSearchView, ConfirmStockDataView } from '../../_model/scan-receive';
 import { AuthenticationService } from '../../_service/authentication.service';
 import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
@@ -37,6 +37,7 @@ export class ScanReceiveSearchComponent implements OnInit {
   public user: any;
   public model: ScanReceiveDataView = new ScanReceiveDataView();
   public searchModel: ScanReceiveDataSearchView = new ScanReceiveDataSearchView();
+  public confirmModel : ConfirmStockDataView = new ConfirmStockDataView();
 
   public data: any = {};
   // public model_scan: ScanSendFinView = new ScanSendFinView();
@@ -53,13 +54,7 @@ export class ScanReceiveSearchComponent implements OnInit {
     this.docDate = new Date();
     this.searchModel.doc_date = this.docDate;
     this.searchModel.send_type = "WAIT";
-    // this.wclist = await this._dll.getDdlWCSend(this.user.username);
-    // if(this.wclist.length==1)
-    // {
-    //   this.searchModel.wc_code = this.wclist[0].key;
-    // }
-    //this.searchModel.req_date = new Date()
-    //console.log(this.data);
+  
     
   }
 
@@ -147,11 +142,25 @@ export class ScanReceiveSearchComponent implements OnInit {
   }
 
 
-  async sendMail(entity,doc_no)
+  async ConfirmStock(entity,doc_no)
   {
-    let res: any = await this._scanRecSvc.SendMail(entity,doc_no);
-  
-    this._msgSvc.successPopup(res.message);
+    this.confirmModel.entity = entity;
+    this.confirmModel.doc_no = doc_no;
+    this.confirmModel.user_id = this.user.username;
+
+    this._msgSvc.confirmPopup("ยืนยัน Update Stock", async result => {
+      if (result) {
+        let res: any = await this._scanRecSvc.ConfirmStock(this.confirmModel);
+
+        this._msgSvc.successPopup(res.message);
+        this.search();
+      }
+      
+    })
+
+    this.search();
+
+ 
   }
 
   close() {

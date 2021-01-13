@@ -45,7 +45,7 @@ namespace api.Services
 
                 //query data
 
-                string sql1 = "select c.disgrp_line_code distype_code ,d.disgrp_line_desc type , a.prod_code_sub prod_code , a.prod_name_sub prod_name, nvl(sum(a.qty_plan),0) qty "+
+                string sql1 = "select c.disgrp_line_code distype_code ,d.disgrp_line_desc type , a.prod_code_sub prod_code , a.prod_name_sub prod_name, nvl(sum(a.qty_plan),0) plan_qty "+
                     "from mps_det_wc_stk a , bm_sub_bom_code b, pd_distype_mast c , pd_disgrp_line d " +
                     "where a.prod_code_sub = b.bom_code " +
                     "and b.distype_code = c.distype_code " +
@@ -57,7 +57,7 @@ namespace api.Services
                     "and a.wc_code = :p_wc_code " +
                     "group by c.disgrp_line_code ,d.disgrp_line_desc , a.prod_code_sub , a.prod_name_sub " +
                     "union " +
-                    "select 'OTHER' distype_code  ,'OTHER' type ,a1.prod_code_sub prod_code , a1.prod_name_sub prod_name , nvl(sum(a1.qty_plan), 0) qty " +
+                    "select 'OTHER' distype_code  ,'OTHER' type ,a1.prod_code_sub prod_code , a1.prod_name_sub prod_name , nvl(sum(a1.qty_plan), 0) plan_qty " +
                     "from mps_det_wc_stk a1, bm_sub_bom_code a2 " +
                     "where a1.entity = :p_entity2 " +
                     "and a1.req_date = to_date(:p_req_date2, 'dd/mm/yyyy') " +

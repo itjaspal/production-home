@@ -139,9 +139,9 @@
                         *ngIf="(x.qty_pdt != x.qty_rec)">
                         <mat-icon class="material-icons">cancel</mat-icon> <span>Scan รับมอบ</span>
                       </button>
-                      <button mat-menu-item (click)="sendMail(x.entity,x.doc_no)" action
-                      *ngIf="(x.qty_rec > 0)">
-                        <mat-icon class="material-icons">mail</mat-icon> <span>Send Mail</span>
+                      <button mat-menu-item (click)="ConfirmStock(x.entity,x.doc_no)" action
+                      *ngIf="(x.qty_rec == x.qty_pdt )">
+                        <mat-icon class="material-icons">check</mat-icon> <span>ยืนยัน Update Stock</span>
                       </button>
                       <button mat-menu-item (click)="openProductDetail(x.entity,x.doc_no)">
                         <mat-icon class="material-icons">description</mat-icon> <span>รายการสินค้า</span>

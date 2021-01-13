@@ -1,9 +1,9 @@
 import { AppSetting } from "../_constants/app-setting";
 
 export class ScanReceiveDataView {
-    public pageIndex : number;
-    public totalItem : number;
-    public itemPerPage : number;
+    public pageIndex: number;
+    public totalItem: number;
+    public itemPerPage: number;
     public entity: string = AppSetting.entity;
     public build_type: string = "";
     public total_qty_pdt: number = 0;
@@ -43,7 +43,7 @@ export class ScanReceiveSearchView {
     public scan_data: string = "";
     public scan_qty: number = 1;
     public user_id: string = "";
-    public build_type : string = "";
+    public build_type: string = "";
 }
 
 export class ScanReceiveView {
@@ -55,16 +55,14 @@ export class ScanReceiveView {
     public qty: number = 0;
 }
 
-export class ScanReceiveFinView
-{
+export class ScanReceiveFinView {
     public pageIndex: number = 1;
     public itemPerPage: number = AppSetting.itemPerPage;
-    public totalItem : number = 0;
+    public totalItem: number = 0;
     public datas: ScanReceiveFinDataView[] = [];
 }
 
-export class ScanReceiveFinDataView
-{
+export class ScanReceiveFinDataView {
     public entity: string = AppSetting.entity;
     public doc_no: string = "";
     public set_no: string = "";
@@ -73,8 +71,13 @@ export class ScanReceiveFinDataView
     public qty: number = 0;
 }
 
-export class SendProductSearch
-{
+export class SendProductSearch {
     public entity: string = AppSetting.entity;
     public doc_no: string = "";
+}
+
+export class ConfirmStockDataView {
+    public entity: string = AppSetting.entity;
+    public doc_no: string = "";
+    public user_id: string = "";
 }

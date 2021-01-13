@@ -11,6 +11,17 @@ namespace api.Services
 {
     public class ProductionRecService : IProductionRecService
     {
+        public int getTimeDelay(string entity, string build_type)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string sql = "select time_delay from pd_monitor_ctl where pd_entity = :p_entity and build_type = :p_build_type";
+                int vtime = ctx.Database.SqlQuery<int>(sql, new OracleParameter("p_entity", entity), new OracleParameter("p_build_type", build_type)).FirstOrDefault();
+
+                return vtime;
+            }
+        }
+
         public ProductionRecTotalView SearchProductionRec(ProductionRecSearchView model)
         {
             using (var ctx = new ConXContext())

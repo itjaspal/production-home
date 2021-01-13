@@ -19,39 +19,66 @@ namespace api.Services
     {
         public void ConfirmStock(ConfirmStockDataView model)
         {
-            using (TransactionScope scope = new TransactionScope())
+            using (var ctx = new ConXContext())
             {
-                string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
-                var dataConn = new OracleConnectionStringBuilder(strConn);
-                OracleConnection conn = new OracleConnection(dataConn.ToString());
+                string sql1 = "select cost_yr , cost_prd from ic_control  where ic_entity = :p_entity";
+                CostDataView cost = ctx.Database.SqlQuery<CostDataView>(sql1, new OracleParameter("p_entity", model. entity)).SingleOrDefault();
 
-               
-                OracleCommand oraCommand = conn.CreateCommand();
-                oraCommand.CommandText = "Test";
-                
-                oraCommand.CommandType = CommandType.StoredProcedure;
-                //oraCommand.Parameters.Add("p_owner", OracleDbType.Varchar2);
-                //oraCommand.Parameters.Add("pin_deptno", OracleDbType.Varchar2).Value = "20";
-                oraCommand.Parameters.Add("pout_count", OracleDbType.Int16).Direction = ParameterDirection.Output;
-                try
+                string sql2 = "select to_number(to_char(doc_date,'yyyy')) yr , to_number(to_char(doc_date,'mm')) prd from pd_mast where pd_entity=:p_entity and  doc_no=:p_doc_no";
+                DocDateView doc = ctx.Database.SqlQuery<DocDateView>(sql2, new OracleParameter("p_entity", model.entity), new OracleParameter("p_doc_no", model.doc_no)).SingleOrDefault();
+
+
+                if(doc.yr < cost.cost_yr)
                 {
-                    conn.Open();
-                    oraCommand.ExecuteNonQuery();
-                    System.Console.WriteLine("Number of employees in department 20 is {0}", oraCommand.Parameters["pout_count"].Value);
+                    throw new Exception("Update Stock ไม่ได้ เนื่องจากมีการปิดงวดต้นทุนไปแล้ว");
                 }
-                catch (Exception ex)
+                else if (doc.yr == cost.cost_yr)
                 {
-                    System.Console.WriteLine("Exception: {0}", ex.ToString());
+                    if(doc.prd < cost.cost_prd)
+                    {
+                        throw new Exception("Update Stock ไม่ได้ เนื่องจากมีการปิดงวดต้นทุนไปแล้ว");
+                    }
                 }
 
-                oraCommand.ExecuteNonQuery();
-
-                conn.Close();
 
 
-                scope.Complete();
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
+                    var dataConn = new OracleConnectionStringBuilder(strConn);
+                    OracleConnection conn = new OracleConnection(dataConn.ToString());
 
 
+                    OracleCommand oraCommand = conn.CreateCommand();
+                    oraCommand.CommandText = "PROD_MHMWEBSERVICE_PKG.ICCFM_RECEIVE";
+
+
+                    oraCommand.CommandType = CommandType.StoredProcedure;
+                    oraCommand.Parameters.Add("p_entity", OracleDbType.Varchar2).Value = model.entity;
+                    oraCommand.Parameters.Add("p_doc_no", OracleDbType.Varchar2).Value = model.doc_no;
+                    oraCommand.Parameters.Add("p_user_id", OracleDbType.Varchar2).Value = model.user_id;
+                    //oraCommand.Parameters.Add("pout_count", OracleDbType.Int16).Direction = ParameterDirection.Output;
+                    try
+                    {
+                        conn.Open();
+                        //oraCommand.ExecuteNonQuery();
+                        oraCommand.ExecuteReader();
+                        //System.Console.WriteLine("Number of employees in department 20 is {0}", oraCommand.Parameters["pout_count"].Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Console.WriteLine("Exception: {0}", ex.ToString());
+                    }
+
+                    //oraCommand.ExecuteNonQuery();
+
+                    conn.Close();
+
+
+                    scope.Complete();
+
+
+                }
             }
         }
 

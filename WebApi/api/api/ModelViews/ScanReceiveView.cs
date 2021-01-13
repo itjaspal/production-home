@@ -39,7 +39,7 @@ namespace api.ModelViews
         public string entity { get; set; }
         public string doc_no { get; set; }
         public string doc_date { get; set; }
-        public string send_type { get; set; } 
+        public string send_type { get; set; }
         public string build_type { get; set; }
         public string user_id { get; set; }
     }
@@ -77,7 +77,7 @@ namespace api.ModelViews
     {
         public string start_date { get; set; }
         public string end_date { get; set; }
-       
+
     }
 
     public class SendDataView
@@ -110,7 +110,21 @@ namespace api.ModelViews
 
     public class ConfirmStockDataView
     {
+        public string entity { get; set; }
         public string doc_no { get; set; }
+        public string user_id { get; set; }
+    }
+
+    public class CostDataView
+    {
+        public int cost_yr { get; set; }
+        public int cost_prd { get; set; }
+    }
+
+    public class DocDateView
+    {
+        public int yr { get; set; }
+        public int prd { get; set; }
     }
 
 }

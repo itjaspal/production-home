@@ -116,8 +116,14 @@ namespace api.Controllers
             try
             {
                 receiveService.ConfirmStock(model);
+                CommonResponseView res = new CommonResponseView()
+                {
+                    status = CommonStatus.SUCCESS,
+                    message = "Update Stock เรียบร้อยแล้ว"
+                };
 
-                return Request.CreateResponse(HttpStatusCode.OK, "ยืนยันรับมอบเรียบร้อยแล้ว");
+                return Request.CreateResponse(HttpStatusCode.OK, res);
+                //return Request.CreateResponse(HttpStatusCode.OK, "ยืนยันรับมอบเรียบร้อยแล้ว");
             }
             catch (Exception ex)
             {
