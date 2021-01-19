@@ -46,13 +46,12 @@ export class JobOperationComponent implements OnInit {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
 
-    this.reqDate = new Date();
-    // this.model.req_date = this.reqDate;
-    var datePipe = new DatePipe("en-US");
-    this.model.req_date = datePipe.transform(this.reqDate, 'dd/MM/yyyy').toString();
-    // this.req_date.nativeElement.value = this.model.req_date;
+    // this.reqDate = new Date();
+    // var datePipe = new DatePipe("en-US");
+    // this.model.req_date = datePipe.transform(this.reqDate, 'dd/MM/yyyy').toString();
+    
     this.model.build_type = this.user.branch.entity_code;
-    // console.log(this.model.req_date);
+    
     this.searchJobOperation();
 
   }
@@ -93,17 +92,17 @@ export class JobOperationComponent implements OnInit {
 
     this.model.build_type = this.user.branch.entity_code;
     // this.model.wc_code    = "";
-    //this.model.req_date = "";
+    this.model.req_date = "";
 
     // console.log(this.user.userWcPrvlgList);
     if (this.user.userWcPrvlgList.length > 1) {
       this.model.wc_code = this.user.userWcPrvlgList[0].wc_code;
 
     }
-    // console.log(this.model);
+    console.log(this.model);
 
     this.dataCurrent = await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
-    // console.log(this.dataCurrent.dataTotals);
+    console.log(this.dataCurrent.dataTotals);
     this.dataPending = await this._jobOperationMacSvc.searchJobOperationPending(this.model);
     // console.log(this.dataPending);
     this.dataForward = await this._jobOperationMacSvc.searchJobOperationForward(this.model);
@@ -143,7 +142,7 @@ export class JobOperationComponent implements OnInit {
 
 
     this.dataCurrent = await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
-    // console.log(this.dataCurrent.dataTotals);
+    //console.log(this.dataCurrent.dataTotals);
     this.dataPending = await this._jobOperationMacSvc.searchJobOperationPending(this.model);
     // console.log(this.dataPending);
     this.dataForward = await this._jobOperationMacSvc.searchJobOperationForward(this.model);

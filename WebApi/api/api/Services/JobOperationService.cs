@@ -213,7 +213,7 @@ namespace api.Services
                     productDetail = new List<ModelViews.OrderProductView>()
                 };
 
-                string sqld = "select a.prod_code , a.prod_tname prod_name , b.bar_code , a.model_name model , b.tick_no spec, a.size_name , b.style_code style , b.weight_net weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , b.bar_code , a.model_name , b.tick_no , a.size_name , b.style_code , b.weight_net";
+                string sqld = "select a.prod_code , a.prod_tname prod_name , b.bar_code , a.model_name model , b.tick_no spec, a.size_name , b.style_code style , nvl(b.weight_net,0) weight , sum(a.qty_req) plan_qty , sum(nvl(a.qty_fgg,0)) act_qty from mps_det a , product b where a.prod_code=b.prod_code and  a.entity=:p_entity and a.req_date = trunc(:p_req_date) and nvl(a.build_type,'HMJIT')= :p_build_type and a.pdjit_grp = :p_pdjit_grp  group by a.prod_code , a.prod_tname , b.bar_code , a.model_name , b.tick_no , a.size_name , b.style_code , b.weight_net";
                 List<OrderProductView> prod = ctx.Database.SqlQuery<OrderProductView>(sqld, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
 
                 foreach(var x in prod)
@@ -430,12 +430,16 @@ namespace api.Services
                 string vuser = model.user_id;
 
 
-                DateTime req_tmp = DateTime.Now;
+                //DateTime req_tmp = DateTime.Now;
 
+                string sqld = "select  nvl(max(wc1_back_day1),0) from pd_wctable where pd_entity= :p_entity";
+                int day_back = ctx.Database.SqlQuery<int>(sqld, new OracleParameter("param1", ventity)).SingleOrDefault();
 
+              
                 if(vreq_date == "")
                 {
-                    vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
+                    vreq_date = DateTime.Today.AddDays(day_back).ToString("dd/MM/yyyy");
+                    //vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
                 }
 
                 if(vwc_code == "")
@@ -449,7 +453,10 @@ namespace api.Services
 
                 string wc_name = ctx.Database.SqlQuery<string>(sqlj, new OracleParameter("param1", vwc_code)).SingleOrDefault();
 
-               
+                
+
+                
+
                 //define model view
                 JobOperationView view = new ModelViews.JobOperationView()
                 {
@@ -594,9 +601,19 @@ namespace api.Services
                 string vuser = model.user_id;
 
 
+                //if (vreq_date == "")
+                //{
+                //    vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
+                //}
+
+                string sqld = "select  nvl(max(wc1_back_day1),0) from pd_wctable where pd_entity= :p_entity";
+                int day_back = ctx.Database.SqlQuery<int>(sqld, new OracleParameter("param1", ventity)).SingleOrDefault();
+
+
                 if (vreq_date == "")
                 {
-                    vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
+                    vreq_date = DateTime.Today.AddDays(day_back).ToString("dd/MM/yyyy");
+                    //vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
                 }
 
                 if (vwc_code == "")
@@ -762,9 +779,19 @@ namespace api.Services
                 string vbuild_type = model.build_type;
                 string vuser = model.user_id;
 
+                //if (vreq_date == "")
+                //{
+                //    vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
+                //}
+
+                string sqld = "select  nvl(max(wc1_back_day1),0) from pd_wctable where pd_entity= :p_entity";
+                int day_back = ctx.Database.SqlQuery<int>(sqld, new OracleParameter("param1", ventity)).SingleOrDefault();
+
+
                 if (vreq_date == "")
                 {
-                    vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
+                    vreq_date = DateTime.Today.AddDays(day_back).ToString("dd/MM/yyyy");
+                    //vreq_date = DateTime.Now.ToString("dd/MM/yyyy");
                 }
 
                 if (vwc_code == "")
