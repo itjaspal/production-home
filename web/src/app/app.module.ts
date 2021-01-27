@@ -213,6 +213,7 @@ import { UploadFileAddComponent } from './upload-file/upload-file-add/upload-fil
 import { UploadFileEditComponent } from './upload-file/upload-file-edit/upload-file-edit.component';
 import { ProductionTrackingComponent } from './job-operation/production-tracking/production-tracking.component';
 import { ProductionTrackingStockComponent } from './job-operation/production-tracking-stock/production-tracking-stock.component';
+import { ScanCheckQrComponent } from './scan-receive/scan-check-qr/scan-check-qr.component';
 
 
 
@@ -452,6 +453,7 @@ import { ProductionTrackingStockComponent } from './job-operation/production-tra
     UploadFileEditComponent,
     ProductionTrackingComponent,
     ProductionTrackingStockComponent,
+    ScanCheckQrComponent,
     
 
   
@@ -499,7 +501,8 @@ import { ProductionTrackingStockComponent } from './job-operation/production-tra
     SummaryDefectComponent,
     ProductGroupDetailComponent,
     ProductionTrackingComponent,
-    ProductionTrackingStockComponent
+    ProductionTrackingStockComponent,
+    ScanCheckQrComponent
   ],
   bootstrap: [AppComponent]
 })

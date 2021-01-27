@@ -24,6 +24,7 @@ export class productionRecListTotalView<T>{
 
 export class productionRecListDetailView{ 
     public jit_date: any = null;
+    public pd_entity: string = "";
     public doc_no: string = "";
     public doc_code: string = "";
     public wh_code: string = "";

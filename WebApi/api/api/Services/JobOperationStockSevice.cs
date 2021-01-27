@@ -440,20 +440,21 @@ namespace api.Services
                         groupViews.Add(gView);
 
 
-                        DisplayGroupView dView = new DisplayGroupView()
-                        {
-                            disgroup_code = y.disgrp_line_code,
-                            disgroup_desc = y.disgrp_line_desc,
+                        //DisplayGroupView dView = new DisplayGroupView()
+                        //{
+                        //    disgroup_code = y.disgrp_line_code,
+                        //    disgroup_desc = y.disgrp_line_desc,
 
-                        };
+                        //};
 
-                        displayGroupViews.Add(dView);
+                        //displayGroupViews.Add(dView);
 
 
                     }
 
 
                     
+
 
 
                     view.porGroups.Add(new ModelViews.PorStockGroupView()
@@ -469,6 +470,18 @@ namespace api.Services
                     });
 
 
+                }
+
+                foreach (var z in group)
+                {
+                    DisplayGroupView dView = new DisplayGroupView()
+                    {
+                        disgroup_code = z.disgrp_line_code,
+                        disgroup_desc = z.disgrp_line_desc,
+
+                    };
+
+                    displayGroupViews.Add(dView);
                 }
 
                 view.displayGroups = displayGroupViews;
@@ -562,17 +575,19 @@ namespace api.Services
                         groupViews.Add(gView);
 
 
-                        DisplayGroupView dView = new DisplayGroupView()
-                        {
-                            disgroup_code = y.disgrp_line_code,
-                            disgroup_desc = y.disgrp_line_desc,
+                        //DisplayGroupView dView = new DisplayGroupView()
+                        //{
+                        //    disgroup_code = y.disgrp_line_code,
+                        //    disgroup_desc = y.disgrp_line_desc,
 
-                        };
+                        //};
 
-                        displayGroupViews.Add(dView);
+                        //displayGroupViews.Add(dView);
 
 
                     }
+
+                    
 
 
                     view.porGroups.Add(new ModelViews.PorStockGroupView()
@@ -590,6 +605,18 @@ namespace api.Services
 
                 }
 
+                foreach (var z in group)
+                {
+                    DisplayGroupView dView = new DisplayGroupView()
+                    {
+                        disgroup_code = z.disgrp_line_code,
+                        disgroup_desc = z.disgrp_line_desc,
+
+                    };
+
+                    displayGroupViews.Add(dView);
+                }
+
                 view.displayGroups = displayGroupViews;
 
 
@@ -605,6 +632,7 @@ namespace api.Services
                 string vreq_date = model.req_date;
                 string vbuild_type = model.build_type;
                 string vuser_id = model.user_id;
+                string qty_other = "";
 
                 //int total_plan_qty = 0;
 
@@ -646,7 +674,7 @@ namespace api.Services
                 foreach (var x in por)
                 {
                     List<PorStockGroupDetailView> groupViews = new List<PorStockGroupDetailView>();
-                    
+
                     foreach (var y in group)
                     {
                         string sql = "select distype_code , distype_desc , distype_sortid from pd_distype_mast where entity = :p_entity and  disgrp_line_code = :p_disgrp_line order by distype_sortid";
@@ -670,7 +698,7 @@ namespace api.Services
                                 //dis_qty = dis_qty + group_qty.distype_code + "-" + group_qty.qty + "/";
                                 dis_qty = dis_qty + group_qty.qty + "/";
                             }
-                            
+
 
                         }
 
@@ -685,23 +713,31 @@ namespace api.Services
                         groupViews.Add(gView);
 
 
-                        DisplayGroupView dView = new DisplayGroupView()
-                        {
-                            disgroup_code = y.disgrp_line_code,
-                            disgroup_desc = y.disgrp_line_desc,
-                          
-                        };
+                        //DisplayGroupView dView = new DisplayGroupView()
+                        //{
+                        //    disgroup_code = y.disgrp_line_code,
+                        //    disgroup_desc = y.disgrp_line_desc,
 
-                        displayGroupViews.Add(dView);
+                        //};
+
+                        //displayGroupViews.Add(dView);
 
 
                     }
 
-                    //displayGroupViews.Add(new ModelViews.DisplayGroupView()
+
+                    //foreach (var z in group)
                     //{
-                    //    disgroup_code = "OTHER",
-                    //    disgroup_desc = "OTHER",
-                    //});
+                    //    DisplayGroupView dView = new DisplayGroupView()
+                    //    {
+                    //        disgroup_code = z.disgrp_line_code,
+                    //        disgroup_desc = z.disgrp_line_desc,
+
+                    //    };
+
+                    //    displayGroupViews.Add(dView);
+                    //}
+
 
 
                     string sql3 = "select to_char(nvl(sum(a1.qty_plan),0)) " +
@@ -713,20 +749,20 @@ namespace api.Services
                     "and a1.prod_code_sub = a2.bom_code " +
                     "and a2.distype_code is null " +
                     "and wc_code = :p_wc_code";
-                    string qty_other = ctx.Database.SqlQuery<string>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_wc_code", wc.wc_code)).FirstOrDefault();
+                    qty_other = ctx.Database.SqlQuery<string>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_por_no", x.por_no), new OracleParameter("p_ref_no", x.ref_no), new OracleParameter("p_wc_code", wc.wc_code)).FirstOrDefault();
 
-                    if(qty_other == null)
+                    if (qty_other == null)
                     {
                         qty_other = "0";
                     }
 
-                    if(qty_other != "0")
+                    if (qty_other != "0")
                     {
-                        displayGroupViews.Add(new ModelViews.DisplayGroupView()
-                        {
-                            disgroup_code = "OTHER",
-                            disgroup_desc = "OTHER",
-                        });
+                        //displayGroupViews.Add(new ModelViews.DisplayGroupView()
+                        //{
+                        //    disgroup_code = "OTHER",
+                        //    disgroup_desc = "OTHER",
+                        //});
 
 
                         groupViews.Add(new ModelViews.PorStockGroupDetailView()
@@ -739,12 +775,6 @@ namespace api.Services
                     }
 
 
-                    //groupViews.Add(new ModelViews.PorStockGroupDetailView()
-                    //{
-                    //    disgroup_code = "OTHER",
-                    //    disgroup_desc = "OTHER",
-                    //    qty = qty_other.ToString()
-                    //});
 
 
                     view.porGroups.Add(new ModelViews.PorStockGroupView()
@@ -755,12 +785,34 @@ namespace api.Services
                         design_name = x.design_name,
                         qty = x.qty,
                         dataGroups = groupViews,
-                        
+
 
                     });
 
-
                 }
+
+                foreach (var z in group)
+                {
+                    DisplayGroupView dView = new DisplayGroupView()
+                    {
+                        disgroup_code = z.disgrp_line_code,
+                        disgroup_desc = z.disgrp_line_desc,
+
+                    };
+
+                    displayGroupViews.Add(dView);
+                }
+
+                if (qty_other != "0")
+                {
+                    displayGroupViews.Add(new ModelViews.DisplayGroupView()
+                    {
+                        disgroup_code = "OTHER",
+                        disgroup_desc = "OTHER",
+                    });
+                }
+
+
 
                 view.displayGroups = displayGroupViews;
 

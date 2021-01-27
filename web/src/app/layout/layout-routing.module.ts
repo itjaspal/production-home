@@ -187,11 +187,11 @@ const routes: Routes = [
 
       //Scan PutAway
       { path: 'scanPtw', component: ScanPutawayComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
-      { path: 'scanPtw/qr-add/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayQrComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" } },     
+      { path: 'scanPtw/qr-add/:doc_no/:doc_code/:wh_code/:doc_date/:pd_entity', component: ScanPutawayQrComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" } },     
       { path: 'scanPtw/qr-cancel/:doc_no/:doc_code/:wh_code/:doc_date', component: InprocessScanCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  },
-      { path: 'scanPtw/barcode-add/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayBarcodeComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
+      { path: 'scanPtw/barcode-add/:doc_no/:doc_code/:wh_code/:doc_date/:pd_entity', component: ScanPutawayBarcodeComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
       { path: 'scanPtw/barcode-cancel/:doc_no/:doc_code/:wh_code/:doc_date', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
-      { path: 'scanPtw/detail/:doc_no/:doc_code/:wh_code/:doc_date', component: ScanPutawayDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
+      { path: 'scanPtw/detail/:doc_no/:doc_code/:wh_code/:doc_date/:pd_entity', component: ScanPutawayDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
       { path: 'scanPtwProdView', component: ScanPutawayProductViewComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
 
 

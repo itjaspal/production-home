@@ -46,13 +46,9 @@ namespace api.Services
                 }
 
 
-                //string sqls = "select spring_pic_file from pdspring_mast where springtype_code = :p_springtype_code";
-                //string spring_file = ctx.Database.SqlQuery<string>(sqls, new OracleParameter("p_springtype_code", datas.springtype_code)).SingleOrDefault();
-
                 if (datas.sd_no == null)
                 {
-                    string sqlp = "select hm_design_path from bm_basic_mast";
-                    file_path = ctx.Database.SqlQuery<string>(sqlp).SingleOrDefault();
+                    
                     type = "Design";
                     //file = "*" + datas.design_code + ".pdf";
                     file = datas.design_code + ".pdf";
@@ -60,8 +56,7 @@ namespace api.Services
                 }
                 else
                 {
-                    string sqlp = "select hm_sd_path from bm_basic_mast";
-                    file_path = ctx.Database.SqlQuery<string>(sqlp).SingleOrDefault();
+                    
                     type = "SD";
                     //file = "*" + datas.sd_no + ".pdf";
                     file = datas.design_code + ".pdf";

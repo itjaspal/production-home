@@ -82,18 +82,18 @@
                         <mat-icon class="material-icons">more_horiz</mat-icon>
                      </button>
                       <mat-menu #appMenu1="matMenu">
-                        <button mat-menu-item [routerLink]="['qr-add/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date]" (click)="set_session()">
+                        <button mat-menu-item [routerLink]="['qr-add/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date + '/' + x.pd_entity]" (click)="set_session()">
                           <mat-icon class="material-icons">save</mat-icon> <span>Scan QR จัดเก็บ</span>
                         </button>
-                        <button mat-menu-item [routerLink]="['barcode-add/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date]" (click)="set_session()">  
+                        <button mat-menu-item [routerLink]="['barcode-add/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date + '/' + x.pd_entity]" (click)="set_session()">  
                           <mat-icon class="material-icons">save</mat-icon> <span>Scan ฺBarcode จัดเก็บ</span>
                         </button>
-                        <button mat-menu-item  (click)="openProductDetail(this.vEntity ,x.doc_no )">  
+                        <button mat-menu-item  (click)="openProductDetail(x.pd_entity ,x.doc_no )">  
                           <mat-icon class="material-icons">description</mat-icon> <span>รายการสินค้า</span>
                         </button>
                       </mat-menu>
                       <mat-menu #appMenu2="matMenu">
-                        <button mat-menu-item [routerLink]="['detail/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date]" (click)="set_session()">
+                        <button mat-menu-item [routerLink]="['detail/'+ x.doc_no + '/' + x.doc_code + '/' + x.wh_code + '/' + x.gen_date + '/' + x.pd_entity]" (click)="set_session()">
                           <mat-icon class="material-icons">search</mat-icon> <span>รายละเอียดจัดเก็บ</span>
                         </button>
                       </mat-menu>

@@ -131,5 +131,21 @@ namespace api.Controllers
             }
         }
 
+        [Route("scan-receive/postScanCheckQr")]
+        public HttpResponseMessage postScanCheckQr(ScanCheckQrSearchView model)
+        {
+            try
+            {
+                var result = receiveService.ScanCheckQr(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
+
     }
 }

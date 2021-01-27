@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../_service/authentication.service';
 import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
 import { ScanReceiveService } from '../../_service/scan-receive.service';
+import { ScanCheckQrComponent } from '../scan-check-qr/scan-check-qr.component';
 import { ScanReceiveCreateComponent } from '../scan-receive-create/scan-receive-create.component';
 import { ScanReceiveProductViewComponent } from '../scan-receive-product-view/scan-receive-product-view.component';
 
@@ -92,6 +93,7 @@ export class ScanReceiveSearchComponent implements OnInit {
 
   openScanReceiveNew(p_entity : string ,p_doc_no: string  , _index: number = -1)
   {
+    console.log(p_entity);
     const dialogRef = this._dialog.open(ScanReceiveCreateComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -135,6 +137,29 @@ export class ScanReceiveSearchComponent implements OnInit {
     // })
   }
 
+
+  openScanCheckQr()
+  {
+    
+    const dialogRef = this._dialog.open(ScanCheckQrComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+              
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.search();
+      // if (result.length > 0) {
+      //   //this.add_prod(result);
+      // }
+    })
+  }
+
   radioTypeChange(value) {
     this.searchModel.send_type = value;
     
@@ -144,9 +169,12 @@ export class ScanReceiveSearchComponent implements OnInit {
 
   async ConfirmStock(entity,doc_no)
   {
+    console.log(entity);
     this.confirmModel.entity = entity;
     this.confirmModel.doc_no = doc_no;
     this.confirmModel.user_id = this.user.username;
+
+    console.log(this.confirmModel);
 
     this._msgSvc.confirmPopup("ยืนยัน Update Stock", async result => {
       if (result) {

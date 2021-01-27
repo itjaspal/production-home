@@ -86,11 +86,12 @@ export class InprocessComponent implements OnInit {
     this.model.req_date = "";
     
 
-    if(this.wclist.length > 1)
+    if(this.wclist.length >= 1)
     {
       this.model.wc_code = this.wclist[0].key;
       
     }
+   
 
     this.dataCurrent =  await this._jobOperationMacSvc.searchJobOperationCurrent(this.model);
     console.log(this.dataCurrent);

@@ -55,8 +55,8 @@ export class ScanPutawayDetailComponent implements OnInit {
     this.buildForm();
     this.user = this._authSvc.getLoginUser();
 
-    this.setNolist = await this._dll.getDdlPtwSetNoList(AppSetting.entity, this._actRoute.snapshot.params.doc_code, this._actRoute.snapshot.params.doc_no);
-    this.prodlist  = await this._dll.getDdlPtwProdList(AppSetting.entity, this._actRoute.snapshot.params.doc_code, this._actRoute.snapshot.params.doc_no);
+    this.setNolist = await this._dll.getDdlPtwSetNoList(this._actRoute.snapshot.params.pd_entity, this._actRoute.snapshot.params.doc_code, this._actRoute.snapshot.params.doc_no);
+    this.prodlist  = await this._dll.getDdlPtwProdList(this._actRoute.snapshot.params.pd_entity, this._actRoute.snapshot.params.doc_code, this._actRoute.snapshot.params.doc_no);
     
     this.search();
 
@@ -93,7 +93,7 @@ export class ScanPutawayDetailComponent implements OnInit {
   async search() {
    
 
-        this.model_ptwDetail.entity     = AppSetting.entity;
+        this.model_ptwDetail.entity     = this._actRoute.snapshot.params.pd_entity;
         this.model_ptwDetail.doc_no     = this._actRoute.snapshot.params.doc_no;
         this.model_ptwDetail.doc_code   = this._actRoute.snapshot.params.doc_code;
 
@@ -116,6 +116,7 @@ export class ScanPutawayDetailComponent implements OnInit {
       var datePipe = new DatePipe("en-US");
       //console.log( this._actRoute.snapshot.params.doc_no + "|" + this._actRoute.snapshot.params.doc_code + "|" + p_item + "|" + p_prodCode + "|" + p_barCode);
  
+      this.model_cancel.entity     = this._actRoute.snapshot.params.pd_entity;
       this.model_cancel.doc_no     = this._actRoute.snapshot.params.doc_no;
       this.model_cancel.doc_code   = this._actRoute.snapshot.params.doc_code;
       this.model_cancel.item       = p_item;

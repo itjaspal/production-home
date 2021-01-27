@@ -11,7 +11,6 @@ import { MessageService } from '../../_service/message.service';
 import { ScanSendSearchView } from '../../_model/scan-send';
 import { ScanPutawayService } from '../../_service/scan-putaway.service';
 import { DatePipe } from '@angular/common';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-scan-putaway-barcode',
@@ -66,14 +65,16 @@ export class ScanPutawayBarcodeComponent implements OnInit {
     //this.wclist = await this._dll.getDdlWCPtwByUser(AppSetting.entity, this.user.username);
     this.whlist = await this._dll.getDdlPutAwayWHMast();
 
-    this.defaultWH = await this._putawaySvc.getWhDefault(AppSetting.entity);
+    this.defaultWH = await this._putawaySvc.getWhDefault(this._actRoute.snapshot.params.pd_entity);
     this.model_scan.wh_code = this.defaultWH.wh_code;
+
+    //this.model_scan.wh_code = this._actRoute.snapshot.params.wh_code;
 
     //this.defaultDept = await this._putawaySvc.getDeptDefault(AppSetting.entity, this.user.username);
     //this.model_scan.wc_code = this.defaultDept.dept_code;
 
     
-    this.model_ptwDetail.entity     = AppSetting.entity;
+    this.model_ptwDetail.entity     = this._actRoute.snapshot.params.pd_entity;
     this.model_ptwDetail.doc_no     = this._actRoute.snapshot.params.doc_no;
     this.model_ptwDetail.doc_code   = this._actRoute.snapshot.params.doc_code;
     this.model_ptwDetail.set_no     = "";
@@ -179,6 +180,7 @@ export class ScanPutawayBarcodeComponent implements OnInit {
      this.model_scan.build_type = this.user.branch.entity_code;
      this.model_scan.pdjit_grp = this._actRoute.snapshot.params.pdjit_grp;*/
      
+     this.model_scan.entity      =  this._actRoute.snapshot.params.pd_entity;
      this.model_scan.build_type  =  "";
      this.model_scan.doc_no      =  this._actRoute.snapshot.params.doc_no;
      this.model_scan.doc_code    =  this._actRoute.snapshot.params.doc_code;
@@ -266,6 +268,7 @@ export class ScanPutawayBarcodeComponent implements OnInit {
           var datePipe = new DatePipe("en-US");
           //console.log( this._actRoute.snapshot.params.doc_no + "|" + this._actRoute.snapshot.params.doc_code + "|" + p_item + "|" + p_prodCode + "|" + p_barCode);
      
+          this.model_cancel.entity     = this._actRoute.snapshot.params.pd_entity;
           this.model_cancel.doc_no     = this._actRoute.snapshot.params.doc_no;
           this.model_cancel.doc_code   = this._actRoute.snapshot.params.doc_code;
           this.model_cancel.item       = p_item;
@@ -277,7 +280,7 @@ export class ScanPutawayBarcodeComponent implements OnInit {
           //Refresh Data
           //this.current_scan.datas.re
           this.current_scan =  new PutAwayScanFinView();
-          this.model_ptwDetail.entity     = AppSetting.entity;
+          this.model_ptwDetail.entity     = this._actRoute.snapshot.params.pd_entity;
           this.model_ptwDetail.doc_no     = this._actRoute.snapshot.params.doc_no;
           this.model_ptwDetail.doc_code   = this._actRoute.snapshot.params.doc_code;
           this.model_ptwDetail.set_no     = "";

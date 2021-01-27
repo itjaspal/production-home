@@ -91,6 +91,7 @@ export class ViewSpecDrawingComponent implements OnInit {
         this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawing(this.scan_barcode.nativeElement.value);
         console.log(this.specDrawingData);
 
+        
     } 
    sessionStorage.setItem('spect-drawing-barcode', this.scan_barcode.nativeElement.value);
     

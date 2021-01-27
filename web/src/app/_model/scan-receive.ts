@@ -81,3 +81,37 @@ export class ConfirmStockDataView {
     public doc_no: string = "";
     public user_id: string = "";
 }
+
+export class ScanCheckQrSearchView {
+    public entity: string = AppSetting.entity;
+    public qr: string = "";
+   
+}
+
+export class ScanCheckQrView {
+    public prod_code: string = "";
+    public prod_name: string = "";
+    public design_name : string = ""; 
+    public req_date : string = "";
+    public doc_no : string = "";
+    public doc_date : string = "";
+    public set_no : string = ""; 
+}
+
+export class ScanCheckQrFinView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public totalItem: number = 0;
+    public datas: ScanCheckQrFinDataView[] = [];
+}
+
+export class ScanCheckQrFinDataView {
+    public prod_code: string = "";
+    public prod_name: string = "";
+    public design_name : string = ""; 
+    public req_date : string = "";
+    public doc_no : string = "";
+    public doc_date : string = "";
+    public set_no : string = ""; 
+}
+

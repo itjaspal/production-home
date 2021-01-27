@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { ConfirmStockDataView, ScanReceiveDataSearchView, ScanReceiveDataView, ScanReceiveSearchView, ScanReceiveView } from '../_model/scan-receive';
+import { ConfirmStockDataView, ScanCheckQrSearchView, ScanReceiveDataSearchView, ScanReceiveDataView, ScanReceiveSearchView, ScanReceiveView } from '../_model/scan-receive';
 
 @Injectable({
   providedIn: 'root'
@@ -33,4 +33,9 @@ export class ScanReceiveService {
     return await this.http.post(environment.API_URL + 'scan-receive/postConfirmStock/', _model).toPromise(); 
 
   } 
+
+  public async ScanCheckQr(_model: ScanCheckQrSearchView) {
+    return await this.http.post<ScanReceiveView>(environment.API_URL + 'scan-receive/postScanCheckQr', _model).toPromise();
+  }
+
 }

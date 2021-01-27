@@ -22,7 +22,7 @@ namespace api.Services
             using (var ctx = new ConXContext())
             {
                 string sql1 = "select cost_yr , cost_prd from ic_control  where ic_entity = :p_entity";
-                CostDataView cost = ctx.Database.SqlQuery<CostDataView>(sql1, new OracleParameter("p_entity", model. entity)).SingleOrDefault();
+                CostDataView cost = ctx.Database.SqlQuery<CostDataView>(sql1, new OracleParameter("p_entity", model.entity)).SingleOrDefault();
 
                 string sql2 = "select to_number(to_char(doc_date,'yyyy')) yr , to_number(to_char(doc_date,'mm')) prd from pd_mast where pd_entity=:p_entity and  doc_no=:p_doc_no";
                 DocDateView doc = ctx.Database.SqlQuery<DocDateView>(sql2, new OracleParameter("p_entity", model.entity), new OracleParameter("p_doc_no", model.doc_no)).SingleOrDefault();
@@ -61,8 +61,8 @@ namespace api.Services
                     try
                     {
                         conn.Open();
-                        //oraCommand.ExecuteNonQuery();
-                        oraCommand.ExecuteReader();
+                        oraCommand.ExecuteNonQuery();
+                        //oraCommand.ExecuteReader();
                         //System.Console.WriteLine("Number of employees in department 20 is {0}", oraCommand.Parameters["pout_count"].Value);
                     }
                     catch (Exception ex)
@@ -117,9 +117,9 @@ namespace api.Services
                         vset_no = vset_no + i.set_no + "(" + i.qty + ") ,";
                     }
 
-                    string sql = "select distinct to_char(b.req_date,'dd/mm/yyyy') from pd_det a , mps_det b where a.pd_entity = :p_entity and a.doc_no = :p_doc_no and a.plan_no = b.por_no  and a.por_no = b.ref_no and rownum=1";
-                    //string sql = "select to_char(req_date,'dd/mm/yyyy') from mps_det where entity = :p_entity and por_no= :p_por_no and ref_no=:p_ref_no and rownum = 1";
-                    string vreq_date = ctx.Database.SqlQuery<string>(sql, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).FirstOrDefault();
+                    //string sql = "select distinct to_char(b.req_date,'dd/mm/yyyy') from pd_det a , mps_det b where a.pd_entity = :p_entity and a.doc_no = :p_doc_no and a.plan_no = b.por_no  and a.por_no = b.ref_no and rownum=1";
+                    string sql = "select to_char(tran_date,'dd/mm/yyyy') from pkg_barcode where entity = :p_entity and por_no = :p_por_no and ref_pd_docno = :p_doc_no and rownum = 1";
+                    string vreq_date = ctx.Database.SqlQuery<string>(sql, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", x.job_no), new OracleParameter("p_doc_no", doc_no)).FirstOrDefault();
 
 
                     view.datas.Add(new ModelViews.SendDataDetailView()
@@ -146,6 +146,47 @@ namespace api.Services
             }
         }
 
+        public ScanCheckQrView ScanCheckQr(ScanCheckQrSearchView model)
+        {
+            string ventity = model.entity;
+            string vqr = model.qr;
+            string vset_no = "";
+
+            using (var ctx = new ConXContext())
+            {
+                String[] strlist = model.qr.Split('|');
+
+                if (strlist.Length <= 2)
+                {
+                    throw new Exception("Set No. ไม่ถูกต้อง");
+                }
+                else
+                {
+                    vset_no = strlist[2];
+                }
+
+
+                string sql1 = "select a.prod_code , b.prod_tname prod_name , b.pddsgn_desc design_name , to_char(a.tran_date,'dd/mm/yyyy') req_date , a.ref_pd_docno doc_no , to_char(c.doc_date,'dd/mm/yyyy') doc_date from pkg_barcode a , product b , pd_mast c where a.prod_code=b.prod_code and a.ref_pd_docno = c.doc_no and a.entity= :p_entity and a.pkg_barcode_set = :p_set_no and rownum = 1";
+                ScanCheckQrView scan = ctx.Database.SqlQuery<ScanCheckQrView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
+
+
+
+                ScanCheckQrView view = new ModelViews.ScanCheckQrView()
+                {
+                    prod_code = scan.prod_code,
+                    prod_name = scan.prod_name,
+                    design_name = scan.design_name,
+                    req_date = scan.req_date,
+                    doc_no = scan.doc_no,
+                    doc_date = scan.doc_date,
+                    set_no = vset_no.ToString()
+                };
+
+                //return data to contoller
+                return view;
+            }
+        }
+
         public ScanReceiveView ScanReceiveAdd(ScanReceiveSearchView model)
         {
             string ventity = model.entity;
@@ -161,8 +202,8 @@ namespace api.Services
 
             using (var ctx = new ConXContext())
             {
-                if (vbuild_type == "HMJIT")
-                {
+                //if (vbuild_type == "HMJIT")
+                //{
                     if (vscan_type == "SETNO")
                     {
                         String[] strlist = model.scan_data.Split('|');
@@ -176,9 +217,15 @@ namespace api.Services
                             vset_no = strlist[2];
                         }
 
-                        
+                        // Check Set No 
+                        string sql5 = "select ref_set_no from pd_det_whcf where pd_entity = : p_entity and ref_set_no=:p_set_no";
+                        string set = ctx.Database.SqlQuery<string>(sql5, new OracleParameter("p_entity", ventity), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
 
 
+                        if(set != null)
+                        {
+                            throw new Exception("Set No. นี้ ได้ Scan ไปแล้ว");
+                        }
 
                         string sql1 = "select max(prod_code) prod_code , max(bar_code) bar_code , to_char(max(pkg_barcode_set)) set_no , count(*) scan_qty from pkg_barcode where entity = :p_entity and ref_pd_docno = :p_doc_no and pkg_barcode_set = :p_set_no";
                         ScanDataView scan = ctx.Database.SqlQuery<ScanDataView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vdoc_no), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
@@ -426,23 +473,23 @@ namespace api.Services
                         //return data to contoller
                         return view;
                     }
-                }
-                else
-                {
-                    ScanReceiveView view = new ModelViews.ScanReceiveView()
-                    {
-                        entity = ventity,
-                        doc_no = vdoc_no,
-                        set_no = "",
-                        //prod_code = scan.prod_code,
-                        //qty = vscan_qty,
-                        //line_no = vline_no
+                //}
+                //else
+                //{
+                //    ScanReceiveView view = new ModelViews.ScanReceiveView()
+                //    {
+                //        entity = ventity,
+                //        doc_no = vdoc_no,
+                //        set_no = "",
+                //        //prod_code = scan.prod_code,
+                //        //qty = vscan_qty,
+                //        //line_no = vline_no
 
-                    };
+                //    };
 
-                    //return data to contoller
-                    return view;
-                }
+                //    //return data to contoller
+                //    return view;
+                //}
 
             }
         }
@@ -516,17 +563,29 @@ namespace api.Services
                 //{
                     if (vsend_type == "WAIT")
                     {
-                        string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
-                            "from pd_mast a , pd_det b " +
-                            "where a.pd_entity = b.pd_entity " +
-                            "and a.doc_no = b.doc_no " +
-                            "and a.pd_entity = :p_entity " +
-                            "and trunc(doc_date) = to_date(:p_doc_date,'dd/mm/yyyy') " +
-                            "and a.doc_no like :p_doc_no " +
-                            "and a.doc_status = 'PAL' " +
-                            "group by  a.doc_no order by a.doc_no";
+                    string sql1 = "select a.pd_entity entity , a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
+                        "from pd_mast a , pd_det b " +
+                        "where a.pd_entity = b.pd_entity " +
+                        "and a.doc_no = b.doc_no " +
+                        "and a.pd_entity = :p_entity " +
+                        "and trunc(doc_date) = to_date(:p_doc_date,'dd/mm/yyyy') " +
+                        "and a.doc_no like :p_doc_no " +
+                        "and a.doc_status = 'PAL' " +
+                        //"group by  a.doc_no order by a.doc_no " +
+                        "group by  a.doc_no , a.pd_entity " +
+                        "union " +
+                        "select a.pd_entity entity ,a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
+                        "from pd_mast a , pd_det b " +
+                        "where a.pd_entity = b.pd_entity " +
+                        "and a.doc_no = b.doc_no " +
+                        "and a.pd_entity = 'B10' " +
+                        "and trunc(doc_date) = to_date(:p_doc_date2,'dd/mm/yyyy') " +
+                        "and (a.doc_no like 'PP%' or a.doc_no like 'FP%') " +
+                        "and a.doc_status = 'PAL' " +
+                        "group by a.doc_no , a.pd_entity " +
+                        "order by 2";
 
-                        List<ScanReceiveDataDetailView> send = ctx.Database.SqlQuery<ScanReceiveDataDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_date", vdoc_date), new OracleParameter("p_doc_no", vdoc_no+"%")).ToList();
+                    List<ScanReceiveDataDetailView> send = ctx.Database.SqlQuery<ScanReceiveDataDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_date", vdoc_date), new OracleParameter("p_doc_no", vdoc_no+"%"), new OracleParameter("p_doc_date2", vdoc_date)).ToList();
 
                         view.totalItem = send.Count;
                         send = send.Skip(view.pageIndex * view.itemPerPage)
@@ -552,7 +611,8 @@ namespace api.Services
 
                             view.datas.Add(new ModelViews.ScanReceiveDataDetailView()
                             {
-                                entity = ventity,
+                                //entity = ventity,
+                                entity = x.entity,
                                 req_date =  vreq_date,
                                 doc_no = x.doc_no,
                                 wc_code = x.wc_code,
@@ -574,17 +634,29 @@ namespace api.Services
                     }
                     else
                     {
-                        string sql1 = "select a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
-                            "from pd_mast a , pd_det b " +
-                            "where a.pd_entity = b.pd_entity " +
-                            "and a.doc_no = b.doc_no " +
-                            "and a.pd_entity = :p_entity " +
-                            "and trunc(doc_date) = to_date(:p_doc_date,'dd/mm/yyyy') " +
-                            "and a.doc_no like :p_doc_no " +
-                            "and a.doc_status = 'APV' " +
-                            "group by  a.doc_no order by a.doc_no";
+                        string sql1 = "select a.pd_entity entity , a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
+                        "from pd_mast a , pd_det b " +
+                        "where a.pd_entity = b.pd_entity " +
+                        "and a.doc_no = b.doc_no " +
+                        "and a.pd_entity = :p_entity " +
+                        "and trunc(doc_date) = to_date(:p_doc_date,'dd/mm/yyyy') " +
+                        "and a.doc_no like :p_doc_no " +
+                        "and a.doc_status = 'APV' " +
+                        //"group by  a.doc_no order by a.doc_no" +
+                        "group by  a.doc_no , a.pd_entity " +
+                        "union " +
+                        "select a.pd_entity entity , a.doc_no , max(a.wc_code) wc_code , max(a.gen_by) gen_by , to_char(max(a.gen_date),'dd/mm/yyyy hh24:mi') gen_date , max(plan_no) plan_no , sum(b.qty_pdt) qty_pdt " +
+                        "from pd_mast a , pd_det b " +
+                        "where a.pd_entity = b.pd_entity " +
+                        "and a.doc_no = b.doc_no " +
+                        "and a.pd_entity = 'B10' " +
+                        "and trunc(doc_date) = to_date(:p_doc_date2,'dd/mm/yyyy') " +
+                        "and (a.doc_no like 'PP%' or a.doc_no like 'FP%') " +
+                        "and a.doc_status = 'APV' " +
+                        "group by  a.doc_no , a.pd_entity " +
+                        "order by 2";
 
-                        List<ScanReceiveDataDetailView> send = ctx.Database.SqlQuery<ScanReceiveDataDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_date", vdoc_date), new OracleParameter("p_doc_no", vdoc_no + "%")).ToList();
+                    List<ScanReceiveDataDetailView> send = ctx.Database.SqlQuery<ScanReceiveDataDetailView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_date", vdoc_date), new OracleParameter("p_doc_no", vdoc_no + "%"), new OracleParameter("p_doc_date2", vdoc_date)).ToList();
 
                         view.totalItem = send.Count;
                         send = send.Skip(view.pageIndex * view.itemPerPage)
@@ -606,7 +678,8 @@ namespace api.Services
 
                             view.datas.Add(new ModelViews.ScanReceiveDataDetailView()
                             {
-                                entity = ventity,
+                                //entity = ventity,
+                                entity = x.entity,
                                 req_date = vreq_date,
                                 doc_no = x.doc_no,
                                 wc_code = x.wc_code,

@@ -64,7 +64,7 @@ namespace api.Services
                 };
 
                 var vspec = "";
-                string sqld = "select por_no , line_no , prod_code , prod_name , qty_ord , pdgrp_code , pdcolor_code , pdsize_code , design , uom , gplabel_no , skb_flag , dsgn_no, sd_no from por_det where pd_entity = :p_entity and por_no = :p_por_no";
+                string sqld = "select por_no , line_no , prod_code , prod_name , qty_ord , pdgrp_code , pdcolor_code , pdsize_code , design , uom , gplabel_no , skb_flag , dsgn_no, sd_no from por_det where pd_entity = :p_entity and por_no = :p_por_no order by line_no";
                 List<OrderDetailView> por_det = ctx.Database.SqlQuery<OrderDetailView>(sqld, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", por_no)).ToList();
 
                 List<OrderSpecialView> specialViews = new List<OrderSpecialView>();
@@ -100,7 +100,7 @@ namespace api.Services
                     // Find Sub Product    
                     List<SubProductView> subViews = new List<SubProductView>();
 
-                    string sqls = "select por_no , item ,bom_code , description , pack , qty_ord , uom_code , width , length ,height , size_uom from por_det1 where pd_entity = :p_entity and por_no =:p_por_no and line_no = :p_line_no";
+                    string sqls = "select por_no , item ,bom_code , description , pack , qty_ord , uom_code , width , length ,height , size_uom from por_det1 where pd_entity = :p_entity and por_no =:p_por_no and line_no = :p_line_no order by item";
                     List<SubProductView> subProd = ctx.Database.SqlQuery<SubProductView>(sqls, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", por_no), new OracleParameter("p_line_no", i.line_no)).ToList();
 
                     foreach (var x in subProd)

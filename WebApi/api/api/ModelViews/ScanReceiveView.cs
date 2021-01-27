@@ -127,4 +127,21 @@ namespace api.ModelViews
         public int prd { get; set; }
     }
 
+    public class ScanCheckQrSearchView
+    {
+        public string entity { get; set; }
+        public string qr { get; set; }
+    }
+
+    public class ScanCheckQrView
+    {
+        public string prod_code { get; set; }
+        public string prod_name { get; set; }
+        public string design_name { get; set; }
+        public string req_date { get; set; }
+        public string doc_no { get; set; }
+        public string doc_date { get; set; }
+        public string set_no { set; get; }
+    }
+
 }

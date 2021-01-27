@@ -64,6 +64,14 @@
                 </mat-card-actions>
               </div>
 
+              <div class="col-6 col-lg-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary" type="button" (click)="openScanCheckQr()">
+                    <mat-icon class="material-icons">search</mat-icon> ตรวจสอบใบส่งมอบ
+                  </button>
+                </mat-card-actions>
+              </div>
+
 
 
               <!-- <div class="col-2 col-lg-2 ">
@@ -146,6 +154,7 @@
                       <button mat-menu-item (click)="openProductDetail(x.entity,x.doc_no)">
                         <mat-icon class="material-icons">description</mat-icon> <span>รายการสินค้า</span>
                       </button>
+                      
                     </mat-menu>
                   </td>
 

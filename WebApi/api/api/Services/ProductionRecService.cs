@@ -305,12 +305,12 @@ namespace api.Services
 
                 //query data
                 string sql = "";
-                     sql += " select a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt,0)) as conf_qty";
+                     sql += " select a.pd_entity, a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt,0)) as conf_qty";
                      sql += " from pd_mast a, pd_det b";
                      sql += " where a.pd_entity = b.pd_entity";
                      sql += " and   a.doc_no    = b.doc_no";
                      sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate,'dd/mm/yyyy'),trunc(a.doc_date))";
-                     sql += " and a.pd_entity = :pEntity";
+                     sql += " and ((a.pd_entity = 'H10')or((a.pd_entity = 'B10')and((a.doc_no like 'PP%')or(a.doc_no like 'FP%'))))";
                      sql += " and((a.build_type = :pBuildType) or(a.build_type is null))";
                      sql += " and a.doc_no = nvl(:pDocNo,a.doc_no)";
                      sql += " and a.doc_status = 'APV'";
@@ -335,7 +335,7 @@ namespace api.Services
 
                      }
 
-                     sql += " group by a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                     sql += " group by a.pd_entity, a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
                      
 
               /*  sql += " select a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt, 0)) as conf_qty";
@@ -357,7 +357,7 @@ namespace api.Services
 
                 List<ProductionRecView> productionRecView = ctx.Database.SqlQuery<ProductionRecView>
                                                         (sql, new OracleParameter("pReqDate", vreq_date),
-                                                              new OracleParameter("pEntity", ventity),
+                                                              //new OracleParameter("pEntity", ventity),
                                                               new OracleParameter("pBuildType", vbuild_type),
                                                               new OracleParameter("pDocNo", vdoc_no)).ToList();
                                                               //new OracleParameter("pDocStatus", vdoc_status)).ToList();
@@ -387,7 +387,7 @@ namespace api.Services
 
                     //find ptw_qty
                    string sql_ptwQty = "select nvl(sum(nvl(qty,0)),0) ptw_qty from whtran_det where ic_entity = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and doc_code = :pdoc_code";
-                   int vPtwQty = ctx.Database.SqlQuery<int>(sql_ptwQty, new OracleParameter("pic_entity", ventity),
+                   int vPtwQty = ctx.Database.SqlQuery<int>(sql_ptwQty, new OracleParameter("pic_entity", i.pd_entity),
                                                                    new OracleParameter("pdoc_no", i.doc_no),
                                                                    new OracleParameter("pdoc_code", i.doc_code)).SingleOrDefault();
 
@@ -399,6 +399,7 @@ namespace api.Services
                     {
                         jit_date = i.jit_date,
                         doc_no = i.doc_no,
+                        pd_entity = i.pd_entity,
                         doc_code = i.doc_code,
                         wh_code = i.wh_code,
                         wc_code = i.wc_code,

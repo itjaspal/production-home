@@ -15,5 +15,6 @@ namespace api.Interfaces
         void SendMail(string entity , string doc_no);
         SendDataView getProductDetail(string entity, string doc_no);
         void ConfirmStock(ConfirmStockDataView model);
+        ScanCheckQrView ScanCheckQr(ScanCheckQrSearchView model); 
     }
 }
