@@ -214,6 +214,10 @@ import { UploadFileEditComponent } from './upload-file/upload-file-edit/upload-f
 import { ProductionTrackingComponent } from './job-operation/production-tracking/production-tracking.component';
 import { ProductionTrackingStockComponent } from './job-operation/production-tracking-stock/production-tracking-stock.component';
 import { ScanCheckQrComponent } from './scan-receive/scan-check-qr/scan-check-qr.component';
+import { OrderSearchComponent } from './scan-inprocess-stock/order-search/order-search.component';
+import { OrderAllSearchComponent } from './job-operation/order-all-search/order-all-search.component';
+import { ProductDefectOrderSearchComponent } from './product-defect/product-defect-order-search/product-defect-order-search.component';
+import { ScanDefectOrderSearchComponent } from './scan-defect/scan-defect-order-search/scan-defect-order-search.component';
 
 
 
@@ -454,6 +458,10 @@ import { ScanCheckQrComponent } from './scan-receive/scan-check-qr/scan-check-qr
     ProductionTrackingComponent,
     ProductionTrackingStockComponent,
     ScanCheckQrComponent,
+    OrderSearchComponent,
+    OrderAllSearchComponent,
+    ProductDefectOrderSearchComponent,
+    ScanDefectOrderSearchComponent,
     
 
   
@@ -502,7 +510,11 @@ import { ScanCheckQrComponent } from './scan-receive/scan-check-qr/scan-check-qr
     ProductGroupDetailComponent,
     ProductionTrackingComponent,
     ProductionTrackingStockComponent,
-    ScanCheckQrComponent
+    ScanCheckQrComponent,
+    OrderSearchComponent,
+    OrderAllSearchComponent,
+    ScanDefectOrderSearchComponent,
+    ProductDefectOrderSearchComponent
   ],
   bootstrap: [AppComponent]
 })

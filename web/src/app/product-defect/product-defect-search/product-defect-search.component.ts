@@ -11,6 +11,7 @@ import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
 import { ProductDefectService } from '../../_service/product-defect.service';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
+import { ProductDefectOrderSearchComponent } from '../product-defect-order-search/product-defect-order-search.component';
 import { ProductDefectQcCuttingComponent } from '../product-defect-qc-cutting/product-defect-qc-cutting.component';
 import { ProductDefectQcEntryComponent } from '../product-defect-qc-entry/product-defect-qc-entry.component';
 import { ViewSpecComponent } from '../view-spec/view-spec.component';
@@ -105,7 +106,7 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
  
   }
 
-  openEntryQC(p_por_no : string ,p_ref_no: string ,p_prod_code  , _index: number = -1)
+  openEntryQC(p_por_no : string ,p_ref_no: string ,p_prod_code , p_qc_qty : number , _index: number = -1)
   {
     const dialogRef = this._dialog.open(ProductDefectQcEntryComponent, {
       maxWidth: '100vw',
@@ -117,7 +118,8 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
         por_no: p_por_no,
         ref_no : p_ref_no,
         prod_code : p_prod_code,
-        build_type : this.user.branch.entity_code
+        build_type : this.user.branch.entity_code,
+        qc_qty : p_qc_qty
       }
 
     });
@@ -148,7 +150,7 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
     
   }
 
-  openSpec(p_bar_code : string  , _index: number = -1)
+  openSpec(p_bar_code : string , p_dsgn_no : string  , _index: number = -1)
   {
     console.log(p_bar_code);
     const dialogRef = this._dialog.open(ViewSpecComponent, {
@@ -158,10 +160,40 @@ openCuttingQC(p_por_no : string ,p_ref_no: string ,p_prod_code:string , p_size_n
       width: '100%',
       data: {    
         bar_code: p_bar_code,
+        dsgn_no : p_dsgn_no
       }
 
     });
 
+    
+  }
+
+  openGetOrderReq()
+  {
+    const dialogRef = this._dialog.open(ProductDefectOrderSearchComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        build_type : this.user.branch.entity_code
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result.length > 0) {
+        this.add_data(result);
+      }
+    })
+  }
+
+  add_data(datas: any) {
+  
+    this.searchModel.req_date = datas[0].req_date;
+    this.searchModel.por_no = datas[0].ref_no;
+    this.search();
     
   }
 

@@ -161,5 +161,20 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
             }
         }
+
+        [Route("job-inprocess-stock/postGetOrderReq")]
+        public HttpResponseMessage postGetOrderReq(OrderReqSearchView model)
+        {
+            try
+            {
+                var result = jobService.getOrderReq(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
     }
 }

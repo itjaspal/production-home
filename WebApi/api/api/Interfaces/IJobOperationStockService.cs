@@ -15,5 +15,6 @@ namespace api.Interfaces
         ProductGroupView SearchSummaryProdcutGroup(ProductGroupSearchView model);
         ProductionTrackingStockView ProductionTrackingStock(ProductGroupSearchView model);
         ProductionTrackingStockView ProductionTrackingDetailStock(ProductGroupSearchView model);
+        OrderReqView getOrderReqAll(OrderReqSearchView model);
     }
 }

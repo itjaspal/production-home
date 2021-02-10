@@ -157,5 +157,20 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
+
+        [Route("product-defect/postGetOrderReq")]
+        public HttpResponseMessage postGetOrderReq(OrderReqSearchView model)
+        {
+            try
+            {
+                var result = defectService.getOrderReq(model);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message.ToString());
+            }
+        }
     }
 }

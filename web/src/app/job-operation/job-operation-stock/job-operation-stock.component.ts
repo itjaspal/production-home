@@ -11,6 +11,7 @@ import { JobOperationStockService } from '../../_service/job-operation-stock.ser
 import { JobOperationService } from '../../_service/job-operation.service';
 import { MessageService } from '../../_service/message.service';
 import { JobOrderDetailComponent } from '../job-order-detail/job-order-detail.component';
+import { OrderAllSearchComponent } from '../order-all-search/order-all-search.component';
 import { PorDetailComponent } from '../por-detail/por-detail.component';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductGroupDetailComponent } from '../product-group-detail/product-group-detail.component';
@@ -210,6 +211,34 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
     //   //   //this.add_prod(result);
     //   // }
     // })
+  }
+
+  openGetOrderReq()
+  {
+    const dialogRef = this._dialog.open(OrderAllSearchComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        user_id : this.user.username
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result.length > 0) {
+        this.add_data(result);
+      }
+    })
+  }
+
+  add_data(datas: any) {
+  
+    this.searchModel.req_date = datas[0].req_date;
+    this.search();
+    
   }
 
 close() {

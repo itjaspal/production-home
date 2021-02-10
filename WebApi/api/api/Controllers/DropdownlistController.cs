@@ -151,5 +151,20 @@ namespace api.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
+
+        [Route("dropdownlist/getDdlDeptMarketing")]
+        public HttpResponseMessage getDdlDeptMarketing()
+        {
+            try
+            {
+                var result = ddlSvc.GetDeptMarketing();
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
+            }
+        }
     }
 }

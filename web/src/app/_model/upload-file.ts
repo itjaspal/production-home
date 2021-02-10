@@ -7,6 +7,8 @@ export class UploadFileView {
     public file_path: string = "";
     public file_name: string = "";
     public fullPath: string = "";
+    public dsgn_no:string = "";
+    public dept_code : string = "";
 
     public file:any = null;
 }

@@ -474,7 +474,7 @@ namespace api.Services
                         "where a.prod_code = b.prod_code " +
                         "and a.entity = :p_entity " +
                         "and trunc(req_date) = to_date(:p_req_date,'dd/mm/yyyy') " +
-                        "and a.por_no like :p_doc_no " +
+                        "and a.ref_no like :p_doc_no " +
                         "and a.build_type = 'HMSTK' " +
                         "group by  a.entity , a.por_no , a.ref_no , a.prod_code " +
                         "order by a.por_no , a.ref_no";
@@ -600,6 +600,50 @@ namespace api.Services
                 return view;
 
 
+            }
+        }
+
+        public OrderReqView getOrderReq(OrderReqSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity;
+                string vpor_no = model.por_no;
+                string vbuild_type = model.build_type;
+
+                //int total_plan_qty = 0;
+
+
+                
+
+                OrderReqView view = new ModelViews.OrderReqView()
+                {
+                    datas = new List<ModelViews.OrderReqDetailView>()
+                };
+
+                string sql = "select distinct por_no ,ref_no  , req_date " +
+                    "from mps_det " +
+                    "where nvl(build_type,'HMJIT') = :p_build_type " +
+                    "and entity='H10' " + 
+                    "and ref_no like :p_por_no";
+                    
+
+                List<OrderReqDetailView> por = ctx.Database.SqlQuery<OrderReqDetailView>(sql, new OracleParameter("p_build_type", vbuild_type), new OracleParameter("p_por_no", vpor_no + "%")).ToList();
+
+                foreach (var i in por)
+                {
+
+                    view.datas.Add(new ModelViews.OrderReqDetailView()
+                    {
+                        por_no = i.por_no,
+                        ref_no = i.ref_no,
+                        req_date = i.req_date,
+                    });
+                }
+
+
+                //return data to contoller
+                return view;
             }
         }
     }

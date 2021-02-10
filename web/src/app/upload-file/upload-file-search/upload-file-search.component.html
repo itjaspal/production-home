@@ -45,9 +45,14 @@
         <mat-card-content>
          
           <div class="row card-table-body" *ngFor="let x of data.datas">
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-lg-2">
               <small>Design Code</small>
               <dd>{{x.pddsgn_code}}</dd>
+            </div>
+
+            <div class="col-6 col-lg-2">
+              <small>Design Spec.</small>
+              <dd>{{x.dsgn_no}}</dd>
             </div>
             
             <div class="col-12 col-lg-4">
@@ -71,7 +76,7 @@
                   <mat-icon class="material-icons">search</mat-icon> <span>ดู</span>
                 </button>
               
-                <button mat-menu-item [routerLink]="['/app/upload/edit/'+x.pddsgn_code]">
+                <button mat-menu-item [routerLink]="['/app/upload/edit/'+x.pddsgn_code+'/'+x.dsgn_no]">
                   <mat-icon class="material-icons">edit</mat-icon> <span>แก้ไข</span>
                 </button>
 

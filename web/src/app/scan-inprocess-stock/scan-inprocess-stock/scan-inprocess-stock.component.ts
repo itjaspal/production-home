@@ -1,6 +1,6 @@
 import { ScanInprocessStockScanAddComponent } from './../scan-inprocess-stock-scan-add/scan-inprocess-stock-scan-add.component';
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, PageEvent } from '@angular/material';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -14,6 +14,7 @@ import { MessageService } from '../../_service/message.service';
 import { ScanInprocessStockService } from '../../_service/scan-inprocess-stock.service';
 import { ScanInprocessStockEntryAddComponent } from '../scan-inprocess-stock-entry-add/scan-inprocess-stock-entry-add.component';
 import { ScanInprocessStockCancelComponent } from '../scan-inprocess-stock-cancel/scan-inprocess-stock-cancel.component';
+import { OrderSearchComponent } from '../order-search/order-search.component';
 
 @Component({
   selector: 'app-scan-inprocess-stock',
@@ -33,6 +34,8 @@ export class ScanInprocessStockComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private _dll: DropdownlistService,
   ) { }
+
+  
 
   public validationForm: FormGroup;
   public user: any;
@@ -79,7 +82,7 @@ export class ScanInprocessStockComponent implements OnInit {
 
     this.data_docdate = this.searchModel.req_date;
     
-     
+    console.log(this.searchModel.req_date); 
     var datePipe = new DatePipe("en-US");
     this.searchModel.req_date = datePipe.transform(this.searchModel.req_date, 'dd/MM/yyyy').toString();
     this.searchModel.user_id = this.user.username;
@@ -170,6 +173,35 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
       //   //this.add_prod(result);
       // }
     })
+  }
+
+
+  openGetOrderReq()
+  {
+    const dialogRef = this._dialog.open(OrderSearchComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        wc_code : this.searchModel.wc_code
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result.length > 0) {
+        this.add_data(result);
+      }
+    })
+  }
+
+  add_data(datas: any) {
+  
+    this.searchModel.req_date = datas[0].req_date;
+    this.search();
+    
   }
 
 close() {

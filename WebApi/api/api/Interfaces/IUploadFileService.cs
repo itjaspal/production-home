@@ -13,7 +13,7 @@ namespace api.Interfaces
         void Create(UploadFileView model);
         void Update(UploadFileView model);
         void Delete(UploadFileView model);
-        bool CheckDupplicate(string code);
-        UploadFileView GetInfo(string code);
+        bool CheckDupplicate(string code , string dsgn_no);
+        UploadFileView GetInfo(string code , string dsgn_no);
     }
 }

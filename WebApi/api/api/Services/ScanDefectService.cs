@@ -106,10 +106,10 @@ namespace api.Services
                     throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
-                //if (vqty > mps_in_process.qty_fin)
-                //{
-                //    throw new Exception("บันทึกเกินจำนวนผลิตเสร็จ");
-                //}
+                if (vqty > mps_in_process.qty_plan)
+                {
+                    throw new Exception("บันทึกเกินจำนวนผลิต");
+                }
 
                 string sql3 = "select nvl(max(item_no),0)+1 from pd_qc_mast where pd_entity= :p_entity and doc_no=:p_por_no and qc_process='FG'";
                 int seq = ctx.Database.SqlQuery<int>(sql3, new OracleParameter("p_entity", ventity), new OracleParameter("p_doc_no", vpor_no)).FirstOrDefault();
@@ -232,7 +232,10 @@ namespace api.Services
                     throw new Exception("ไม่พบข้อมูลรายการสินค้านี้ กรุณาตรวจสอบ");
                 }
 
-
+                if (vqty > mps_in_process.qty_plan)
+                {
+                    throw new Exception("บันทึกเกินจำนวนผลิต");
+                }
 
                 //define model view
                 ScanDefectView view = new ModelViews.ScanDefectView()
@@ -347,6 +350,57 @@ namespace api.Services
 
                     scope.Complete();
                 }
+            }
+        }
+
+        public OrderReqView getOrderReq(OrderReqSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity;
+                string vpor_no = model.por_no;
+                string vwc_code = model.wc_code;
+
+                //int total_plan_qty = 0;
+
+
+                //DateTime req_tmp = DateTime.Now;
+
+                //string sql1 = "select a.dept_code wc_code , b.wc_tdesc wc_name  from auth_function a, wc_mast b where a.dept_code = b.wc_code and  a.function_id='PDOPTHM' and a.doc_code='STK' and a.user_id=:p_user_id";
+
+                //WcDataView wc = ctx.Database.SqlQuery<WcDataView>(sql1, new OracleParameter("p_user_id", vuser_id)).SingleOrDefault();
+
+                OrderReqView view = new ModelViews.OrderReqView()
+                {
+                    datas = new List<ModelViews.OrderReqDetailView>()
+                };
+
+                string sql = "select distinct a.por_no ,a.ref_no  , a.req_date " +
+                    "from mps_det a, mps_det_wc_stk b " +
+                    "where a.build_type = 'HMSTK' " +
+                    "and a.por_no = b.por_no " +
+                    "and a.entity = b.entity " +
+                    "and a.req_date = b.req_date " +
+                    "and b.wc_code = :p_wc_code " +
+                    "and a.ref_no like :p_por_no " +
+                    "group by a.por_no ,a.ref_no, a.req_date";
+
+                List<OrderReqDetailView> por = ctx.Database.SqlQuery<OrderReqDetailView>(sql, new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_por_no", vpor_no + "%")).ToList();
+
+                foreach (var i in por)
+                {
+
+                    view.datas.Add(new ModelViews.OrderReqDetailView()
+                    {
+                        por_no = i.por_no,
+                        ref_no = i.ref_no,
+                        req_date = i.req_date,
+                    });
+                }
+
+
+                //return data to contoller
+                return view;
             }
         }
 

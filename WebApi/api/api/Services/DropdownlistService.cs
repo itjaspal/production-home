@@ -203,6 +203,22 @@ namespace api.Services
             }
         }
 
-        
+        public List<Dropdownlist> GetDeptMarketing()
+        {
+            using (var ctx = new ConXContext())
+            {
+
+                string sql = "select dept_code key , dept_code value from department where dept_ctrl='MKT'";
+                List<Dropdownlist> ddl = ctx.Database.SqlQuery<Dropdownlist>(sql)
+                                            .Select(x => new Dropdownlist()
+                                            {
+                                                key = x.key,
+                                                value = x.value,
+                                            })
+                                            .ToList();
+
+                return ddl;
+            }
+        }
     }
 }

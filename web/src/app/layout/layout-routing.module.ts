@@ -202,7 +202,7 @@ const routes: Routes = [
       //Upload File
       { path: 'upload', component: UploadFileSearchComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
       { path: 'upload/create', component: UploadFileAddComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
-      { path: 'upload/edit/:pddsgn_code', component: UploadFileEditComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
+      { path: 'upload/edit/:pddsgn_code/:dsgn_no', component: UploadFileEditComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  }, 
        
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

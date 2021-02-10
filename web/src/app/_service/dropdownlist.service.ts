@@ -82,4 +82,7 @@ export class DropdownlistService {
     return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlWCInprocessStock/' + _user).toPromise();
   }
   
+  public async getDdlDeptMarketing() {
+    return await this.http.get<Dropdownlist[]>(environment.API_URL + 'dropdownlist/getDdlDeptMarketing').toPromise();
+  }
 }

@@ -1,0 +1,82 @@
+<div class="container-fluid no-breadcrumbs">
+
+
+  <mat-card>
+
+    <mat-card-title>
+      <h6>เลือก Order</h6>
+    </mat-card-title>
+    <form [formGroup]="validationForm">
+    <mat-card-content>
+
+      <div class="row">
+        <div class="col-lg-2 col-sm-5 col-5">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Order No." formControlName="por_no" name="por_no" #por_no [(ngModel)] ="model.por_no">
+          </mat-form-field>
+        </div>
+
+        <div class="col-1 col-sm-1">
+          <button mat-raised-button *ngIf="por_no.value != ''" color="primary" class="btn-w-md" type="button" (click)="search()">
+            <mat-icon class="material-icons">search</mat-icon> ค้นหา
+          </button>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </form>
+  </mat-card>
+
+  <mat-card style="margin-top:40px;">
+    <mat-card-subtitle class="no-margin">
+      <h6 class="no-margin">ผลการค้นหา</h6>
+    </mat-card-subtitle>
+    <mat-card-content>
+      <div class="row" *ngIf="datas.length == 0;else show_product">
+     
+        <div class="col-12 text-center">
+          <h4>ไม่พบรายการ</h4>
+        </div>
+      </div>
+
+      <ng-template #show_product >
+        <div class="row" *ngFor="let x of datas.datas">
+
+
+          <div class="col-sm-1 col-1">
+            <dd>
+              <mat-checkbox [(ngModel)]="x.selected" (change)="add()"></mat-checkbox>
+            </dd>
+
+          </div>
+          <div class="col-sm-2 col-2">
+            <small>Por. No.</small>
+            <dd>{{x.por_no}} </dd>
+          </div>
+         
+          <div class="col-sm-2 col-2">
+            <small>Ref. No.</small>
+            <dd>{{x.ref_no}}</dd>
+          </div>
+          <div class="col-sm-2 col-2">
+            <small>Req. date</small>
+            <dd>{{x.req_date | date: 'dd/MM/yyyy'}}</dd>
+          </div>
+          
+
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="form-action">
+
+    <button mat-raised-button class="btn-w-md" type="button" (click)="close()">
+      <mat-icon class="material-icons">close</mat-icon> ปิด
+    </button>
+
+    
+
+  </div>
+
+</div>

@@ -22,7 +22,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="col-2 col-lg-2">
+              <div class="col-4 col-lg-2">
                 <mat-card-actions class="no-margin">
                   <button mat-raised-button color="primary" type="button" (click)="search()"
                     [disabled]="!searchModel.req_date">
@@ -31,9 +31,25 @@
                 </mat-card-actions>
               </div>
 
+              <div class="col-2 col-sm-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary"  type="button" (click)="openGetOrderReq()" >
+                    <mat-icon class="material-icons">search</mat-icon> เลือก Order
+                  </button>
+                </mat-card-actions>
+              </div>
+
             </div>
 
-
+            <!-- <div class="row card-table-body">
+              <div class="col-2 col-sm-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary"  type="button" (click)="openGetOrderReq()" >
+                    <mat-icon class="material-icons">search</mat-icon> เลือก Order
+                  </button>
+                </mat-card-actions>
+              </div>
+            </div> -->
 
 
 

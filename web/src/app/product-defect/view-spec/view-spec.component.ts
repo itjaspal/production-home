@@ -28,6 +28,7 @@ export class ViewSpecComponent implements OnInit {
 
   public scanPcsModel: any = { 
     scan_barcode: "",
+    dsgn_no : ""
 }
 
   constructor(
@@ -48,7 +49,8 @@ export class ViewSpecComponent implements OnInit {
       console.log("paramData.bar_code: " + this.paramData.bar_code);
 
       this.scanPcsModel.scan_barcode = this.paramData.bar_code;
-      this.searchViewSpecDrawing(this.scanPcsModel.scan_barcode );
+      this.scanPcsModel.dsgn_no = this.paramData.dsgn_no;
+      this.searchViewSpecDrawing(this.scanPcsModel.scan_barcode , this.scanPcsModel.dsgn_no );
   }
 
   close() { 
@@ -63,14 +65,14 @@ export class ViewSpecComponent implements OnInit {
   }
 
  
-  async searchViewSpecDrawing(p_barCode: string) { 
+  async searchViewSpecDrawing(p_barCode: string , p_dsgn_no: string) { 
 
     if (p_barCode != "") { 
          console.log("searchSpecDrawingByPcs : " + p_barCode);
       
          this.specDrawingData = new SpecDrawingView();
  
-         this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawing(p_barCode);
+         this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawing(p_barCode , p_dsgn_no);
          console.log(this.specDrawingData);
  
      } 
@@ -85,7 +87,7 @@ export class ViewSpecComponent implements OnInit {
      
         this.specDrawingData = new SpecDrawingView();
 
-        this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawing(this.paramData.bar_code);
+        this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawing(this.paramData.bar_code , this.paramData.dsgn_no);
         console.log(this.specDrawingData);
 
     } 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadFileView } from '../../_model/upload-file';
+import { DropdownlistService } from '../../_service/dropdownlist.service';
 import { MessageService } from '../../_service/message.service';
 import { UploadFileService } from '../../_service/upload-file.service';
 
@@ -17,7 +18,8 @@ export class UploadFileEditComponent implements OnInit {
     private _actRoute:ActivatedRoute,
     private _uploadSvc: UploadFileService,
     private _msgSvc: MessageService,
-    private _router: Router
+    private _router: Router,
+    private _dll: DropdownlistService,
   ) { }
 
   public model: UploadFileView = new UploadFileView();
@@ -25,16 +27,24 @@ export class UploadFileEditComponent implements OnInit {
   selectedFiles: FileList;
   fileName: any;
   public code : string = "";
+  public dsgn_no : string = "";
+  public deptlist: any; 
+
 
   async ngOnInit() {
     this.buildForm();
+
     this.code = this._actRoute.snapshot.params.pddsgn_code;
-    this.model = await this._uploadSvc.getInfo(this.code);
+    this.dsgn_no = this._actRoute.snapshot.params.dsgn_no;
+    this.deptlist = await this._dll.getDdlDeptMarketing();
+    this.model = await this._uploadSvc.getInfo(this.code , this.dsgn_no);
   }
   buildForm() {
     this.validationForm = this._formBuilder.group({
       pddsgn_code: [null, [Validators.required]],
       type: [null, [Validators.required]],
+      dsgn_no: [null, [Validators.required]],
+      dept_code: [null, [Validators.required]],
     });
   }
 

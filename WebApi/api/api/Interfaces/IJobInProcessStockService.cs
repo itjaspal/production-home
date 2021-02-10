@@ -18,5 +18,6 @@ namespace api.Interfaces
         ProductSubModalView getSubProduct(ProductSubSearchView model);
         ProductSubModalView getSubProductCancel(ProductSubSearchView model);
         JobInProcessStockView EntryCancel(JobInProcessStockSearchView model);
+        OrderReqView getOrderReq(OrderReqSearchView model);
     }
 }

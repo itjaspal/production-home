@@ -19,8 +19,8 @@ namespace api.Interfaces
         DataQcEnrtyView GetQcGroup(string build_type);
         void DataQcEntrtyData(DataQcEnrtyView model);
         ItemNoWipModalView GetItemNoWipList(string entity, string por_no , string qc_process);
-        
-        
+        OrderReqView getOrderReq(OrderReqSearchView model);
+
 
 
     }

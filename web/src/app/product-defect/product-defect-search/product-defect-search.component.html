@@ -50,7 +50,13 @@
               </div>
 
 
-
+              <div class="col-2 col-sm-2">
+                <mat-card-actions class="no-margin">
+                  <button mat-raised-button color="primary"  type="button" (click)="openGetOrderReq()" >
+                    <mat-icon class="material-icons">search</mat-icon> เลือก Order
+                  </button>
+                </mat-card-actions>
+              </div>
 
 
             </div>
@@ -119,13 +125,13 @@
                         *ngIf="(x.qty_pdt != x.qty_rec)">
                         <mat-icon class="material-icons">add</mat-icon> <span>Cutting QC</span>
                       </button>
-                      <button mat-menu-item (click)="openEntryQC(x.por_no,x.ref_no,x.prod_code)">
+                      <button mat-menu-item (click)="openEntryQC(x.por_no,x.ref_no,x.prod_code,x.qty_pdt-x.qty_cutting-x.qty_wip-x.qty_fin)">
                         <mat-icon class="material-icons">add</mat-icon> <span>QC Data Entry</span>
                       </button>
                       <button mat-menu-item (click)="openOrderDetail(x.por_no)">
                         <mat-icon class="material-icons">description</mat-icon> <span>Order Detail</span>
                       </button>
-                      <button mat-menu-item (click)="openSpec(x.bar_code)">
+                      <button mat-menu-item (click)="openSpec(x.bar_code , x.dsgn_no)">
                         <mat-icon class="material-icons">description</mat-icon> <span>SD / Design Spec.</span>
                       </button>
                     </mat-menu>

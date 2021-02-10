@@ -37,6 +37,24 @@
               </div>
 
             </div>
+
+            <div class="row card-table-body">
+              <div class="col-6 col-lg-3">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Design Spec. No." formControlName="dsgn_no" [(ngModel)]="model.dsgn_no" name="dsgn_no">
+                </mat-form-field>
+              </div>
+    
+              <div class="col-6 col-lg-3"> 
+                <mat-form-field class="full-width">
+                  <mat-select autocomplete="off" [(value)]="model.dept_code" placeholder="หน่วยงาน" [(ngModel)]= "model.dept_code"
+                  formControlName="dept_code">
+                    <mat-option value="0">ไม่ระบุ</mat-option>
+                    <mat-option *ngFor="let x of deptlist" [value]="x.key">{{x.key}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+             </div>
+            </div>
             <br>
             <div class="output">ไฟล์ที่เลือก: {{ fileName }} </div>
           </mat-card-content>

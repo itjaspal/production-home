@@ -13,6 +13,7 @@ import { MessageService } from '../../_service/message.service';
 import { ScanInprocessStockService } from '../../_service/scan-inprocess-stock.service';
 import { ScanDefectEntryAddComponent } from '../scan-defect-entry-add/scan-defect-entry-add.component';
 import { ScanDefectEntryCancelComponent } from '../scan-defect-entry-cancel/scan-defect-entry-cancel.component';
+import { ScanDefectOrderSearchComponent } from '../scan-defect-order-search/scan-defect-order-search.component';
 import { ScanDefectScanAddComponent } from '../scan-defect-scan-add/scan-defect-scan-add.component';
 import { SummaryDefectComponent } from '../summary-defect/summary-defect.component';
 
@@ -201,6 +202,33 @@ openScanAdd(p_entity : string ,p_por_no: string ,p_ref_no: string ,p_req_date: s
     // })
   }
 
+  openGetOrderReq()
+  {
+    const dialogRef = this._dialog.open(ScanDefectOrderSearchComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        wc_code : this.searchModel.wc_code       
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result.length > 0) {
+        this.add_data(result);
+      }
+    })
+  }
+
+  add_data(datas: any) {
+  
+    this.searchModel.req_date = datas[0].req_date;
+    this.search();
+    
+  }
 
 
 close() {

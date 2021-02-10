@@ -44,7 +44,7 @@ export class ProductDetailComponent implements OnInit {
      this.searchOrderSummary();
   }
 
-  openSpec(p_bar_code : string  , _index: number = -1)
+  openSpec(p_bar_code : string , p_dsgn_no : string  , _index: number = -1)
   {
     console.log(p_bar_code);
     const dialogRef = this._dialog.open(ViewSpecComponent, {
@@ -54,6 +54,7 @@ export class ProductDetailComponent implements OnInit {
       width: '100%',
       data: {    
         bar_code: p_bar_code,
+        dsgn_no :p_dsgn_no
       }
 
     });

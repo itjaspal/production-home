@@ -52,7 +52,7 @@ export class UploadFileSearchComponent implements OnInit {
   
   
    async delete(file) {
-    
+    console.log(file);
     this._msgSvc.confirmPopup("ยืนยันลบข้อมูล", async result => {
       if (result) {
         let res: any = await this._uploadSvc.delete(file);

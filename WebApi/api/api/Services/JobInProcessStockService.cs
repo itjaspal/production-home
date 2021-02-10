@@ -519,14 +519,14 @@ namespace api.Services
                         groupViews.Add(gView);
 
 
-                        DisplayGroupView dView = new DisplayGroupView()
-                        {
-                            disgroup_code = y.disgrp_line_code,
-                            disgroup_desc = y.disgrp_line_desc,
+                        //DisplayGroupView dView = new DisplayGroupView()
+                        //{
+                        //    disgroup_code = y.disgrp_line_code,
+                        //    disgroup_desc = y.disgrp_line_desc,
 
-                        };
+                        //};
 
-                        displayGroupViews.Add(dView);
+                        //displayGroupViews.Add(dView);
 
 
                     }
@@ -545,6 +545,20 @@ namespace api.Services
                     });
 
 
+                }
+
+                foreach (var z in group)
+                {
+                    DisplayGroupView dView = new DisplayGroupView()
+                    {
+                        disgroup_code = z.disgrp_line_code,
+                        disgroup_desc = z.disgrp_line_desc,
+
+                    };
+
+                    displayGroupViews.Add(dView);
+
+                    
                 }
 
                 view.displayGroups = displayGroupViews;
@@ -641,14 +655,14 @@ namespace api.Services
                         groupViews.Add(gView);
 
 
-                        DisplayGroupView dView = new DisplayGroupView()
-                        {
-                            disgroup_code = y.disgrp_line_code,
-                            disgroup_desc = y.disgrp_line_desc,
+                        //DisplayGroupView dView = new DisplayGroupView()
+                        //{
+                        //    disgroup_code = y.disgrp_line_code,
+                        //    disgroup_desc = y.disgrp_line_desc,
 
-                        };
+                        //};
 
-                        displayGroupViews.Add(dView);
+                        //displayGroupViews.Add(dView);
 
 
                     }
@@ -665,6 +679,20 @@ namespace api.Services
 
 
                     });
+
+
+                }
+
+                foreach (var z in group)
+                {
+                    DisplayGroupView dView = new DisplayGroupView()
+                    {
+                        disgroup_code = z.disgrp_line_code,
+                        disgroup_desc = z.disgrp_line_desc,
+
+                    };
+
+                    displayGroupViews.Add(dView);
 
 
                 }
@@ -762,14 +790,14 @@ namespace api.Services
                         groupViews.Add(gView);
 
 
-                        DisplayGroupView dView = new DisplayGroupView()
-                        {
-                            disgroup_code = y.disgrp_line_code,
-                            disgroup_desc = y.disgrp_line_desc,
+                        //DisplayGroupView dView = new DisplayGroupView()
+                        //{
+                        //    disgroup_code = y.disgrp_line_code,
+                        //    disgroup_desc = y.disgrp_line_desc,
 
-                        };
+                        //};
 
-                        displayGroupViews.Add(dView);
+                        //displayGroupViews.Add(dView);
 
 
                     }
@@ -790,10 +818,68 @@ namespace api.Services
 
                 }
 
+                foreach (var z in group)
+                {
+                    DisplayGroupView dView = new DisplayGroupView()
+                    {
+                        disgroup_code = z.disgrp_line_code,
+                        disgroup_desc = z.disgrp_line_desc,
+
+                    };
+
+                    displayGroupViews.Add(dView);
+
+
+                }
+
                 view.displayGroups = displayGroupViews;
 
 
                 return view;
+            }
+        }
+
+        public OrderReqView getOrderReq(OrderReqSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity;
+                string vwc_code = model.wc_code;
+                string vpor_no = model.por_no;
+
+                OrderReqView view = new ModelViews.OrderReqView()
+                {
+                    datas = new List<ModelViews.OrderReqDetailView>()
+                };
+
+                string sql = "select distinct a.por_no ,a.ref_no  , a.req_date " +
+                    "from mps_det a, mps_det_wc_stk b " +
+                    "where a.build_type = 'HMSTK' " +
+                    "and a.por_no = b.por_no " +
+                    "and a.entity = b.entity " +
+                    "and a.req_date = b.req_date " +
+                    "and b.wc_code = :p_wc_code " +
+                    "and a.ref_no like :p_por_no " +
+                    "group by a.por_no ,a.ref_no, a.req_date " +
+                    "having sum(b.qty_plan) > sum(b.qty_fin)";
+                List<OrderReqDetailView> por = ctx.Database.SqlQuery<OrderReqDetailView>(sql, new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_por_no", vpor_no + "%")).ToList();
+
+                foreach (var i in por)
+                {
+
+                    view.datas.Add(new ModelViews.OrderReqDetailView()
+                    {
+                        por_no = i.por_no,
+                        ref_no = i.ref_no,
+                        req_date = i.req_date,
+                    });
+                }
+
+
+                //return data to contoller
+                return view;
+
+
             }
         }
     }

@@ -166,8 +166,10 @@ namespace api.Services
                 }
 
 
-                string sql1 = "select a.prod_code , b.prod_tname prod_name , b.pddsgn_desc design_name , to_char(a.tran_date,'dd/mm/yyyy') req_date , a.ref_pd_docno doc_no , to_char(c.doc_date,'dd/mm/yyyy') doc_date from pkg_barcode a , product b , pd_mast c where a.prod_code=b.prod_code and a.ref_pd_docno = c.doc_no and a.entity= :p_entity and a.pkg_barcode_set = :p_set_no and rownum = 1";
-                ScanCheckQrView scan = ctx.Database.SqlQuery<ScanCheckQrView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
+                //string sql1 = "select a.prod_code , b.prod_tname prod_name , b.pddsgn_desc design_name , to_char(a.tran_date,'dd/mm/yyyy') req_date , a.ref_pd_docno doc_no , to_char(c.doc_date,'dd/mm/yyyy') doc_date from pkg_barcode a , product b , pd_mast c where a.prod_code=b.prod_code and a.ref_pd_docno = c.doc_no and a.entity= :p_entity and a.pkg_barcode_set = :p_set_no and rownum = 1";
+                string sql1 = "select a.prod_code , b.prod_tname prod_name , b.pddsgn_desc design_name , to_char(a.tran_date,'dd/mm/yyyy') req_date , a.ref_pd_docno doc_no , to_char(c.doc_date,'dd/mm/yyyy') doc_date from pkg_barcode a , product b , pd_mast c where a.prod_code=b.prod_code and a.ref_pd_docno = c.doc_no and a.pkg_barcode_set = :p_set_no and rownum = 1";
+                //ScanCheckQrView scan = ctx.Database.SqlQuery<ScanCheckQrView>(sql1, new OracleParameter("p_entity", ventity), new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
+                ScanCheckQrView scan = ctx.Database.SqlQuery<ScanCheckQrView>(sql1, new OracleParameter("p_set_no", vset_no)).FirstOrDefault();
 
 
 

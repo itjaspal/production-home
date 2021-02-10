@@ -24,7 +24,7 @@ export class SpecDrawingComponent implements OnInit {
   public vSum: number;
   public validationForm: FormGroup;
   
-
+  datas: any = {};
 
   @ViewChild('scan_barcode') scan_barcode: ElementRef;
         
@@ -67,7 +67,8 @@ export class SpecDrawingComponent implements OnInit {
      
         this.specDrawingData = new SpecDrawingView();
 
-        this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawing(this.scan_barcode.nativeElement.value);
+        // this.specDrawingData =  await this._jobOrderSummarySvc.getSpecDrawingBarcode(this.scan_barcode.nativeElement.value);
+        this.datas =  await this._jobOrderSummarySvc.getSpecDrawingBarcode(this.scan_barcode.nativeElement.value);
         console.log(this.specDrawingData);
 
     } 

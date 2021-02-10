@@ -11,6 +11,59 @@ namespace api.Services
 {
     public class JobOperationStockSevice : IJobOperationStockService
     {
+        public OrderReqView getOrderReqAll(OrderReqSearchView model)
+        {
+            using (var ctx = new ConXContext())
+            {
+                string ventity = model.entity;
+                string vpor_no = model.por_no;
+                string vuser_id = model.user_id;
+
+                //int total_plan_qty = 0;
+
+
+                DateTime req_tmp = DateTime.Now;
+
+                string sql1 = "select a.dept_code wc_code , b.wc_tdesc wc_name  from auth_function a, wc_mast b where a.dept_code = b.wc_code and  a.function_id='PDOPTHM' and a.doc_code='STK' and a.user_id=:p_user_id";
+
+                WcDataView wc = ctx.Database.SqlQuery<WcDataView>(sql1, new OracleParameter("p_user_id", vuser_id)).SingleOrDefault();
+
+                OrderReqView view = new ModelViews.OrderReqView()
+                {
+                    datas = new List<ModelViews.OrderReqDetailView>()
+                };
+
+                string sql = "select distinct a.por_no ,a.ref_no  , a.req_date " +
+                    "from mps_det a, mps_det_wc_stk b " +
+                    "where a.build_type = 'HMSTK' " +
+                    "and a.por_no = b.por_no " +
+                    "and a.entity = b.entity " +
+                    "and a.req_date = b.req_date " +
+                    "and b.wc_code = :p_wc_code " +
+                    "and a.ref_no like :p_por_no " +
+                    "group by a.por_no ,a.ref_no, a.req_date";
+
+                List<OrderReqDetailView> por = ctx.Database.SqlQuery<OrderReqDetailView>(sql, new OracleParameter("p_wc_code", wc.wc_code), new OracleParameter("p_por_no", vpor_no + "%")).ToList();
+
+                foreach (var i in por)
+                {
+
+                    view.datas.Add(new ModelViews.OrderReqDetailView()
+                    {
+                        por_no = i.por_no,
+                        ref_no = i.ref_no,
+                        req_date = i.req_date,
+                    });
+                }
+
+
+                //return data to contoller
+                return view;
+            }
+                
+
+        }
+
         public ProductionTrackingStockView ProductionTrackingDetailStock(ProductGroupSearchView model)
         {
             using (var ctx = new ConXContext())

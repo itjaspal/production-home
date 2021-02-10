@@ -36,7 +36,7 @@ namespace api.ModelViews
     }
 
 
-    public class ProductModalView
+    public class CommonSearchView
     {
         public int pageIndex { get; set; }
         public int itemPerPage { get; set; }

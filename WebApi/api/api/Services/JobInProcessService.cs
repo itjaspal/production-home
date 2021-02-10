@@ -415,7 +415,7 @@ namespace api.Services
             }
         }
 
-        public ProductModalView getProduct(ProductSearchView model)
+        public CommonSearchView getProduct(ProductSearchView model)
         {
             
             using (var ctx = new ConXContext())
@@ -425,19 +425,19 @@ namespace api.Services
                 string vwc_code = model.wc_code;
                 string vpdjit_grp = model.pdjit_grp;
 
-                ProductModalView view = new ModelViews.ProductModalView()
+                CommonSearchView view = new ModelViews.CommonSearchView()
                 {
 
                     datas = new List<ModelViews.ProductView>()
                 };
 
-                string sql = "select distinct prod_code , prod_name , bar_code ,sum(qty_pdt) qty_plan from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='N' group by prod_code , prod_name , bar_code";
+                string sql = "select distinct prod_code , prod_name , bar_code ,sum(qty_pdt) qty_plan from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st = 'N'  group by prod_code , prod_name , bar_code";
                 List<ProductView> prod = ctx.Database.SqlQuery<ProductView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
 
                 foreach (var i in prod)
                 {
-                    string sql2 = "select nvl(sum(qty_pdt),0) qty_plan from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y'";
-                    int qty_act = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp)).SingleOrDefault();
+                    string sql2 = "select nvl(sum(qty_pdt),0) qty_plan from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y' and prod_code = :p_prod_code";
+                    int qty_act = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_prod_code", i.prod_code)).SingleOrDefault();
 
 
                     view.datas.Add(new ModelViews.ProductView()
@@ -793,26 +793,62 @@ namespace api.Services
                     datas = new List<ModelViews.ProductView>()
                 };
 
-                string sql = "select distinct prod_code , prod_name , bar_code  from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y'";
+                string sql = "select distinct prod_code , prod_name , bar_code ,sum(qty_pdt) qty_plan from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y' group by prod_code , prod_name , bar_code";
                 List<ProductView> prod = ctx.Database.SqlQuery<ProductView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
-
-
 
                 foreach (var i in prod)
                 {
+                    string sql2 = "select nvl(sum(qty_pdt),0) qty_plan from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y' and prod_code = :p_prod_code";
+                    int qty_act = ctx.Database.SqlQuery<int>(sql2, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp), new OracleParameter("p_prod_code", i.prod_code)).SingleOrDefault();
+
 
                     view.datas.Add(new ModelViews.ProductView()
                     {
+
                         prod_code = i.prod_code,
                         prod_name = i.prod_name,
-                        bar_code = i.bar_code
+                        bar_code = i.bar_code,
+                        qty_plan = i.qty_plan,
+                        qty_act = qty_act,
+
 
                     });
                 }
 
 
-                //return data to contoller
                 return view;
+
+                //string ventity = model.entity;
+                //string vreq_date = model.req_date;
+                //string vwc_code = model.wc_code;
+                //string vpdjit_grp = model.pdjit_grp;
+
+                //CommonSearchView<ProductView> view = new ModelViews.CommonSearchView<ModelViews.ProductView>()
+                //{
+
+                //    datas = new List<ModelViews.ProductView>()
+                //};
+
+                //string sql = "select distinct prod_code , prod_name , bar_code  from mps_det_wc where entity = :p_entity and req_date = to_date(:p_req_date,'dd/mm/yyyy') and wc_code = :p_wc_code and pdjit_grp = :p_pdjit_grp and mps_st='Y'";
+                //List<ProductView> prod = ctx.Database.SqlQuery<ProductView>(sql, new OracleParameter("p_entity", ventity), new OracleParameter("p_req_date", vreq_date), new OracleParameter("p_wc_code", vwc_code), new OracleParameter("p_pdjit_grp", vpdjit_grp)).ToList();
+
+
+
+                //foreach (var i in prod)
+                //{
+
+                //    view.datas.Add(new ModelViews.ProductView()
+                //    {
+                //        prod_code = i.prod_code,
+                //        prod_name = i.prod_name,
+                //        bar_code = i.bar_code
+
+                //    });
+                //}
+
+
+                ////return data to contoller
+                //return view;
 
 
             }

@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ProductDefectSearchView, ProductDefectView } from '../_model/product-defect';
 import { CommonSearchView } from '../_model/common-search-view';
+import { OrderReqSearchView, OrderReqView } from '../_model/job-operation-stock';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class ProductDefectService {
 
   public async DataQcEntry(_model: DataQcEnrtyView) {
     return await this.http.post(environment.API_URL + 'product-defect/postDataQcEntry', _model).toPromise();
+  }
+
+  public async getOrderReq(_model: OrderReqSearchView) {
+    return await this.http.post<OrderReqView[]>(environment.API_URL + 'product-defect/postGetOrderReq', _model).toPromise();
   }
 
 }

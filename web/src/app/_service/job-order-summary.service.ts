@@ -32,9 +32,15 @@ export class JobOrderSummaryService {
 
   } 
 
-  public async getSpecDrawing(_pBarcode: string) { 
+  public async getSpecDrawing(_pBarcode: string , _pDsgn_no ) { 
 
-    return await this.http.get<SpecDrawingView>(environment.API_URL + 'spec/getdrawning/' + _pBarcode).toPromise();
+    return await this.http.get<SpecDrawingView>(environment.API_URL + 'spec/getdrawning/' + _pBarcode+'/'+_pDsgn_no).toPromise();
+
+  }
+
+  public async getSpecDrawingBarcode(_pBarcode: string ) { 
+
+    return await this.http.get<SpecDrawingView>(environment.API_URL + 'spec/getdrawningall/' + _pBarcode).toPromise();
 
   }
 

@@ -39,21 +39,21 @@
                     <div class="row card-table-body">
                         <div class="col-lg-3 col-sm-3 col-12"> 
                           <small>รหัสสินค้า</small>
-                          <dd *ngIf="specDrawingData;">{{specDrawingData.prod_code}}</dd>
+                          <dd *ngIf="specDrawingData;">{{datas.prod_code}}</dd>
                         </div>
                         <div class="col-lg-7 col-sm-3 col-12">
                           <small>รายละเอียดสินค้า</small>  
-                          <dd *ngIf="specDrawingData;">{{specDrawingData.prod_name}}</dd>
+                          <dd *ngIf="specDrawingData;">{{datas.prod_name}}</dd>
                         </div>
 
                         <div class="col-lg-3 col-sm-7 col-12">
                             <small>Type</small>  
                             <div *ngIf="specDrawingData;">
-                                <div *ngIf="specDrawingData.type == 'SD';  else DesignSpec">
-                                   <dd>{{specDrawingData.sd_no}}</dd>
+                                <div *ngIf="datas.type == 'SD';  else DesignSpec">
+                                   <dd>{{datas.sd_no}}</dd>
                                 </div> 
                                 <ng-template #DesignSpec>
-                                   <dd>{{specDrawingData.design_no}}</dd>
+                                   <dd>{{datas.design_no}}</dd>
                                 </ng-template>  
 
                             </div>
@@ -61,10 +61,12 @@
                         <div class="col-12">
                           <hr />
                         </div>
+
+
                         <div class="col-lg-3 col-sm-3 col-12" *ngIf="specDrawingData;">
-                          <div *ngIf="specDrawingData.file_name;  else elseBlock">
-                             <small>View Spec Drawing</small> 
-                              <dd><a href="{{specDrawingData.file_name}}"  target="_blank" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
+                          <div *ngIf="datas.datas.lenght != 0;  else elseBlock">
+                             <!-- <small>View Spec Drawing</small> 
+                              <dd><a href="{{specDrawingData.file_name}}"  target="_blank" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd> -->
                           </div>  
                           <ng-template #elseBlock>
                               <small>&nbsp;</small>  
@@ -75,6 +77,43 @@
                     </div>   
                 </mat-card-content>
               </mat-card> 
+
+              <mat-card>
+                <mat-card-content>
+                 
+                  <div class="row card-table-body" *ngFor="let x of datas.datas">
+                    <div class="col-6 col-lg-2">
+                      <small>Design Code</small>
+                      <dd>{{x.design_code}}</dd>
+                    </div>
+                    <div class="col-6 col-lg-2">
+                      <small>Design Name </small>
+                      <dd>{{x.design_name}}</dd>
+                    </div>
+        
+                    <div class="col-6 col-lg-2">
+                      <small>Design Spec.</small>
+                      <dd>{{x.dsgn_no}}</dd>
+                    </div>
+                    
+                    
+                    <div class="col-6 col-lg-3">
+                      <small>Dept Code</small>
+                      <dd>{{x.dept_code}}</dd>
+                    </div>
+
+                    <div class="col-6 col-lg-3">
+                      <small>View Spec Drawing</small> 
+                      <dd><a href="{{x.file_name}}"  target="_blank" title="SD/Design"><mat-icon class="material-icons">search</mat-icon></a></dd>
+                    </div>
+                 
+                    
+                    <div class="col-12">
+                      <hr />
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
           </mat-card-content>     
 
 

@@ -40,12 +40,14 @@ export class ProductDefectQcEntryComponent implements OnInit {
   public item_no: any;
   // public curr_time: any;
   public group_qc: any = {};
+  public qty_chk : number = 0;
 
   async ngOnInit() {
     // this.buildForm();
     var datePipe = new DatePipe("en-US");
     this.user = this._authSvc.getLoginUser();
     
+    this.qty_chk = this.data.qc_qty;
     this.model.qc_qty = 0;
     this.model.qc_date = datePipe.transform(new Date(), 'dd/MM/yyyy').toString();
     this.model.qc_time = datePipe.transform(new Date(), 'HH:mm').toString();
@@ -75,10 +77,18 @@ export class ProductDefectQcEntryComponent implements OnInit {
     this.model.datas = this.group_qc.datas;
     console.log(this.model);
     
-    this.datas = await this._defectSvc.DataQcEntry(this.model);
+    if(this.model.qc_qty > this.qty_chk)
+    {
+      this._msgSvc.warningPopup("จำนวนไม่ผ่านมากกว่าจำนวนสินค้า");
+    }
+    else
+    {
+      this.datas = await this._defectSvc.DataQcEntry(this.model);
     
-    await this._msgSvc.successPopup("บันทึกข้อมูลเรียบร้อย");
-    this.dialogRef.close([]);
+      await this._msgSvc.successPopup("บันทึกข้อมูลเรียบร้อย");
+      this.dialogRef.close([]);
+    }
+    
     
 
   }

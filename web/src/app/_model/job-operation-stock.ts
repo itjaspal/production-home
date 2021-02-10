@@ -75,14 +75,18 @@ export class ProductionTrackingStockSearchView {
     public ref_no: string = "";
 }
 
-// export class ProductionTrackingStockView {
-//     public pageIndex: number = 1;
-//     public itemPerPage: number = AppSetting.itemPerPage;
-//     public totalItem: number = 0;
-//     public entity: string = "";
-//     public req_date: string = "";
-//     public build_type: string = "";
-//     public productGroups: ProductDataGroupView[] = [];
-//     public displayGroups: DisplayWcGroupView[] = [];
+export class OrderReqSearchView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public entity: string = AppSetting.entity;
+    public por_no: string = "";
+    public wc_code: string = "";
+    public user_id:string = "";
+    public build_type:string = "";
+}
 
-// }
+export class OrderReqView {
+    public por_no: string = "";
+    public wc_code: string = "";
+    public req_date : any = null
+}

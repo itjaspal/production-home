@@ -13,7 +13,7 @@ namespace api.Interfaces
         JobInProcessView ScanCancel(JobInProcessSearchView model);
         JobInProcessView EntryAdd(JobInProcessSearchView model);
         JobInProcessView EntryCancel(JobInProcessSearchView model);
-        ProductModalView getProduct(ProductSearchView model);
+        CommonSearchView getProduct(ProductSearchView model);
         CommonSearchView<ProductView> getProductCancel(ProductSearchView model);
     }
 }

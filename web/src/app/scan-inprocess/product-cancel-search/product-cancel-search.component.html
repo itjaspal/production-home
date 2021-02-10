@@ -32,9 +32,21 @@
           </dd>
           
         </div>
-        <div class="col-sm-10 col-10">
+        <div class="col-sm-5 col-5">
           <small>Product</small>
           <dd>{{x.bar_code}} - {{x.prod_code}}</dd>
+        </div>
+        <div class="col-sm-2 col-2">
+          <small>Plan Qty</small>
+          <dd>{{x.qty_plan}}</dd>
+        </div>
+        <div class="col-sm-2 col-2">
+          <small>Act Qty</small>
+          <dd>{{x.qty_act}}</dd>
+        </div>
+        <div class="col-sm-2 col-2">
+          <small>Diff Qty</small>
+          <dd>{{x.qty_plan-x.qty_act}}</dd>
         </div>
         
     

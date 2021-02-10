@@ -77,11 +77,21 @@ export class ProductDefectQcCuttingComponent implements OnInit {
     this.model.build_type = this.user.branch.entity_code;
     this.model.user_id = this.user.username;
     console.log(this.model);
+
+    if(this.model.no_pass_qty > this.model.qc_qty)
+    {
+      this._msgSvc.warningPopup("จำนวนไม่ผ่านมากกว่าจำนวนตรวจ");
+    }
+    else
+    {
+      this.datas = await this._defectSvc.DataQcCutting(this.model);
+      await this._msgSvc.successPopup("บันทึกข้อมูลเรียบร้อย");
+      this.dialogRef.close([]);
+    }
     
-    this.datas = await this._defectSvc.DataQcCutting(this.model);
-    await this._msgSvc.successPopup("บันทึกข้อมูลเรียบร้อย");
+    
         
-    this.dialogRef.close([]);
+    
     
 
   }

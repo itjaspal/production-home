@@ -154,4 +154,31 @@ namespace api.ModelViews
         public int qty_fin { get; set; }
         public int qty_defect { get; set; }
     }
-}
+
+    public class OrderReqSearchView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public string entity { get; set; }
+        public string por_no { get; set; }
+        public string wc_code { get; set; }
+        public string user_id { get; set; }
+        public string build_type { get; set; }
+    }
+
+    public class OrderReqView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public int totalItem { get; set; }
+        public List<OrderReqDetailView> datas { get; set; }
+    }
+
+    public class OrderReqDetailView
+    {
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public DateTime req_date { get; set; }
+    }
+
+ }

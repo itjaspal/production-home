@@ -10,6 +10,8 @@ namespace api.ModelViews
     {
         public string pddsgn_code { get; set; }
         public string pddsgn_name { get; set; }
+        public string dsgn_no { get; set; }
+        public string dept_code { get; set; }
         public string type { get; set; }
         public string file_path { get; set; }
         public string file_name { get; set; }

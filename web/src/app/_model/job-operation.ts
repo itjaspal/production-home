@@ -110,6 +110,8 @@ export class SpecDrawingView {
     public file_path: string = "";
     public design_code: string = "";
     public file_name: string = "";
+    public dsgn_no : string = "";
+    public dept_code : string = "";
 }
 
 
@@ -215,6 +217,7 @@ export class OrderDetailParamView {
 
 export class SpecDrawingParamView {
     public bar_code: string = "";
+    public dsgn_no: string = "";
     public isEdit: boolean = false;
     public hideSerialNo: boolean = false;
     public isSaleBed: boolean = false;

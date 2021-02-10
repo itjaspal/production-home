@@ -72,11 +72,13 @@ namespace api.Controllers
                     string pddsgn_code = HttpContext.Current.Request.Params["pddsgn_code"];
 
                     string type = HttpContext.Current.Request.Params["type"];
+                    string dsgn_no = HttpContext.Current.Request.Params["dsgn_no"];
+                    string dept_code = HttpContext.Current.Request.Params["dept_code"];
                     //rename
                     string[] fileNameOldArr = htf.FileName.Split('.');
                     string fileNameOld = htf.FileName;
                     //string fileNameNew = DateTime.Now.ToString("ddMMyyyy-HHmmss-fff", new CultureInfo("en-US").DateTimeFormat);
-                    string fileNameNew = pddsgn_code;
+                    string fileNameNew = pddsgn_code + "_" +dsgn_no;
                     //fileNameNew = string.Format("{0}_{1}.{2}", fileNameOldArr[0], fileNameNew, fileNameOldArr[fileNameOldArr.Length - 1]);
                     fileNameNew = string.Format("{0}.{1}", fileNameNew, fileNameOldArr[fileNameOldArr.Length - 1]);
 
@@ -99,6 +101,8 @@ namespace api.Controllers
 
                     model.pddsgn_code = pddsgn_code;
                     model.type = type;
+                    model.dsgn_no = dsgn_no;
+                    model.dept_code = dept_code;
 
 
                     //model.file_path = string.Format("{0}/{1}/{2}", year, month, fileNameNew);
@@ -107,7 +111,7 @@ namespace api.Controllers
 
                 }
 
-                var isDupplicate = uploadSvc.CheckDupplicate(model.pddsgn_code);
+                var isDupplicate = uploadSvc.CheckDupplicate(model.pddsgn_code,model.dsgn_no);
                 if (isDupplicate)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, string.Format("Design Code {0} มีอยู่ในระบบแล้ว", model.pddsgn_code));
@@ -149,13 +153,14 @@ namespace api.Controllers
                 {
                     System.Web.HttpPostedFile htf = files[key];
                     string pddsgn_code = HttpContext.Current.Request.Params["pddsgn_code"];
-
                     string type = HttpContext.Current.Request.Params["type"];
+                    string dsgn_no = HttpContext.Current.Request.Params["dsgn_no"];
+                    string dept_code = HttpContext.Current.Request.Params["dept_code"];
                     //rename
                     string[] fileNameOldArr = htf.FileName.Split('.');
                     string fileNameOld = htf.FileName;
                     
-                    string fileNameNew = pddsgn_code;
+                    string fileNameNew = pddsgn_code + "_" + dsgn_no;
                     
                     fileNameNew = string.Format("{0}.{1}", fileNameNew, fileNameOldArr[fileNameOldArr.Length - 1]);
 
@@ -174,6 +179,8 @@ namespace api.Controllers
                   
                     model.pddsgn_code = pddsgn_code;
                     model.type = type;
+                    model.dsgn_no = dsgn_no;
+                    model.dept_code = dept_code;
 
                     model.file_path = path + "\\" + string.Format("{0}", fileNameNew);
                     model.file_name = string.Format("{0}", fileNameNew);
@@ -191,12 +198,12 @@ namespace api.Controllers
             }
         }
 
-        [Route("upload-file/getInfo/{code}")]
-        public HttpResponseMessage getInfo(string code)
+        [Route("upload-file/getInfo/{code}/{dsgn_no}")]
+        public HttpResponseMessage getInfo(string code , string dsgn_no)
         {
             try
             {
-                var result = uploadSvc.GetInfo(code);
+                var result = uploadSvc.GetInfo(code , dsgn_no);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
