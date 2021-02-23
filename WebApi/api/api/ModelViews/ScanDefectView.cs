@@ -36,7 +36,9 @@ namespace api.ModelViews
         public string user_id { get; set; }
         public int qty { get; set; }
         public int item_no { get; set; }
-
+        public string remark1 { get; set; }
+        public string remark2 { get; set; }
+        public string remark3 { get; set; }
     }
 
     public class DefectProductSubSearchView

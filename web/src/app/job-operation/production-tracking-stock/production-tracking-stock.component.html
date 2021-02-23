@@ -34,8 +34,8 @@
                     <th style="width: 50px" class="text-center" *ngFor="let k of datas.displayGroups; let i = index;" >
                       {{k.wc_name}}
                     </th>
-      
-                   
+                    <th style="width: 10px" class="text-center"></th>
+                    
                     
                   </tr>
                   <tr *ngFor="let x of datas.productGroups; let i = index;">
@@ -47,7 +47,17 @@
                     <td class="text-center">{{x.plan_qty}}</td>
                     <td class="text-center" *ngFor="let y of x.dataGroups; let i = index;">{{y.qty}}</td>
                     
-                    
+                    <td>
+                      <button mat-icon-button [matMenuTriggerFor]="appMenu1">
+                        <mat-icon class="material-icons">more_horiz</mat-icon>
+                      </button>
+                      <mat-menu #appMenu1="matMenu">
+                        <button mat-menu-item (click)="openProductionGroupTracking(x.entity,x.por_no,x.ref_no,searchModel.req_date,x.group)">
+                          <mat-icon class="material-icons">description</mat-icon> <span>Detail</span>
+                        </button>
+      
+                      </mat-menu>
+                    </td>
                   </tr>
       
       

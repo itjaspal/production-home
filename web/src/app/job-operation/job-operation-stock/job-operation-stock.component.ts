@@ -157,10 +157,10 @@ openPorDetail(p_entity : string ,p_por_no: string  , _index: number = -1)
 
   openProductionTracking(p_entity : string ,p_por_no: string,p_ref_no: string , p_req_date : string , _index: number = -1)
   {
-    console.log(p_por_no);
-    console.log(p_ref_no);
-    console.log(this.searchModel.req_date);
-    console.log(this.wc_code);
+    // console.log(p_por_no);
+    // console.log(p_ref_no);
+    // console.log(this.searchModel.req_date);
+    // console.log(this.wc_code);
     const dialogRef = this._dialog.open(ProductionTrackingStockComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',

@@ -218,6 +218,7 @@ import { OrderSearchComponent } from './scan-inprocess-stock/order-search/order-
 import { OrderAllSearchComponent } from './job-operation/order-all-search/order-all-search.component';
 import { ProductDefectOrderSearchComponent } from './product-defect/product-defect-order-search/product-defect-order-search.component';
 import { ScanDefectOrderSearchComponent } from './scan-defect/scan-defect-order-search/scan-defect-order-search.component';
+import { ProductionTrackingGroupComponent } from './job-operation/production-tracking-group/production-tracking-group.component';
 
 
 
@@ -462,6 +463,7 @@ import { ScanDefectOrderSearchComponent } from './scan-defect/scan-defect-order-
     OrderAllSearchComponent,
     ProductDefectOrderSearchComponent,
     ScanDefectOrderSearchComponent,
+    ProductionTrackingGroupComponent,
     
 
   
@@ -514,7 +516,8 @@ import { ScanDefectOrderSearchComponent } from './scan-defect/scan-defect-order-
     OrderSearchComponent,
     OrderAllSearchComponent,
     ScanDefectOrderSearchComponent,
-    ProductDefectOrderSearchComponent
+    ProductDefectOrderSearchComponent,
+    ProductionTrackingGroupComponent
   ],
   bootstrap: [AppComponent]
 })

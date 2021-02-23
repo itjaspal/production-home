@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { ProductionTrackingSearchView, ProductionTrackingView } from '../_model/job-operation';
-import { JobOperationStockSearchView, OrderReqSearchView, OrderReqView, ProductGroupSearchView, ProductionTrackingStockSearchView} from '../_model/job-operation-stock';
+import { JobOperationStockSearchView, OrderReqSearchView, OrderReqView, ProductGroupDetailSearchView, ProductGroupSearchView, ProductionTrackingStockSearchView} from '../_model/job-operation-stock';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -41,5 +41,13 @@ export class JobOperationStockService {
 
   public async getOrderReqAll(_model: OrderReqSearchView) {
     return await this.http.post<OrderReqView[]>(environment.API_URL + 'job-operation-stock/postGetOrderReqAll', _model).toPromise();
+  }
+
+  public async searchProductionTrackingGroupDetailStock(_model: ProductGroupDetailSearchView) {
+    return await this.http.post<ProductionTrackingView>(environment.API_URL + 'job-operation-stock/postProductionTrackingGroupDetailStock', _model).toPromise();
+  }
+
+  public async searchProductionTrackingGroupOthDetailStock(_model: ProductGroupDetailSearchView) {
+    return await this.http.post<ProductionTrackingView>(environment.API_URL + 'job-operation-stock/postProductionTrackingGroupOthDetailStock', _model).toPromise();
   }
 }

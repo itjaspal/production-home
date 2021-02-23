@@ -242,6 +242,7 @@ namespace api.ModelViews
         public string model_name { get; set; }
         public string size_name { get; set; }
         public string type { get; set; }
+        public string group { get; set; }
         public int plan_qty { get; set; }
         public List<ProductDataGroupDetailView> dataGroups { get; set; }
 

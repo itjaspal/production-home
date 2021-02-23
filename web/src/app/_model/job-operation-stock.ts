@@ -90,3 +90,16 @@ export class OrderReqView {
     public wc_code: string = "";
     public req_date : any = null
 }
+
+export class ProductGroupDetailSearchView {
+    public pageIndex: number = 1;
+    public itemPerPage: number = AppSetting.itemPerPage;
+    public entity_code: string = AppSetting.entity;
+    public user_id: string = "";
+    public wc_code: string = "";
+    public build_type: string = "";
+    public req_date: string = "";
+    public por_no: string = "";
+    public ref_no: string = "";
+    public group : string = "";
+}

@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../_service/authentication.service';
 import { JobOperationStockService } from '../../_service/job-operation-stock.service';
 import { MessageService } from '../../_service/message.service';
 import { DatePipe } from '@angular/common';
+import { ProductionTrackingGroupComponent } from '../production-tracking-group/production-tracking-group.component';
 
 @Component({
   selector: 'app-production-tracking-stock',
@@ -51,9 +52,42 @@ export class ProductionTrackingStockComponent implements OnInit {
     console.log(this.searchModel);
     this.datas =  await this._jobSvc.searchProductionTrackingStock(this.searchModel);
     this.datas_det =  await this._jobSvc.searchProductionTrackingDetailStock(this.searchModel);
-    console.log(this.datas_det);
+    //console.log(this.datas);
   }
 
+  openProductionGroupTracking(p_entity : string ,p_por_no: string,p_ref_no: string , p_req_date : string  , p_group : string, _index: number = -1)
+  {
+    console.log(this.searchModel.entity_code);
+    console.log(this.searchModel.por_no);
+    console.log(this.searchModel.ref_no);
+    console.log(this.searchModel.req_date);
+    console.log(p_group);
+    console.log(this.user.username);
+    
+    const dialogRef = this._dialog.open(ProductionTrackingGroupComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        por_no: this.searchModel.por_no,
+        entity_code:this.searchModel.entity_code,
+        ref_no :this.searchModel.ref_no,
+        req_date : p_req_date,
+        user_id : this.user.username,
+        group : p_group,
+       
+      }
+
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.length > 0) {
+    //     //this.add_prod(result);
+    //   }
+    // })
+  }
+  
   close() { 
     this.dialogRef.close();
   }

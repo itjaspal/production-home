@@ -1,0 +1,70 @@
+<div class="container-fluid no-breadcrumbs"> <!-- container-->
+  <mat-card> <!-- mat-card 1 -->
+      <mat-card-title>
+         <h6>Detail</h6>
+      </mat-card-title>
+      <br /> 
+
+      <mat-card-content class="no-margin">
+          <mat-card-content>
+            <!-- <div>
+              Req. Date : {{this.datas.req_date}}
+            </div> -->
+            
+          <div class="row card-table-body scroller">
+
+            <!-- Table -->
+            <table style="width: 100%">
+              <tbody>
+                <!-- <tr>
+                  <th colspan="4">ข้อมูล Order</th>
+                  <th colspan="3">รายการสินค้าที่ต้องผลิต </th>
+                  <th *ngFor="let k of datas.displayGroups| slice:2:10; let i = index"> &nbsp;</th>
+                </tr> -->
+                <tr>
+                  <th style="width: 30px" class="text-center">ประเภทสินค้า</th>
+                  <th style="width: 50px" class="text-center">รหัสสินค้า</th>
+                  <th style="width: 50px" class="text-center">ชื่อสินค้า</th>
+                  
+                  <th style="width: 50px" class="text-center">Plan Qty</th>
+                  <th style="width: 50px" class="text-center" *ngFor="let k of datas_det.displayGroups; let i = index;" >
+                    {{k.wc_name}}
+                  </th>
+    
+                 
+                  
+                </tr>
+                <tr *ngFor="let x of datas_det.productGroups; let i = index;">
+                  <td>{{x.type}}</td>
+                  <td>{{x.prod_code}}</td>
+                  <td>{{x.prod_name}}</td>
+                  
+                  
+                  <td class="text-center">{{x.plan_qty}}</td>
+                  <td class="text-center" *ngFor="let y of x.dataGroups; let i = index;">{{y.qty}}</td>
+                  
+                  
+                </tr>
+    
+    
+              </tbody>
+            </table>
+    
+    
+    
+          </div>
+        </mat-card-content>
+  </mat-card-content> <!--  <mat-card-content class="no-margin"> --> 
+    
+    <mat-card-actions class="no-margin">
+      <div class="row">
+        <div class="col-2 col-sm-2">
+          <button (click)="close();" mat-raised-button color="primary">
+            <mat-icon class="material-icons">close</mat-icon> ปิด
+          </button>
+        </div>
+    </div>
+    </mat-card-actions>  
+
+    </mat-card> <!-- mat-card 1 -->
+ </div> <!-- container-->      

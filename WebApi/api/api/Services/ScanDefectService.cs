@@ -84,8 +84,9 @@ namespace api.Services
                 string vuser_id = model.user_id;
                 string vpor_no = model.por_no;
                 string vref_no = model.ref_no;
-
-
+                string vremark1 = model.remark1;
+                string vremark2 = model.remark2;
+                string vremark3 = model.remark3;
 
                 string sql2 = "select prod_name ,prod_code , prod_code_sub sub_prod_code, prod_name_sub sub_prod_name , por_no , ref_no , sum(qty_plan) qty_plan , sum(qty_fin) qty_fin";
                 sql2 += " from mps_det_wc_stk";
@@ -153,6 +154,7 @@ namespace api.Services
                             new OracleParameter("p_por_no", vpor_no),
                             new OracleParameter("p_ref_no", vref_no),
                             new OracleParameter("p_qty", vqty),
+                            
                     };
                     oraCommand.BindByName = true;
                     oraCommand.Parameters.AddRange(param);
@@ -174,11 +176,14 @@ namespace api.Services
                         new OracleParameter("p_ref_no", model.ref_no),
                         new OracleParameter("p_no_pass_qty", model.qty),
                         new OracleParameter("p_upd_by", model.user_id),
-                        new OracleParameter("p_cre_by", model.user_id)
+                        new OracleParameter("p_cre_by", model.user_id),
+                        new OracleParameter("p_remark1", vremark1),
+                        new OracleParameter("p_remark2", vremark2),
+                        new OracleParameter("p_remark3", vremark3),
                     };
                     oraCommandqc.BindByName = true;
                     oraCommandqc.Parameters.AddRange(paramqc);
-                    oraCommandqc.CommandText = "insert into pd_qc_mast (pd_entity , doc_no , item_no , prod_code, build_type , qc_process , ref_por_no , qc_date , no_pass_qty , upd_by , upd_date , cre_by , cre_date , ref_prod_code) values (:p_entity , :p_doc_no , :p_item_no , :p_prod_code, :p_build_type , 'FG' , :p_ref_no , sysdate , :p_no_pass_qty , :p_upd_by , sysdate , :p_cre_by , sysdate , :p_ref_prod_code)";
+                    oraCommandqc.CommandText = "insert into pd_qc_mast (pd_entity , doc_no , item_no , prod_code, build_type , qc_process , ref_por_no , qc_date , no_pass_qty , upd_by , upd_date , cre_by , cre_date , ref_prod_code , remark4 , remark5 ,remark6) values (:p_entity , :p_doc_no , :p_item_no , :p_prod_code, :p_build_type , 'FG' , :p_ref_no , sysdate , :p_no_pass_qty , :p_upd_by , sysdate , :p_cre_by , sysdate , :p_ref_prod_code,:p_remark1,:p_remark2,:p_remark3)";
 
                     oraCommandqc.ExecuteNonQuery();
 

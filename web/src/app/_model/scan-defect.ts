@@ -28,6 +28,9 @@ export class ScanDefectSearchView {
     public user_id: string = "";
     public qty: number = 0;
     public item_no :number = 0;
+    public remark1 : string = "";
+    public remark2 : string = "";
+    public remark3 : string = "";
 }
 
 export class ScanDefectScanFinView {

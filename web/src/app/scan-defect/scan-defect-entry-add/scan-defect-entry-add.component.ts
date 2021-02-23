@@ -71,7 +71,10 @@ export class ScanDefectEntryAddComponent implements OnInit {
   private buildForm() {
     this.validationForm = this._fb.group({
       sub_prod_code: [null, [Validators.required]],
-      qty: [null, []]
+      qty: [null, []],
+      remark1: [null, []],
+      remark2: [null, []],
+      remark3: [null, []]
     });
   }
 
@@ -92,13 +95,16 @@ export class ScanDefectEntryAddComponent implements OnInit {
     this.searchModel.ref_no = this.data.ref_no;
     this.searchModel.user_id = this.user.username;
     this.searchModel.build_type = this.user.branch.entity_code;
-    console.log(this.data);
+    console.log(this.searchModel);
 
     this.datas = await this._defectSvc.searchEntryAdd(this.searchModel);
 
     this.add(this.datas);
     this.searchModel.sub_prod_code = "";
     this.searchModel.qty = 0;
+    this.searchModel.remark1 = "";
+    this.searchModel.remark2 = "";
+    this.searchModel.remark3 = "";
     }
 
     

@@ -67,6 +67,31 @@
               </div>
 
             </div>
+
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 1" formControlName="remark1" name="remark1" #remark1
+                    type="none" [(ngModel)]="searchModel.remark1" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 2" formControlName="remark2" name="remark2" #remark2
+                    type="none" [(ngModel)]="searchModel.remark2" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row card-table-body">
+              <div class="col-10 col-lg-10 ">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="หมายเหตุ 3" formControlName="remark3" name="remark3" #remark3
+                    type="none" [(ngModel)]="searchModel.remark3" maxlength="100">
+                </mat-form-field>
+              </div>
+            </div>
           </form>
         </mat-card-content>
       </mat-card>

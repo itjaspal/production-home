@@ -181,4 +181,17 @@ namespace api.ModelViews
         public DateTime req_date { get; set; }
     }
 
- }
+    public class ProductGroupDetailSearchView
+    {
+        public int pageIndex { get; set; }
+        public int itemPerPage { get; set; }
+        public string entity_code { get; set; }
+        public string user_id { get; set; }
+        public string wc_code { get; set; }
+        public string build_type { get; set; }
+        public string req_date { get; set; }
+        public string por_no { get; set; }
+        public string ref_no { get; set; }
+        public string group { get; set; }
+    }
+}
