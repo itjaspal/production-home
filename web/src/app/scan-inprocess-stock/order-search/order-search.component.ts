@@ -49,7 +49,7 @@ export class OrderSearchComponent implements OnInit {
   }
 
   async search() {
-        
+    this.model.por_no = this.model.por_no.toUpperCase();
     this.datas = await this._jobInprocessSvc.getOrderReq(this.model);
 
   }

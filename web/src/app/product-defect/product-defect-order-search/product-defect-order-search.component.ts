@@ -48,7 +48,7 @@ export class ProductDefectOrderSearchComponent implements OnInit {
   }
 
   async search() {
-        
+    this.model.por_no = this.model.por_no.toUpperCase();
     this.datas = await this._defectSvc.getOrderReq(this.model);
 
   }
