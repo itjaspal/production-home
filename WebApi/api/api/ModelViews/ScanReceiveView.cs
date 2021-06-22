@@ -85,6 +85,7 @@ namespace api.ModelViews
         public string doc_no { get; set; }
         public int total_item { get; set; }
         public int total_qty { get; set; }
+        public int total_qty_ptw { get; set; }
         public string set_no { get; set; }
         public List<SendDataDetailView> datas { get; set; }
     }
@@ -96,6 +97,7 @@ namespace api.ModelViews
         public string prod_name { get; set; }
         public string uom_code { get; set; }
         public int qty_pdt { get; set; }
+        public int qty_ptw { get; set; }
         public string req_date { get; set; }
         public string job_no { get; set; }
         public string set_no { get; set; }

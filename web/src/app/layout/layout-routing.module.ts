@@ -69,6 +69,7 @@ import { ScanDefectComponent } from '../scan-defect/scan-defect/scan-defect.comp
 import { UploadFileSearchComponent } from '../upload-file/upload-file-search/upload-file-search.component';
 import { UploadFileAddComponent } from '../upload-file/upload-file-add/upload-file-add.component';
 import { UploadFileEditComponent } from '../upload-file/upload-file-edit/upload-file-edit.component';
+import { ScanPutawayCheckQrComponent } from '../scan_putaway/scan-putaway-check-qr/scan-putaway-check-qr.component';
 
 
 
@@ -193,7 +194,7 @@ const routes: Routes = [
       { path: 'scanPtw/barcode-cancel/:doc_no/:doc_code/:wh_code/:doc_date', component: InprocessEntryCancelComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
       { path: 'scanPtw/detail/:doc_no/:doc_code/:wh_code/:doc_date/:pd_entity', component: ScanPutawayDetailComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app/scanPtw" }  }, 
       { path: 'scanPtwProdView', component: ScanPutawayProductViewComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
-
+      { path: 'scanCheckQr', component: ScanPutawayCheckQrComponent, canActivate: [AuthenGuard], data: { parentUrl: "/app" }  },
 
       
       //Scan Approve Send

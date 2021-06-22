@@ -10,6 +10,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import * as moment from 'moment';
 import { productionRecListDetailView, productionRecListSearchView, productionRecListTotalView } from '../../_model/production-rec-list';
 import { ProductionRecListService } from '../../_service/production-rec-list.service';
+import { ScanPutawayCheckQrComponent } from '../scan-putaway-check-qr/scan-putaway-check-qr.component';
 
 @Component({
   selector: 'app-scan-putaway',
@@ -130,6 +131,28 @@ export class ScanPutawayComponent implements OnInit {
     //   }
     // })
   }
+
+
+  openScanCheckQr()
+  {
+      const dialogRef = this._dialog.open(ScanPutawayCheckQrComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+              
+      }
+
+    });
+    /*dialogRef.afterClosed().subscribe(result => {
+      this.search();
+      // if (result.length > 0) {
+      //   //this.add_prod(result);
+      // }
+    }) */
+  } 
+
 
  /* openProductionRecListDetailDialog(p_docNo: string, p_docDate: string, _isEdit: boolean = false, _index: number = -1) {
     const dialogRef = this._dialog.open(ProductionRecListDetailComponent, {

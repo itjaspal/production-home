@@ -219,6 +219,7 @@ import { OrderAllSearchComponent } from './job-operation/order-all-search/order-
 import { ProductDefectOrderSearchComponent } from './product-defect/product-defect-order-search/product-defect-order-search.component';
 import { ScanDefectOrderSearchComponent } from './scan-defect/scan-defect-order-search/scan-defect-order-search.component';
 import { ProductionTrackingGroupComponent } from './job-operation/production-tracking-group/production-tracking-group.component';
+import { ScanPutawayCheckQrComponent } from './scan_putaway/scan-putaway-check-qr/scan-putaway-check-qr.component';
 
 
 
@@ -464,6 +465,7 @@ import { ProductionTrackingGroupComponent } from './job-operation/production-tra
     ProductDefectOrderSearchComponent,
     ScanDefectOrderSearchComponent,
     ProductionTrackingGroupComponent,
+    ScanPutawayCheckQrComponent,
     
 
   

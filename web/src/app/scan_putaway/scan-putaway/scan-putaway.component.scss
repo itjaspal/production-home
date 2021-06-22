@@ -1,0 +1,42 @@
+.scroller {
+    width: 100%;
+    // height: 500px;
+    overflow-y: scroll;
+    scrollbar-width: thin; 
+    
+  }
+
+:host ::ng-deep .mat-sort-header-container {
+    display: flex;
+    justify-content: center;
+}
+
+@media only screen and (max-width: 580px) {
+  table
+  {
+    width: 800px;
+    font-size: 12px;
+  }
+  
+}
+
+
+
+@media only screen and (min-width: 580px) {
+  table
+  {
+    width: 990px;
+    // font-size: 12px;
+  }
+  
+}
+
+
+@media only screen and (min-width: 768px) {
+    
+  table
+  {
+    width: 990px;
+    
+  }
+}

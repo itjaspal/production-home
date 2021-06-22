@@ -4,7 +4,7 @@
          <h6>รายการจัดเก็บสินค้า</h6>
       </mat-card-title>
        <mat-card> <!-- mat-card 2 -->
-        <div class="scrollable-child scroller"> 
+        <!--<div class="scrollable-child scroller"> -->
           <div class="panel panel-default">
              <form [formGroup]="validationForm"> 
                 <div class="row card-table-body">
@@ -43,10 +43,18 @@
                           </button>
                         </mat-card-actions>
                     </div>
+                    <div class="col-lg-3 col-sm-6 col-12">
+                      <mat-card-actions class="no-margin">
+                        <button mat-raised-button color="primary" type="button" (click)="openScanCheckQr()">
+                          <mat-icon class="material-icons">search</mat-icon> ตรวจสอบใบส่งมอบ
+                        </button>
+                      </mat-card-actions>
+                    </div>
                 </div>
              </form> 
 
          
+             <mat-card-content class="scroller">
              <!-- Table -->
              <table style="width: 100%" >
                <tbody>
@@ -112,14 +120,14 @@
               
                </tbody>
              </table>
-             
+            </mat-card-content>
              
 
              <br />
 
 
             </div> <!-- <div class="panel panel-default"></div> --> 
-         </div> <!-- <div class="scrollable-child"> -->
+        <!-- </div> --><!-- <div class="scrollable-child"> -->
 
 
       </mat-card> <!-- mat-card 2 -->  

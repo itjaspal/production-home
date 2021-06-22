@@ -20,6 +20,7 @@
           </div>
         </div>
       <mat-card-content>
+        <mat-card-content class="scroller">
         <table style="width: 100%">
           <thead>
             <tr>
@@ -28,6 +29,7 @@
               <th style="width: 200px" class="text-center">Product Description</th>
               <th style="width: 50px" class="text-center">Unit</th>
               <th style="width: 50px" class="text-center">ส่งมอบ</th>
+              <th style="width: 50px" class="text-center">จัดเก็บ</th>
               <th style="width: 100px" class="text-center">MPS Date</th>
               <th style="width: 50px" class="text-center">Job No.</th>
 
@@ -40,6 +42,7 @@
               <td>{{x.prod_name}}</td>
               <td class="text-center">{{x.uom_code}}</td>
               <td class="text-center">{{x.qty_pdt}}</td>
+              <td class="text-center">{{x.qty_ptw}}</td>
               <td class="text-center">{{x.req_date}}</td>
               <td class="text-center">{{x.job_no}}</td>
             </tr>
@@ -63,11 +66,13 @@
               <td style="width: 200px" class="text-center">Total : </td>
               <td style="width: 50px" class="text-center">{{datas.total_item}} Item.</td>
               <td style="width: 50px" class="text-center">{{datas.total_qty}}</td>
+              <td style="width: 50px" class="text-center">{{datas.total_qty_ptw}}</td>
               <td style="width: 100px" class="text-center"></td>
               <td style="width: 50px" class="text-center"></td>
             </tr>
           </tbody>
         </table>
+        </mat-card-content>
       </mat-card-content>
     </mat-card-content> <!-- Detail-->
     <br />

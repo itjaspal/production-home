@@ -87,6 +87,7 @@ namespace api.Services
             using (var ctx = new ConXContext())
             {
                 int vtotal_qty = 0;
+                int vtotal_qty_ptw = 0;
 
                 //define model view
                 SendDataView view = new ModelViews.SendDataView()
@@ -121,6 +122,9 @@ namespace api.Services
                     string sql = "select to_char(tran_date,'dd/mm/yyyy') from pkg_barcode where entity = :p_entity and por_no = :p_por_no and ref_pd_docno = :p_doc_no and rownum = 1";
                     string vreq_date = ctx.Database.SqlQuery<string>(sql, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", x.job_no), new OracleParameter("p_doc_no", doc_no)).FirstOrDefault();
 
+                    // Find qty_putway
+                    string sql_ptw = "select nvl(sum(qty),0) qty from  whtran_det where ic_entity = :p_entity and trans_code = 'PTW' and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                    int vqty_ptw = ctx.Database.SqlQuery<int>(sql_ptw, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
 
                     view.datas.Add(new ModelViews.SendDataDetailView()
                     {
@@ -130,15 +134,19 @@ namespace api.Services
                         prod_name = x.prod_name,
                         uom_code = x.uom_code,
                         qty_pdt = x.qty_pdt,
+                        qty_ptw = vqty_ptw,
                         req_date = vreq_date,
                         job_no = x.job_no,
                         set_no = vset_no
                     });
 
                     vtotal_qty = vtotal_qty + x.qty_pdt;
-                   
+                    vtotal_qty_ptw = vtotal_qty_ptw + vqty_ptw;
+
+
                 }
                 view.total_qty = vtotal_qty;
+                view.total_qty_ptw = vtotal_qty_ptw;
                 view.set_no = vset_no;
 
                 return view;
