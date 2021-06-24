@@ -82,7 +82,7 @@ export class ScanPutawayCheckQrComponent implements OnInit {
       newProd.set_no = datas.set_no,
   
       
-      this.model_scan.datas.push(newProd);
+      this.model_scan.datas.push(newProd); 
   
       // Group By Product
     var result = [];

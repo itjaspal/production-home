@@ -99,7 +99,7 @@ namespace api.Services
                 };
 
                 
-                string sql1 = "select a.line_no , a.prod_code , a.qty_pdt , a.por_no job_no , a.plan_no ref_no , b.prod_tname prod_name , b.uom_code  from pd_det a , product b  where a.prod_code = b.prod_code and  a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
+                string sql1 = "select a.line_no , a.wh_code, a.prod_code , a.qty_pdt , a.por_no job_no , a.plan_no ref_no , b.prod_tname prod_name , b.uom_code  from pd_det a , product b  where a.prod_code = b.prod_code and  a.pd_entity=:p_entity and a.doc_no=:p_doc_no";
                 List<SendDataDetailView> send = ctx.Database.SqlQuery<SendDataDetailView>(sql1, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no)).ToList();
 
                 
@@ -123,10 +123,10 @@ namespace api.Services
                     string vreq_date = ctx.Database.SqlQuery<string>(sql, new OracleParameter("p_entity", entity), new OracleParameter("p_por_no", x.job_no), new OracleParameter("p_doc_no", doc_no)).FirstOrDefault();
 
                     // Find qty_putway
-                    string sql_ptw = "select nvl(sum(qty),0) qty from  whtran_det where ic_entity = :p_entity and trans_code = 'PTW' and doc_no = :p_doc_no and prod_code = :p_prod_code";
-                    int vqty_ptw = ctx.Database.SqlQuery<int>(sql_ptw, new OracleParameter("p_entity", entity), new OracleParameter("p_doc_no", doc_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
+                    string sql_ptw = "select nvl(sum(qty),0) qty from  whtran_det where wh_code = :pwh_code and trans_code = 'PTW' and doc_no = :p_doc_no and prod_code = :p_prod_code";
+                    int vqty_ptw = ctx.Database.SqlQuery<int>(sql_ptw, new OracleParameter("pwh_code", x.wh_code), new OracleParameter("p_doc_no", doc_no), new OracleParameter("p_prod_code", x.prod_code)).FirstOrDefault();
 
-                    view.datas.Add(new ModelViews.SendDataDetailView()
+                    view.datas.Add(new ModelViews.SendDataDetailView()    
                     {
 
                         line_no = x.line_no,

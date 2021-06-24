@@ -17,7 +17,8 @@ namespace api.ModelViews
 
     public class ScanPutAwaySearchView
     {
-        public string entity { get; set; }
+        public string ic_entity { get; set; }
+        public string pd_entity { get; set; }
         public string build_type { get; set; }
         public string doc_no { get; set; }
         public string doc_code { get; set; }

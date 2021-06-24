@@ -137,7 +137,7 @@ export class ScanPutawayComponent implements OnInit {
   {
       const dialogRef = this._dialog.open(ScanPutawayCheckQrComponent, {
       maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxHeight: '100vh', 
       height: '100%',
       width: '100%',
       data: {

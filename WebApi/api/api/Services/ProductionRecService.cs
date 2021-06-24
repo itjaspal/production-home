@@ -305,10 +305,14 @@ namespace api.Services
 
                 //query data
                 string sql = "";
-                     sql += " select a.pd_entity, a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt,0)) as conf_qty";
-                     sql += " from pd_mast a, pd_det b";
+                     sql += " select c.ic_entity, b.pd_entity, a.doc_date as jit_date, a.doc_no, a.doc_code, b.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt,0)) as conf_qty";
+                     sql += " from pd_mast a, pd_det b, whtran_det c";
                      sql += " where a.pd_entity = b.pd_entity";
                      sql += " and   a.doc_no    = b.doc_no";
+                     sql += " and a.doc_no = c.doc_no";
+                     sql += " and a.doc_code = c.doc_code";
+                     sql += " and b.wh_code = c.wh_code";
+                     sql += " and c.trans_code = 'REC'";
                      sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate,'dd/mm/yyyy'),trunc(a.doc_date))";
                      sql += " and ((a.pd_entity = 'H10')or((a.pd_entity = 'B10')and((a.doc_no like 'PP%')or(a.doc_no like 'FP%'))))";
                      sql += " and((a.build_type = :pBuildType) or(a.build_type is null))";
@@ -320,7 +324,7 @@ namespace api.Services
 
                          sql += "    and a.doc_no in (select doc_no";
                          sql += "                        from whtran_mast";
-                         sql += "                        where ic_entity = a.pd_entity";
+                         sql += "                        where ic_entity = c.ic_entity";
                          sql += "                        and trans_code  = 'PTW'";
                          sql += "                        and doc_status  = 'APV')";
 
@@ -329,31 +333,32 @@ namespace api.Services
                      {
                          sql += "    and a.doc_no not in (select doc_no";
                          sql += "                      from whtran_mast";
-                         sql += "                      where ic_entity = a.pd_entity";
+                         sql += "                      where ic_entity = c.ic_entity";
                          sql += "                      and trans_code  = 'PTW'";
                          sql += "                      and doc_status  = 'APV')";
 
                      }
 
-                     sql += " group by a.pd_entity, a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
-                     
+                     sql += " group by c.ic_entity, b.pd_entity, a.doc_date, a.doc_no,  a.doc_code, b.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                     sql += " order by a.doc_no,b.wh_code";
 
-              /*  sql += " select a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt, 0)) as conf_qty";
-                sql += " from pd_mast a, pd_det b";
-                sql += " where a.pd_entity = b.pd_entity";
-                sql += " and a.doc_no = b.doc_no";
-                sql += " and a.pd_entity = :pEntity";
-                sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate, 'dd/mm/yyyy'), trunc(a.doc_date))";
-                sql += " and((a.build_type = :pBuildType) or(a.build_type is null))";
-                sql += " and a.doc_no = nvl(:pDocNo, a.doc_no)";
-                sql += " and a.doc_status = 'APV'";
-                sql += " and a.doc_no not in (select doc_no";
-                sql += "                         from whtran_mast";
-                sql += "                         where ic_entity = a.pd_entity";
-                sql += "                         and trans_code = 'PTW'";
-                sql += "                         and doc_status = 'APV')";
-                sql += " group by a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
-                */
+
+                /*  sql += " select a.doc_date as jit_date, a.doc_no, a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by, sum(nvl(b.qty_pdt, 0)) as conf_qty";
+                  sql += " from pd_mast a, pd_det b";
+                  sql += " where a.pd_entity = b.pd_entity";
+                  sql += " and a.doc_no = b.doc_no";
+                  sql += " and a.pd_entity = :pEntity";
+                  sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate, 'dd/mm/yyyy'), trunc(a.doc_date))";
+                  sql += " and((a.build_type = :pBuildType) or(a.build_type is null))";
+                  sql += " and a.doc_no = nvl(:pDocNo, a.doc_no)";
+                  sql += " and a.doc_status = 'APV'";
+                  sql += " and a.doc_no not in (select doc_no";
+                  sql += "                         from whtran_mast";
+                  sql += "                         where ic_entity = a.pd_entity";
+                  sql += "                         and trans_code = 'PTW'";
+                  sql += "                         and doc_status = 'APV')";
+                  sql += " group by a.doc_date, a.doc_no,  a.doc_code, a.wh_code, a.wc_code, a.gen_date, a.gen_by";
+                  */
 
                 List<ProductionRecView> productionRecView = ctx.Database.SqlQuery<ProductionRecView>
                                                         (sql, new OracleParameter("pReqDate", vreq_date),
@@ -386,10 +391,11 @@ namespace api.Services
                     //************
 
                     //find ptw_qty
-                   string sql_ptwQty = "select nvl(sum(nvl(qty,0)),0) ptw_qty from whtran_det where ic_entity = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and doc_code = :pdoc_code";
-                   int vPtwQty = ctx.Database.SqlQuery<int>(sql_ptwQty, new OracleParameter("pic_entity", i.pd_entity),
+                   string sql_ptwQty = "select nvl(sum(nvl(qty,0)),0) ptw_qty from whtran_det where ic_entity = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and doc_code = :pdoc_code and wh_code = :pwh_code";
+                   int vPtwQty = ctx.Database.SqlQuery<int>(sql_ptwQty, new OracleParameter("pic_entity", i.ic_entity),
                                                                    new OracleParameter("pdoc_no", i.doc_no),
-                                                                   new OracleParameter("pdoc_code", i.doc_code)).SingleOrDefault();
+                                                                   new OracleParameter("pdoc_code", i.doc_code),
+                                                                   new OracleParameter("pwh_code", i.wh_code)).SingleOrDefault();
 
 
                     vTotal_ptw_qty += vPtwQty;
@@ -400,6 +406,7 @@ namespace api.Services
                         jit_date = i.jit_date,
                         doc_no = i.doc_no,
                         pd_entity = i.pd_entity,
+                        ic_entity = i.ic_entity,
                         doc_code = i.doc_code,
                         wh_code = i.wh_code,
                         wc_code = i.wc_code,

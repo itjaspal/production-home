@@ -93,6 +93,7 @@ namespace api.ModelViews
     public class SendDataDetailView
     {
         public int line_no { get; set; }
+        public string wh_code { get; set; }
         public string prod_code { get; set; }
         public string prod_name { get; set; }
         public string uom_code { get; set; }

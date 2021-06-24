@@ -16,7 +16,8 @@ export class PutAwayTotalView<T>
 }
 
 export class PutAwayScanSearchView {
-    public entity: string = AppSetting.entity;
+    public ic_entity: string = AppSetting.entity;
+    public pd_entity: string = AppSetting.entity;
     public build_type: string = "";
     public doc_no: string = "";
     public doc_code: string = "";

@@ -24,7 +24,7 @@ export class ScanPutawayService {
   public async searchPutAwayAdd(_model: PutAwayScanSearchView) { 
     return await this.http.post<PutAwayTotalView<PutAwayScanView>>(environment.API_URL + 'ScanPutAway/postScanPutAwayAdd', _model).toPromise();  
 
-  }
+  } 
 
   public async searchPutAwayManualAdd(_model: PutAwayScanSearchView) { 
     return await this.http.post<PutAwayTotalView<PutAwayScanView>>(environment.API_URL + 'ScanPutAway/postScanPutAwayManualAdd', _model).toPromise();  

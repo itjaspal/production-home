@@ -30,6 +30,7 @@ namespace api.ModelViews
     public class ProductionRecView
     {
         public DateTime jit_date { get; set; }
+        public string ic_entity { get; set; }
         public string pd_entity { get; set; }
         public string doc_no { get; set; }
         public string doc_code { get; set; }

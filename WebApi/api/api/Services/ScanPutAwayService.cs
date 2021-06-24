@@ -418,7 +418,8 @@ namespace api.Services
         {
             using (var ctx = new ConXContext())
             {
-                var ventity = model.entity;
+                var vic_entity = model.ic_entity;
+                var vpd_entity = model.pd_entity;
                 var vbuild_type = model.build_type;
                 var vdoc_no = model.doc_no;
                 var vdoc_code = model.doc_code;
@@ -473,7 +474,7 @@ namespace api.Services
                 sqlp += " and pkg_barcode_set = :p_setNo";
                 sqlp += " group by ref_pd_docno,prod_code,bar_code,pkg_barcode_set";
 
-                BarcodeSetDetailView barcode_Set_detail = ctx.Database.SqlQuery<BarcodeSetDetailView>(sqlp, new OracleParameter("p_entity", ventity), new OracleParameter("p_setNo", vSet_no)).FirstOrDefault();
+                BarcodeSetDetailView barcode_Set_detail = ctx.Database.SqlQuery<BarcodeSetDetailView>(sqlp, new OracleParameter("p_entity", vpd_entity), new OracleParameter("p_setNo", vSet_no)).FirstOrDefault();
 
                 if (barcode_Set_detail == null)
                 {
@@ -515,10 +516,10 @@ namespace api.Services
 
                 // validate Location
                 string sql_loc = "select loc_code from whloc_mast where  wh_code = :p_whCode and  loc_code = :p_locCode and rownum = 1";
-                string vChk_loc_code = ctx.Database.SqlQuery<string>(sql_loc, new OracleParameter("p_whCode", vwh_code), new OracleParameter("p_locCode", vloc_code)).FirstOrDefault();
+                string vChk_loc_code = ctx.Database.SqlQuery<string>(sql_loc, new OracleParameter("p_whCode", vfr_wh_code), new OracleParameter("p_locCode", vloc_code)).FirstOrDefault();
                 if (vChk_loc_code == null)
                 {
-                    throw new Exception("กรุณากำหนดข้อมูล Location : " + vloc_code + " ของคลังสินค้า : " + vwh_code + " ในระบบ Master ก่อนทำการ PutAway");
+                    throw new Exception("กรุณากำหนดข้อมูล Location : " + vloc_code + " ของคลังสินค้า : " + vfr_wh_code + " ในระบบ Master ก่อนทำการ PutAway");
                 }
 
                 // validate จำนวน เกินยอดที่ putaway ไปแล้วหรือไม่
@@ -543,7 +544,7 @@ namespace api.Services
                 sql_rec += "                     from wh_mast";
                 sql_rec += "                     where wh_code = a.wh_code)";
 
-                vquery_qty = ctx.Database.SqlQuery<string>(sql_rec, new OracleParameter("p_entity", ventity),
+                vquery_qty = ctx.Database.SqlQuery<string>(sql_rec, new OracleParameter("p_entity", vic_entity),
                                                                     new OracleParameter("p_docNo", view.ref_pd_docno),
                                                                     new OracleParameter("p_docCode", vdoc_code),
                                                                     new OracleParameter("p_prodCode", view.prod_code),
@@ -564,7 +565,7 @@ namespace api.Services
                 sql_ptw += " and a.prod_code = :p_prodCode";
                 sql_ptw += " and a.bar_code = :p_barCode";
 
-                vquery_qty = ctx.Database.SqlQuery<string>(sql_ptw, new OracleParameter("p_entity", ventity),
+                vquery_qty = ctx.Database.SqlQuery<string>(sql_ptw, new OracleParameter("p_entity", vic_entity),
                                                                     new OracleParameter("p_docNo", view.ref_pd_docno),
                                                                     new OracleParameter("p_docCode", vdoc_code),
                                                                     new OracleParameter("p_prodCode", view.prod_code),
@@ -580,7 +581,7 @@ namespace api.Services
                 // Insert Transaction 
                 // Insert whtran_mast 
                 string sql_whMast = "select doc_no from whtran_mast where ic_entity = :p_entity and trans_code = 'PTW' and doc_no = :p_docNo and doc_code = :p_doc_Code";
-                string vCheckDoc = ctx.Database.SqlQuery<string>(sql_whMast, new OracleParameter("p_entity", ventity), new OracleParameter("p_docNo", view.ref_pd_docno), new OracleParameter("p_doc_Code", vdoc_code)).SingleOrDefault();
+                string vCheckDoc = ctx.Database.SqlQuery<string>(sql_whMast, new OracleParameter("p_entity", vic_entity), new OracleParameter("p_docNo", view.ref_pd_docno), new OracleParameter("p_doc_Code", vdoc_code)).SingleOrDefault();
 
                 using (TransactionScope scope = new TransactionScope())
                 {
@@ -594,7 +595,7 @@ namespace api.Services
                         OracleCommand oraCommand = conn.CreateCommand();
                         OracleParameter[] param = new OracleParameter[]
                             {
-                                    new OracleParameter("pic_entity",ventity),
+                                    new OracleParameter("pic_entity",vic_entity),
                                     new OracleParameter("ptrans_code", "PTW"),
                                     new OracleParameter("pdoc_code", vdoc_code),
                                     new OracleParameter("pdoc_no", view.ref_pd_docno),
@@ -630,7 +631,7 @@ namespace api.Services
                             new OracleParameter("ptot_qty", vqty_scan + vPtwQty),
                             new OracleParameter("puser_code", model.user_id),
                             new OracleParameter("psys_date", DateTime.Now),
-                            new OracleParameter("pic_entity", ventity),
+                            new OracleParameter("pic_entity", vic_entity),
                             new OracleParameter("pdoc_no", view.ref_pd_docno),
                             new OracleParameter("pdoc_code", vdoc_code),
 
@@ -649,7 +650,7 @@ namespace api.Services
                 // Insert whtran_det
                 // หา Max item
                 string sql_ItemNo = "select to_char(nvl(max(nvl(item,0)),0)+1) from whtran_det where  ic_entity  = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and  doc_code   = :pdoc_code";
-                vItemNo = ctx.Database.SqlQuery<string>(sql_ItemNo, new OracleParameter("pic_entity", ventity), new OracleParameter("pdoc_no", view.ref_pd_docno), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
+                vItemNo = ctx.Database.SqlQuery<string>(sql_ItemNo, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pdoc_no", view.ref_pd_docno), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
                 using (TransactionScope scope = new TransactionScope())
                 {
                     string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
@@ -660,13 +661,13 @@ namespace api.Services
                     OracleCommand oraCommand = conn.CreateCommand();
                     OracleParameter[] param = new OracleParameter[]
                         {
-                             new OracleParameter("pic_entity",ventity),
+                             new OracleParameter("pic_entity",vic_entity),
                              new OracleParameter("ptrans_code", "PTW"),
                              new OracleParameter("pdoc_code", vdoc_code),
                              new OracleParameter("pdoc_no", view.ref_pd_docno),
                              new OracleParameter("pitem", int.Parse(vItemNo)),
                              new OracleParameter("pprod_code", view.prod_code),
-                             new OracleParameter("pwh_code", vwh_code),
+                             new OracleParameter("pwh_code", vfr_wh_code),
                              new OracleParameter("pwh_refer", vfr_wh_code),
                              new OracleParameter("ploc_code", vloc_code),
                              new OracleParameter("ploc_refer", vloc_code_def),
@@ -699,7 +700,7 @@ namespace api.Services
                     OracleParameter[] param = new OracleParameter[]
                     {
                             new OracleParameter("pqty_scan", vqty_scan),
-                            new OracleParameter("pic_entity", ventity),
+                            new OracleParameter("pic_entity", vic_entity),
                             new OracleParameter("pprod_code", view.prod_code),
                             new OracleParameter("pwh_code", vfr_wh_code),
                             new OracleParameter("ploc_code", vloc_code_def),
@@ -723,7 +724,7 @@ namespace api.Services
                 }
                 // Update Stock TO Location
                 string sql_icLoc = "select prod_code from  ic_mast_loc where ic_entity = :pic_entity and prod_code = :pprod_code and wh_code = :pwh_code and loc_code = :ploc_code and rownum = 1";
-                string vChkStockLoc = ctx.Database.SqlQuery<string>(sql_icLoc, new OracleParameter("pic_entity", ventity), new OracleParameter("pprod_code", view.prod_code), new OracleParameter("pwh_code", vwh_code), new OracleParameter("ploc_code", vloc_code)).SingleOrDefault();
+                string vChkStockLoc = ctx.Database.SqlQuery<string>(sql_icLoc, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pprod_code", view.prod_code), new OracleParameter("pwh_code", vfr_wh_code), new OracleParameter("ploc_code", vloc_code)).SingleOrDefault();
                 using (TransactionScope scope = new TransactionScope())
                 {
                     if (vChkStockLoc == null)
@@ -737,7 +738,7 @@ namespace api.Services
                         OracleCommand oraCommand = conn.CreateCommand();
                         OracleParameter[] param = new OracleParameter[]
                             {
-                             new OracleParameter("pic_entity",ventity),
+                             new OracleParameter("pic_entity",vic_entity),
                              new OracleParameter("pprod_code", view.prod_code),
                              new OracleParameter("pwh_code", vwh_code),
                              new OracleParameter("ploc_code", vloc_code),
@@ -766,9 +767,9 @@ namespace api.Services
                         OracleParameter[] param = new OracleParameter[]
                         {
                             new OracleParameter("pqty_scan", vqty_scan),
-                            new OracleParameter("pic_entity", ventity),
+                            new OracleParameter("pic_entity", vic_entity),
                             new OracleParameter("pprod_code", view.prod_code),
-                            new OracleParameter("pwh_code", vwh_code),
+                            new OracleParameter("pwh_code", vfr_wh_code),
                             new OracleParameter("ploc_code", vloc_code),
 
                         };
@@ -795,11 +796,11 @@ namespace api.Services
                 // Check Total Receive = Total Ptw ?
                 // find total all Rec Qty
                 string sql_totRec = "select sum(nvl(qty,0)) qty from whtran_det where ic_entity = :pic_entity and trans_code = 'REC' and doc_no = :pdoc_no and doc_code = :pdoc_code";
-                int vTotRec = ctx.Database.SqlQuery<int>(sql_totRec, new OracleParameter("pic_entity", ventity), new OracleParameter("pdoc_no", view.ref_pd_docno), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
+                int vTotRec = ctx.Database.SqlQuery<int>(sql_totRec, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pdoc_no", view.ref_pd_docno), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
 
                 // find total all Rec Qty
                 string sql_totPtw = "select sum(nvl(qty,0)) qty from whtran_det where ic_entity = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and doc_code = :pdoc_code";
-                int vTotPtw = ctx.Database.SqlQuery<int>(sql_totPtw, new OracleParameter("pic_entity", ventity), new OracleParameter("pdoc_no", view.ref_pd_docno), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
+                int vTotPtw = ctx.Database.SqlQuery<int>(sql_totPtw, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pdoc_no", view.ref_pd_docno), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
 
                 if (vTotRec == vTotPtw)
                 {
@@ -814,7 +815,7 @@ namespace api.Services
                         OracleCommand oraCommand = conn.CreateCommand();
                         OracleParameter[] param = new OracleParameter[]
                         {
-                                new OracleParameter("pic_entity", ventity),
+                                new OracleParameter("pic_entity", vic_entity),
                                 new OracleParameter("pdoc_no", view.ref_pd_docno),
                                 new OracleParameter("pdoc_code", vdoc_code),
                         };
@@ -849,7 +850,7 @@ namespace api.Services
                 sqlRecQty += " and bar_code = :pbar_code";
                 sqlRecQty += " and(nvl(qty, 0) - nvl(qty_ptw, 0)) > 0";
 
-                List<PutAwayRecDetailView> recQtyData = ctx.Database.SqlQuery<PutAwayRecDetailView>(sqlRecQty, new OracleParameter("pic_entity", ventity), 
+                List<PutAwayRecDetailView> recQtyData = ctx.Database.SqlQuery<PutAwayRecDetailView>(sqlRecQty, new OracleParameter("pic_entity", vic_entity),
                                                                                                            new OracleParameter("pdoc_no", view.ref_pd_docno),
                                                                                                            new OracleParameter("pdoc_code", vdoc_code),
                                                                                                            new OracleParameter("pprod_code", view.prod_code),
@@ -857,7 +858,7 @@ namespace api.Services
                 int vTotScnQty = vqty_scan;
                 foreach (var m in recQtyData)
                 {
-                    if  (vTotScnQty <= m.net_qty)
+                    if (vTotScnQty <= m.net_qty)
                     {
                         // Update PtwQty = Ptw_qty + vTotScnQty
                         // Update PtwQty
@@ -872,7 +873,7 @@ namespace api.Services
                             OracleParameter[] param = new OracleParameter[]
                             {
                                 new OracleParameter("pqty_scan", vTotScnQty),
-                                new OracleParameter("pic_entity", ventity),
+                                new OracleParameter("pic_entity", vic_entity),
                                 new OracleParameter("pdoc_no", view.ref_pd_docno),
                                 new OracleParameter("pdoc_code", vdoc_code),
                                 new OracleParameter("pprod_code", view.prod_code),
@@ -916,7 +917,7 @@ namespace api.Services
                             OracleParameter[] param = new OracleParameter[]
                             {
                                 new OracleParameter("pqty_scan", m.net_qty),
-                                new OracleParameter("pic_entity", ventity),
+                                new OracleParameter("pic_entity", vic_entity),
                                 new OracleParameter("pdoc_no", view.ref_pd_docno),
                                 new OracleParameter("pdoc_code", vdoc_code),
                                 new OracleParameter("pprod_code", view.prod_code),
@@ -979,7 +980,8 @@ namespace api.Services
         {
             using (var ctx = new ConXContext())
             {
-                var ventity = model.entity;
+                var vic_entity = model.ic_entity;
+                var vpd_entity = model.pd_entity;
                 var vbuild_type = model.build_type;
                 var vdoc_no = model.doc_no;
                 var vdoc_code = model.doc_code;
@@ -1057,7 +1059,7 @@ namespace api.Services
                 sql_rec += "                     from wh_mast";
                 sql_rec += "                     where wh_code = a.wh_code)";
 
-                vquery_qty = ctx.Database.SqlQuery<string>(sql_rec, new OracleParameter("p_entity", ventity),
+                vquery_qty = ctx.Database.SqlQuery<string>(sql_rec, new OracleParameter("p_entity", vic_entity),
                                                                     new OracleParameter("p_docNo", vdoc_no),
                                                                     new OracleParameter("p_docCode", vdoc_code),
                                                                     new OracleParameter("p_prodCode", vprod_code),
@@ -1081,7 +1083,7 @@ namespace api.Services
                 sql_ptw += " and a.prod_code = :p_prodCode";
                 sql_ptw += " and a.bar_code = :p_barCode";
 
-                vquery_qty = ctx.Database.SqlQuery<string>(sql_ptw, new OracleParameter("p_entity", ventity),
+                vquery_qty = ctx.Database.SqlQuery<string>(sql_ptw, new OracleParameter("p_entity", vic_entity),
                                                                     new OracleParameter("p_docNo", vdoc_no),
                                                                     new OracleParameter("p_docCode", vdoc_code),
                                                                     new OracleParameter("p_prodCode", vprod_code),
@@ -1097,7 +1099,7 @@ namespace api.Services
                 // Insert Transaction 
                 // Insert whtran_mast 
                 string sql_whMast = "select doc_no from whtran_mast where ic_entity = :p_entity and trans_code = 'PTW' and doc_no = :p_docNo and doc_code = :p_doc_Code";
-                string vCheckDoc = ctx.Database.SqlQuery<string>(sql_whMast, new OracleParameter("p_entity", ventity), new OracleParameter("p_docNo", vdoc_no), new OracleParameter("p_doc_Code", vdoc_code)).SingleOrDefault();
+                string vCheckDoc = ctx.Database.SqlQuery<string>(sql_whMast, new OracleParameter("p_entity", vic_entity), new OracleParameter("p_docNo", vdoc_no), new OracleParameter("p_doc_Code", vdoc_code)).SingleOrDefault();
 
                 using (TransactionScope scope = new TransactionScope())
                 {
@@ -1111,7 +1113,7 @@ namespace api.Services
                         OracleCommand oraCommand = conn.CreateCommand();
                         OracleParameter[] param = new OracleParameter[]
                             {
-                                                    new OracleParameter("pic_entity",ventity),
+                                                    new OracleParameter("pic_entity",vic_entity),
                                                     new OracleParameter("ptrans_code", "PTW"),
                                                     new OracleParameter("pdoc_code", vdoc_code),
                                                     new OracleParameter("pdoc_no", vdoc_no),
@@ -1147,7 +1149,7 @@ namespace api.Services
                                             new OracleParameter("ptot_qty", vqty_scan + vPtwQty),
                                             new OracleParameter("puser_code", model.user_id),
                                             new OracleParameter("psys_date", DateTime.Now),
-                                            new OracleParameter("pic_entity", ventity),
+                                            new OracleParameter("pic_entity", vic_entity),
                                             new OracleParameter("pdoc_no", vdoc_no),
                                             new OracleParameter("pdoc_code", vdoc_code),
 
@@ -1166,7 +1168,7 @@ namespace api.Services
                 // Insert whtran_det
                 // หา Max item
                 string sql_ItemNo = "select to_char(nvl(max(nvl(item,0)),0)+1) from whtran_det where  ic_entity  = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and  doc_code   = :pdoc_code";
-                vItemNo = ctx.Database.SqlQuery<string>(sql_ItemNo, new OracleParameter("pic_entity", ventity), new OracleParameter("pdoc_no", vdoc_no), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
+                vItemNo = ctx.Database.SqlQuery<string>(sql_ItemNo, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pdoc_no", vdoc_no), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
                 using (TransactionScope scope = new TransactionScope())
                 {
                     string strConn = ConfigurationManager.ConnectionStrings["OracleDbContext"].ConnectionString;
@@ -1177,13 +1179,13 @@ namespace api.Services
                     OracleCommand oraCommand = conn.CreateCommand();
                     OracleParameter[] param = new OracleParameter[]
                         {
-                                             new OracleParameter("pic_entity",ventity),
+                                             new OracleParameter("pic_entity",vic_entity),
                                              new OracleParameter("ptrans_code", "PTW"),
                                              new OracleParameter("pdoc_code", vdoc_code),
                                              new OracleParameter("pdoc_no", vdoc_no),
                                              new OracleParameter("pitem", int.Parse(vItemNo)),
                                              new OracleParameter("pprod_code", vprod_code),
-                                             new OracleParameter("pwh_code", vwh_code),
+                                             new OracleParameter("pwh_code", vfr_wh_code),
                                              new OracleParameter("pwh_refer", vfr_wh_code),
                                              new OracleParameter("ploc_code", vloc_code),
                                              new OracleParameter("ploc_refer", vloc_code_def),
@@ -1215,7 +1217,7 @@ namespace api.Services
                     OracleParameter[] param = new OracleParameter[]
                     {
                                             new OracleParameter("pqty_scan", vqty_scan),
-                                            new OracleParameter("pic_entity", ventity),
+                                            new OracleParameter("pic_entity", vic_entity),
                                             new OracleParameter("pprod_code", vprod_code),
                                             new OracleParameter("pwh_code", vfr_wh_code),
                                             new OracleParameter("ploc_code", vloc_code_def),
@@ -1239,7 +1241,7 @@ namespace api.Services
                 }
                 // Update Stock TO Location
                 string sql_icLoc = "select prod_code from  ic_mast_loc where ic_entity = :pic_entity and prod_code = :pprod_code and wh_code = :pwh_code and loc_code = :ploc_code and rownum = 1";
-                string vChkStockLoc = ctx.Database.SqlQuery<string>(sql_icLoc, new OracleParameter("pic_entity", ventity), new OracleParameter("pprod_code", vprod_code), new OracleParameter("pwh_code", vwh_code), new OracleParameter("ploc_code", vloc_code)).SingleOrDefault();
+                string vChkStockLoc = ctx.Database.SqlQuery<string>(sql_icLoc, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pprod_code", vprod_code), new OracleParameter("pwh_code", vwh_code), new OracleParameter("ploc_code", vloc_code)).SingleOrDefault();
                 using (TransactionScope scope = new TransactionScope())
                 {
                     if (vChkStockLoc == null)
@@ -1253,9 +1255,9 @@ namespace api.Services
                         OracleCommand oraCommand = conn.CreateCommand();
                         OracleParameter[] param = new OracleParameter[]
                             {
-                                             new OracleParameter("pic_entity",ventity),
+                                             new OracleParameter("pic_entity",vic_entity),
                                              new OracleParameter("pprod_code", vprod_code),
-                                             new OracleParameter("pwh_code", vwh_code),
+                                             new OracleParameter("pwh_code", vfr_wh_code),
                                              new OracleParameter("ploc_code", vloc_code),
                                              new OracleParameter("pqty_oh", vqty_scan),
                                              new OracleParameter("pqty_avai", vqty_scan),
@@ -1282,9 +1284,9 @@ namespace api.Services
                         OracleParameter[] param = new OracleParameter[]
                         {
                                             new OracleParameter("pqty_scan", vqty_scan),
-                                            new OracleParameter("pic_entity", ventity),
+                                            new OracleParameter("pic_entity", vic_entity),
                                             new OracleParameter("pprod_code", vprod_code),
-                                            new OracleParameter("pwh_code", vwh_code),
+                                            new OracleParameter("pwh_code", vfr_wh_code),
                                             new OracleParameter("ploc_code", vloc_code),
 
                         };
@@ -1311,11 +1313,11 @@ namespace api.Services
                 // Check Total Receive = Total Ptw ?
                 // find total all Rec Qty
                 string sql_totRec = "select sum(nvl(qty,0)) qty from whtran_det where ic_entity = :pic_entity and trans_code = 'REC' and doc_no = :pdoc_no and doc_code = :pdoc_code";
-                int vTotRec = ctx.Database.SqlQuery<int>(sql_totRec, new OracleParameter("pic_entity", ventity), new OracleParameter("pdoc_no", vdoc_no), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
+                int vTotRec = ctx.Database.SqlQuery<int>(sql_totRec, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pdoc_no", vdoc_no), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
 
                 // find total all Rec Qty
                 string sql_totPtw = "select sum(nvl(qty,0)) qty from whtran_det where ic_entity = :pic_entity and trans_code = 'PTW' and doc_no = :pdoc_no and doc_code = :pdoc_code";
-                int vTotPtw = ctx.Database.SqlQuery<int>(sql_totPtw, new OracleParameter("pic_entity", ventity), new OracleParameter("pdoc_no", vdoc_no), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
+                int vTotPtw = ctx.Database.SqlQuery<int>(sql_totPtw, new OracleParameter("pic_entity", vic_entity), new OracleParameter("pdoc_no", vdoc_no), new OracleParameter("pdoc_code", vdoc_code)).SingleOrDefault();
 
                 if (vTotRec == vTotPtw)
                 {
@@ -1330,7 +1332,7 @@ namespace api.Services
                         OracleCommand oraCommand = conn.CreateCommand();
                         OracleParameter[] param = new OracleParameter[]
                         {
-                                                new OracleParameter("pic_entity", ventity),
+                                                new OracleParameter("pic_entity", vic_entity),
                                                 new OracleParameter("pdoc_no", vdoc_no),
                                                 new OracleParameter("pdoc_code", vdoc_code),
                         };
@@ -1366,7 +1368,7 @@ namespace api.Services
                 sqlRecQty += " and bar_code = :pbar_code";
                 sqlRecQty += " and(nvl(qty, 0) - nvl(qty_ptw, 0)) > 0";
 
-                List<PutAwayRecDetailView> recQtyData = ctx.Database.SqlQuery<PutAwayRecDetailView>(sqlRecQty, new OracleParameter("pic_entity", ventity),
+                List<PutAwayRecDetailView> recQtyData = ctx.Database.SqlQuery<PutAwayRecDetailView>(sqlRecQty, new OracleParameter("pic_entity", vic_entity),
                                                                                                            new OracleParameter("pdoc_no", vdoc_no),
                                                                                                            new OracleParameter("pdoc_code", vdoc_code),
                                                                                                            new OracleParameter("pprod_code", vprod_code),
@@ -1389,7 +1391,7 @@ namespace api.Services
                             OracleParameter[] param = new OracleParameter[]
                             {
                                 new OracleParameter("pqty_scan", vTotScnQty),
-                                new OracleParameter("pic_entity", ventity),
+                                new OracleParameter("pic_entity", vic_entity),
                                 new OracleParameter("pdoc_no", vdoc_no),
                                 new OracleParameter("pdoc_code", vdoc_code),
                                 new OracleParameter("pprod_code", vprod_code),
@@ -1433,7 +1435,7 @@ namespace api.Services
                             OracleParameter[] param = new OracleParameter[]
                             {
                                 new OracleParameter("pqty_scan", m.net_qty),
-                                new OracleParameter("pic_entity", ventity),
+                                new OracleParameter("pic_entity", vic_entity),
                                 new OracleParameter("pdoc_no", vdoc_no),
                                 new OracleParameter("pdoc_code", vdoc_code),
                                 new OracleParameter("pprod_code", vprod_code),
