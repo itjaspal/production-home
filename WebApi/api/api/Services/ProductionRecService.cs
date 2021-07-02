@@ -312,6 +312,7 @@ namespace api.Services
                      sql += " and a.doc_no = c.doc_no";
                      sql += " and a.doc_code = c.doc_code";
                      sql += " and b.wh_code = c.wh_code";
+                     sql += " and b.prod_code = c.prod_code";
                      sql += " and c.trans_code = 'REC'";
                      sql += " and trunc(a.doc_date) = nvl(to_date(:pReqDate,'dd/mm/yyyy'),trunc(a.doc_date))";
                      sql += " and ((a.pd_entity = 'H10')or((a.pd_entity = 'B10')and((a.doc_no like 'PP%')or(a.doc_no like 'FP%'))))";

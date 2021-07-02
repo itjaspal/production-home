@@ -481,6 +481,24 @@ namespace api.Services
                     throw new Exception("ไม่พบข้อมูล SetNo : " + vSet_no + " ในระบบ");
                 }
 
+
+                // Check Scan Set no Allready ?
+                string sqlSetno = "select job_no, doc_code, doc_no, prod_code, qty";
+                sqlSetno += " from whtran_det";
+                sqlSetno += " where doc_code = :p_doc_code";
+                sqlSetno += " and doc_no     = :p_doc_no";
+                sqlSetno += " and trans_code = 'PTW'";
+                sqlSetno += " and job_no     = :p_set_no";
+                sqlSetno += " and rownum = 1";
+
+                PutawayChkSetNoView check_set_no = ctx.Database.SqlQuery<PutawayChkSetNoView>(sqlSetno, new OracleParameter("p_doc_code", vdoc_code), new OracleParameter("p_doc_no", vdoc_no),  new OracleParameter("p_set_no", vSet_no)).FirstOrDefault();
+
+                if (check_set_no != null)
+                {
+                    throw new Exception("SetNo : " + vSet_no + " ได้มีการสแกนเข้าไปแล้ว ไม่สามารถสแกนซำ้ได้");
+                }
+
+
                 //define model view
                 BarcodeSetDetailView view = new ModelViews.BarcodeSetDetailView()
                 {
@@ -697,7 +715,7 @@ namespace api.Services
                     conn.Open();
 
                     OracleCommand oraCommand = conn.CreateCommand();
-                    OracleParameter[] param = new OracleParameter[]
+                    OracleParameter[] param = new OracleParameter[] 
                     {
                             new OracleParameter("pqty_scan", vqty_scan),
                             new OracleParameter("pic_entity", vic_entity),

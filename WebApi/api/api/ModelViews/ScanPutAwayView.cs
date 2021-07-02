@@ -114,5 +114,14 @@ namespace api.ModelViews
         public int net_qty { get; set; }
     }
 
+    public class PutawayChkSetNoView
+    {
+        public string job_no { get; set; }
+        public string doc_code { get; set; }
+        public string doc_no { get; set; }
+        public string prod_code { get; set; }
+        public int qty { get; set; }
+    }
+
 
 }
